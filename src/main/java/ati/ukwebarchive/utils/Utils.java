@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package di.uniba.it.ukwebarchive.utils;
+package ati.ukwebarchive.utils;
 
-import static di.uniba.it.ukwebarchive.idx.CdxStatisticsMT.statistics;
+import static ati.ukwebarchive.idx.CdxStatisticsMT.statistics;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

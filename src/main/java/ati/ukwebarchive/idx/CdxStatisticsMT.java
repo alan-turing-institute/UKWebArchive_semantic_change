@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package di.uniba.it.ukwebarchive.content;
+package ati.ukwebarchive.idx;
 
-import di.uniba.it.ukwebarchive.data.CloudBlockMsg;
+import ati.ukwebarchive.content.ContentThread;
+import ati.ukwebarchive.data.CloudBlockMsg;
 import com.microsoft.azure.storage.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
-import di.uniba.it.ukwebarchive.utils.Utils;
-import java.io.BufferedWriter;
+import ati.ukwebarchive.utils.Utils;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -26,29 +24,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPOutputStream;
 
 /**
- * This class extracts txt content from arc and warc blocks from Azure data storage using a multi-thread approach on a single VM 
+ *
  * @author pierpaolo
  */
-public class ContentExtractorMT {
+public class CdxStatisticsMT {
 
     /**
-     * Store properties
+     *
      */
     public static Properties props;
 
     /**
-     * Set of valid mime-types, only records with valid mime-type will be processed
+     *
      */
     public static Set<String> validTypeSet;
 
-    private static Map<String, BufferedWriter> writerMap;
+    /**
+     *
+     */
+    public static Map<String, Long> statistics;
 
     private static int blockCount = 0;
 
@@ -57,29 +56,7 @@ public class ContentExtractorMT {
     private static long parsingOk = 0;
 
     /**
-     * Add textual content to the corpus file. One corpus file is created for each YYYYMM time period
-     * @param datekey The key used to retrieve the corpus file, this shuld be in the format YYYYMM (e.g. 199909)
-     * @param content The textual content to store
-     * @param header The header
-     * @throws IOException
-     */
-    public synchronized static void addContent(String datekey, String content, String header) throws IOException {
-        BufferedWriter writer = writerMap.get(datekey);
-        if (writer == null) {
-            writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(props.getProperty("storePath") + "ukwebarchive_corpus_" + datekey + ".text.gz"))));
-            writerMap.put(datekey, writer);
-        }
-        if (header == null) {
-            header = "#--DOC START--UUID:" + UUID.randomUUID().toString();
-        }
-        writer.write(header);
-        writer.newLine();
-        writer.write(content);
-        writer.newLine();
-    }
-
-    /**
-     * Increase the number of processed blocks
+     *
      */
     public synchronized static void updateBlockCounter() {
         blockCount++;
@@ -87,20 +64,35 @@ public class ContentExtractorMT {
             System.out.print(".");
             if (blockCount % 1000 == 0) {
                 System.out.println(blockCount);
+                Utils.printStatistics(statistics);
             }
         }
     }
 
     /**
-     * Increase the number of processed blocks with information about the number of processed records
-     * @param error Records with errors
-     * @param ok Records without errors
+     *
+     * @param datekey
+     * @param counter
+     */
+    public synchronized static void updateStatistics(String datekey, long counter) {
+        Long c = statistics.get(datekey);
+        if (c == null) {
+            statistics.put(datekey, 1L);
+        } else {
+            statistics.put(datekey, c + counter);
+        }
+    }
+
+    /**
+     *
+     * @param error
+     * @param ok
      */
     public synchronized static void updateBlockCounter(long error, long ok) {
         blockCount++;
         parsingError += error;
         parsingOk += ok;
-        Logger.getLogger(ContentExtractorMT.class.getName()).log(Level.INFO, "PR:{0}\t{1}\t{2}", new Object[]{blockCount, parsingOk, parsingError});
+        Logger.getLogger(CdxStatisticsMT.class.getName()).log(Level.INFO, "PR:{0}\t{1}\t{2}", new Object[]{blockCount, parsingOk, parsingError});
     }
 
     /**
@@ -111,11 +103,7 @@ public class ContentExtractorMT {
             props = new Properties();
             props.load(new FileReader("config.properties"));
             validTypeSet = Utils.loadFileInSet(new File(props.getProperty("contentTypeFilterFile")), true);
-            writerMap = new HashMap<>();
-            File storeDir = new File(props.getProperty("storePath"));
-            if (!storeDir.exists()) {
-                storeDir.mkdirs();
-            }
+            statistics=new HashMap<>();
             File tmpDir = new File(props.getProperty("tempDir"));
             if (!tmpDir.exists()) {
                 tmpDir.mkdirs();
@@ -125,7 +113,7 @@ public class ContentExtractorMT {
             Iterable<ListBlobItem> listBlobs = mainContainer.listBlobs(props.getProperty("mainContainer"));
             int nt = Integer.parseInt(props.getProperty("mt.n"));
             ConcurrentLinkedQueue<CloudBlockMsg> queue = new ConcurrentLinkedQueue<>();
-            int thfull = nt * 25;
+            int thfull = nt * 250;
             List<ContentThread> threads = new ArrayList<>();
             for (int i = 0; i < nt; i++) {
                 threads.add(new ContentThread(queue));
@@ -138,7 +126,7 @@ public class ContentExtractorMT {
                     for (ListBlobItem itemBlock : listBlobs1) {
                         if (itemBlock instanceof CloudBlockBlob) {
                             CloudBlockBlob block = (CloudBlockBlob) itemBlock;
-                            if (block.getName().endsWith(".arc.gz") || block.getName().endsWith(".warc.gz")) {
+                            if (block.getName().endsWith(".cdx.gz")) {
                                 if (queue.size() < thfull) {
                                     queue.offer(new CloudBlockMsg(block, true));
                                 } else {
@@ -148,7 +136,7 @@ public class ContentExtractorMT {
                                         }
                                         queue.offer(new CloudBlockMsg(block, true));
                                     } catch (InterruptedException ex) {
-                                        Logger.getLogger(ContentExtractorMT.class.getName()).log(Level.SEVERE, null, ex);
+                                        Logger.getLogger(CdxStatisticsMT.class.getName()).log(Level.SEVERE, null, ex);
                                     }
                                 }
                             }
@@ -163,15 +151,13 @@ public class ContentExtractorMT {
                 try {
                     threads.get(i).join();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ContentExtractorMT.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(CdxStatisticsMT.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            for (BufferedWriter w : writerMap.values()) {
-                w.close();
-            }
-            Logger.getLogger(ContentExtractorMT.class.getName()).log(Level.INFO, "END:{0}\t{1}\t{2}", new Object[]{blockCount, parsingOk, parsingError});
+            Logger.getLogger(CdxStatisticsMT.class.getName()).log(Level.INFO, "END:{0}\t{1}\t{2}", new Object[]{blockCount, parsingOk, parsingError});
+            Utils.saveStatistics(statistics, new File(props.getProperty("statistics.outFile")));
         } catch (IOException | URISyntaxException | StorageException ex) {
-            Logger.getLogger(ContentExtractorMT.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CdxStatisticsMT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

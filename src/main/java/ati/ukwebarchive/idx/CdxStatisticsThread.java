@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package di.uniba.it.ukwebarchive.idx;
+package ati.ukwebarchive.idx;
 
-import di.uniba.it.ukwebarchive.data.CloudBlockMsg;
+import ati.ukwebarchive.data.CloudBlockMsg;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import di.uniba.it.ukwebarchive.utils.Utils;
+import ati.ukwebarchive.utils.Utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

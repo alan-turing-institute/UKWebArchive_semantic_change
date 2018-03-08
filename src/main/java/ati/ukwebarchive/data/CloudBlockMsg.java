@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package di.uniba.it.ukwebarchive.data;
+package ati.ukwebarchive.data;
 
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import java.util.Objects;

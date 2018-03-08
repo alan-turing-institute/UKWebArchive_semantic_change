@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package di.uniba.it.ukwebarchive.idx;
+package ati.ukwebarchive.idx;
 
 import java.io.BufferedReader;
 import java.io.File;
