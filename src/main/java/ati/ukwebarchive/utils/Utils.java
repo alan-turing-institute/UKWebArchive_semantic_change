@@ -22,22 +22,14 @@ import java.util.Set;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  *
  * @author pierpaolo
  */
 public class Utils {
-
-    private static Tika tika;
-
-    private static boolean blockTika = false;
-
-    static {
-        tika = new Tika();
-    }
 
     /**
      *
@@ -70,12 +62,6 @@ public class Utils {
      */
     public static String getYearMonthFromDateStr(String dateString) {
         return dateString.substring(0, 6);
-    }
-
-    public static synchronized void newTika() {
-        if (!blockTika) {
-            tika = new Tika();
-        }
     }
 
     /*public static void printStatistics(Map<String, Map<String, Long>> statistics) {
@@ -160,18 +146,10 @@ public class Utils {
      * @param file
      * @return
      * @throws IOException
-     * @throws TikaException
      */
-    public static String getContent(File file) throws IOException, TikaException {
-        try {
-            blockTika = true;
-            return tika.parseToString(file);
-        } catch (Throwable th) {
-            tika = new Tika();
-            throw th;
-        } finally {
-            blockTika = false;
-        }
+    public static String getContent(File file) throws IOException {
+        Document doc = Jsoup.parse(file, null);
+        return doc.body().text();
     }
 
     /**
@@ -179,18 +157,10 @@ public class Utils {
      * @param stream
      * @return
      * @throws IOException
-     * @throws TikaException
      */
-    public static String getContent(InputStream stream) throws IOException, TikaException {
-        try {
-            blockTika = true;
-            return tika.parseToString(stream);
-        } catch (Throwable th) {
-            tika = new Tika();
-            throw th;
-        } finally {
-            blockTika = false;
-        }
+    public static String getContent(InputStream stream) throws IOException {
+        Document doc = Jsoup.parse(stream, null, "");
+        return doc.body().text();
     }
 
     /**

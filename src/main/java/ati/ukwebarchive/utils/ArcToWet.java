@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.tika.Tika;
 import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
@@ -31,7 +30,6 @@ public class ArcToWet {
      */
     public static void main(String[] args) {
         try {
-            Tika tika = new Tika();
             ArcReader arcReader = ArcReaderFactory.getReader(new FileInputStream(args[0]));
             WarcWriter warcWriter = WarcWriterFactory.getWriterCompressed(new FileOutputStream(args[1]), 8196);
             int records = 0;
@@ -49,7 +47,7 @@ public class ArcToWet {
                             WarcRecord wetRecord = WarcRecord.createRecord(warcWriter);
                             InputStream is = httpHeader.getPayloadInputStream();
                             if (is != null && is.available() > 0) {
-                                String text = tika.parseToString(is);
+                                String text = Utils.getContent(is);
                                 text = text.replaceAll("\\n+", "\n");
                                 if (text.length() > 0) {
                                     byte[] bytes = text.getBytes();

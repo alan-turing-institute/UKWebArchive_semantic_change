@@ -12,7 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Set;
@@ -20,7 +19,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.tika.exception.TikaException;
 import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
@@ -189,7 +187,6 @@ public class ClientTaskMultiThread extends Thread {
                                 wetFile.delete();
                             }
                         }
-                        Utils.newTika();
                         System.gc();
                     }
                 } else {

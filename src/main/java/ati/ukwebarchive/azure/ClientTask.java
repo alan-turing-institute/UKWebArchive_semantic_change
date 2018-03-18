@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.tika.exception.TikaException;
 import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
@@ -72,7 +71,7 @@ public class ClientTask {
             File tmpDir = new File(props.getProperty("tempDir"));
             tmpDir.mkdirs();
             String blockname = args[0];
-            File tmpPath=null;
+            File tmpPath = null;
             LOG.log(Level.INFO, "Process block {0}.", blockname);
             try {
                 CloudBlockBlob block = mainContainer.getBlockBlobReference(blockname);
@@ -114,7 +113,7 @@ public class ClientTask {
                                                     warcWriter.streamPayload(wis);
                                                     ok++;
                                                 }
-                                            } catch (IOException | TikaException ex) {
+                                            } catch (Exception ex) {
                                                 error++;
                                             }
                                         }
@@ -161,7 +160,7 @@ public class ClientTask {
                                                     warcWriter.streamPayload(wis);
                                                     ok++;
                                                 }
-                                            } catch (IOException | TikaException ex) {
+                                            } catch (Exception ex) {
                                                 error++;
                                             }
                                         }
@@ -187,7 +186,7 @@ public class ClientTask {
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ContentThread.class.getName()).log(Level.WARNING, "Skip block: " + blockname, ex);
-                if (tmpPath!=null) {
+                if (tmpPath != null) {
                     tmpPath.delete();
                 }
             }

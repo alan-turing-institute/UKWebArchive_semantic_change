@@ -11,8 +11,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
 import org.jwat.common.HttpHeader;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
@@ -31,7 +29,6 @@ public class WarcToWet {
      */
     public static void main(String[] args) {
         try {
-            Tika tika = new Tika();
             WarcReader warcReader = WarcReaderFactory.getReader(new FileInputStream(args[0]));
             WarcWriter warcWriter = WarcWriterFactory.getWriterCompressed(new FileOutputStream(args[1]), 8196);
             int records = 0;
@@ -49,7 +46,7 @@ public class WarcToWet {
                             WarcRecord wetRecord = WarcRecord.createRecord(warcWriter);
                             InputStream is = httpHeader.getPayloadInputStream();
                             if (is != null && is.available() > 0) {
-                                String text = tika.parseToString(is);
+                                String text = Utils.getContent(is);
                                 text = text.replaceAll("\\n+", "\n");
                                 if (text.length() > 0) {
                                     byte[] bytes = text.getBytes();

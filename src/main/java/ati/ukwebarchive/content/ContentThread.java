@@ -10,13 +10,11 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import ati.ukwebarchive.utils.Utils;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import org.apache.tika.exception.TikaException;
 import org.jwat.arc.ArcReader;
 import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
@@ -28,6 +26,7 @@ import org.jwat.warc.WarcRecord;
 /**
  * This class is a single thread that processes blocks from the Data Storage.
  * Information about blocks are retrieved from a shared queue
+ *
  * @author pierpaolo
  */
 public class ContentThread extends Thread {
@@ -38,6 +37,7 @@ public class ContentThread extends Thread {
 
     /**
      * Thread constructor with the shared queue
+     *
      * @param queue
      */
     public ContentThread(ConcurrentLinkedQueue<CloudBlockMsg> queue) {
@@ -76,7 +76,7 @@ public class ContentThread extends Thread {
                                                         String header = "#--DOC START--URL:" + record.getUrlStr();
                                                         ContentExtractorMT.addContent(datekey, content, header);
                                                         ok++;
-                                                    } catch (IOException | TikaException ex) {
+                                                    } catch (Exception ex) {
                                                         error++;
                                                     }
                                                 }
@@ -105,7 +105,7 @@ public class ContentThread extends Thread {
                                                         String header = "#--DOC START--URL:" + record.header.warcTargetUriStr;
                                                         ContentExtractorMT.addContent(datekey, content, header);
                                                         ok++;
-                                                    } catch (IOException | TikaException ex) {
+                                                    } catch (Exception ex) {
                                                         error++;
                                                     }
                                                 }
