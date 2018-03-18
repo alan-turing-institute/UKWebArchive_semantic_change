@@ -18,9 +18,10 @@ import org.jwat.warc.WarcRecord;
 
 /**
  * Dummy test class for reading WARC files
+ *
  * @author pierpaolo
  */
-public class TestReadWarc2 {
+public class TestReadWet {
 
     /**
      * @param args the command line arguments
@@ -28,26 +29,24 @@ public class TestReadWarc2 {
      */
     public static void main(String[] args) throws IOException {
 
-        File warcFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.warc.gz");
+        File warcFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.wet.gz");
         WarcReader warcReader = WarcReaderFactory.getReader(new FileInputStream(warcFile));
         int records = 0;
         WarcRecord record;
         while ((record = warcReader.getNextRecord()) != null) {
-            HttpHeader httpHeader = record.getHttpHeader();
-            if (httpHeader != null && httpHeader.contentType != null && httpHeader.statusCodeStr != null) {
-                if (httpHeader.statusCodeStr.equals("200") && httpHeader.contentType.startsWith("text/")) {
-                    System.out.println(record.header.warcDateStr);
-                    System.out.println(httpHeader.contentType);
-                    System.out.println(record.header.warcTargetUriStr);
-                    /*InputStream is = httpHeader.getInputStreamComplete();
-                    BufferedReader reader=new BufferedReader(new InputStreamReader(is));
-                    while (reader.ready()) {
-                        System.out.println(reader.readLine());
-                    }
-                    reader.close();*/
-                    records++;
-                }
+
+            System.out.println(record.header.warcDateStr);
+            System.out.println(record.header.warcTargetUriStr);
+            System.out.println(record.header.contentTypeStr);
+            System.out.println(record.header.contentLength);
+            InputStream is = record.getPayloadContent();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            while (reader.ready()) {
+                System.out.println(reader.readLine());
             }
+            reader.close();
+            records++;
+
         }
         warcReader.close();
         System.out.println("Records: " + records);

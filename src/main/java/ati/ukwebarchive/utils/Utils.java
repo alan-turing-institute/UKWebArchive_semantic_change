@@ -5,7 +5,6 @@
  */
 package ati.ukwebarchive.utils;
 
-import static ati.ukwebarchive.idx.CdxStatisticsMT.statistics;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,6 +32,8 @@ import org.apache.tika.exception.TikaException;
 public class Utils {
 
     private static Tika tika;
+
+    private static boolean blockTika = false;
 
     static {
         tika = new Tika();
@@ -71,6 +72,12 @@ public class Utils {
         return dateString.substring(0, 6);
     }
 
+    public static synchronized void newTika() {
+        if (!blockTika) {
+            tika = new Tika();
+        }
+    }
+
     /*public static void printStatistics(Map<String, Map<String, Long>> statistics) {
         System.out.println();
         Set<String> dateKeySet = statistics.keySet();
@@ -96,14 +103,12 @@ public class Utils {
         }
         writer.close();
     }*/
-
     /**
      *
      * @param statistics
      * @param file
      * @throws IOException
      */
-
     public static void saveStatistics(Map<String, Long> statistics, File file) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         List<String> list = new ArrayList<>(statistics.keySet());
@@ -140,8 +145,7 @@ public class Utils {
         List<String> tokens = new ArrayList<>();
         TokenStream tokenStream = analyzer.tokenStream(fieldname, reader);
         tokenStream.reset();
-        CharTermAttribute cattr = tokenStream.addAttribute(CharTermAttribute.class
-        );
+        CharTermAttribute cattr = tokenStream.addAttribute(CharTermAttribute.class);
         while (tokenStream.incrementToken()) {
             String token = cattr.toString();
             tokens.add(token);
@@ -159,7 +163,15 @@ public class Utils {
      * @throws TikaException
      */
     public static String getContent(File file) throws IOException, TikaException {
-        return tika.parseToString(file);
+        try {
+            blockTika = true;
+            return tika.parseToString(file);
+        } catch (Throwable th) {
+            tika = new Tika();
+            throw th;
+        } finally {
+            blockTika = false;
+        }
     }
 
     /**
@@ -170,7 +182,15 @@ public class Utils {
      * @throws TikaException
      */
     public static String getContent(InputStream stream) throws IOException, TikaException {
-        return tika.parseToString(stream);
+        try {
+            blockTika = true;
+            return tika.parseToString(stream);
+        } catch (Throwable th) {
+            tika = new Tika();
+            throw th;
+        } finally {
+            blockTika = false;
+        }
     }
 
     /**

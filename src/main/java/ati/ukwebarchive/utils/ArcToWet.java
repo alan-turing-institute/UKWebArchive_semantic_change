@@ -12,10 +12,10 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
+import org.jwat.arc.ArcReader;
+import org.jwat.arc.ArcReaderFactory;
+import org.jwat.arc.ArcRecordBase;
 import org.jwat.common.HttpHeader;
-import org.jwat.warc.WarcReader;
-import org.jwat.warc.WarcReaderFactory;
 import org.jwat.warc.WarcRecord;
 import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
@@ -24,7 +24,7 @@ import org.jwat.warc.WarcWriterFactory;
  *
  * @author pierpaolo
  */
-public class WarcToWet {
+public class ArcToWet {
 
     /**
      * @param args the command line arguments
@@ -32,7 +32,7 @@ public class WarcToWet {
     public static void main(String[] args) {
         try {
             Tika tika = new Tika();
-            WarcReader warcReader = WarcReaderFactory.getReader(new FileInputStream(args[0]));
+            ArcReader arcReader = ArcReaderFactory.getReader(new FileInputStream(args[0]));
             WarcWriter warcWriter = WarcWriterFactory.getWriterCompressed(new FileOutputStream(args[1]), 8196);
             int records = 0;
             int errors = 0;
@@ -40,8 +40,8 @@ public class WarcToWet {
             int notValidPayload = 0;
             int ok = 0;
             int zeroL = 0;
-            WarcRecord record;
-            while ((record = warcReader.getNextRecord()) != null) {
+            ArcRecordBase record;
+            while ((record = arcReader.getNextRecord()) != null) {
                 try {
                     HttpHeader httpHeader = record.getHttpHeader();
                     if (httpHeader != null && httpHeader.contentType != null && httpHeader.statusCodeStr != null) {
@@ -53,14 +53,14 @@ public class WarcToWet {
                                 text = text.replaceAll("\\n+", "\n");
                                 if (text.length() > 0) {
                                     byte[] bytes = text.getBytes();
-                                    wetRecord.header.warcDate = record.header.warcDate;
-                                    wetRecord.header.warcDateStr = record.header.warcDateStr;
-                                    wetRecord.header.warcTargetUriStr = record.header.warcTargetUriStr;
-                                    wetRecord.header.warcTargetUriUri = record.header.warcTargetUriUri;
+                                    wetRecord.header.warcDate = record.header.archiveDate;
+                                    wetRecord.header.warcDateStr = record.header.archiveDateStr;
+                                    wetRecord.header.warcTargetUriStr = record.header.urlStr;
+                                    wetRecord.header.warcTargetUriUri = record.header.urlUri;
                                     wetRecord.header.contentLength = new Long(bytes.length);
                                     wetRecord.header.contentLengthStr = String.valueOf(bytes.length);
-                                    wetRecord.header.contentType = record.header.contentType;
-                                    wetRecord.header.contentTypeStr = record.header.contentTypeStr;
+                                    wetRecord.header.contentType=record.header.contentType;
+                                    wetRecord.header.contentTypeStr=record.header.contentTypeStr;
                                     InputStream wis = new ByteArrayInputStream(bytes);
                                     warcWriter.writeHeader(wetRecord);
                                     warcWriter.streamPayload(wis);
@@ -80,15 +80,15 @@ public class WarcToWet {
                     record.close();
                     records++;
                 } catch (Exception ex) {
-                    Logger.getLogger(WarcToWet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
+                    Logger.getLogger(ArcToWet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
                     errors++;
                 }
             }
-            warcReader.close();
+            arcReader.close();
             warcWriter.close();
             System.out.println(records + "\t" + errors + "\t" + notValidHeader + "\t" + notValidPayload + "\t" + zeroL + "\t" + ok);
         } catch (Exception ex) {
-            Logger.getLogger(WarcToWet.class.getName()).log(Level.SEVERE, "Main error", ex);
+            Logger.getLogger(ArcToWet.class.getName()).log(Level.SEVERE, "Main error", ex);
         }
     }
 
