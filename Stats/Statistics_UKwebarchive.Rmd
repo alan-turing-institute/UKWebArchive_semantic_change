@@ -1,0 +1,43 @@
+---
+title: "Statistics of UK Web Archive data"
+author: "Barbara McGillivray"
+date: "06/03/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Initialization
+
+```{r}
+dir = file.path("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute", "Visiting researcher Basile McGillivray - Documents", "ukwebarchive")
+library(readxl)
+```
+
+# Read data
+
+```{r}
+options("scipen"=100, "digits"=4) # disable scientific notation
+d = data.frame(read_excel(paste(dir, "statistics_1996_2010.xlsx", sep = "/"), col_names = F))
+colnames(d) = c("Year_Month", "type", "freq")
+d = d[1:nrow(d)-1,]
+d$year = as.numeric(substr(d$Year_Month, 1,4))
+d$month = as.numeric(substr(d$Year_Month, 5,6))
+d$type = as.factor(d$type)
+summary(d)
+```
+
+## Count number of files per year
+
+
+```{r}
+dy = aggregate(d$freq, by = list(Year = d$year), FUN = sum)
+colnames(dy)[2] = "num_files"
+dy
+png(paste(dir, "numfiles_year.png", sep = "/"))
+barplot(dy$num_files, names.arg = dy$Year, las = 2, main = "Number of files per year")
+dev.off()
+```
+
