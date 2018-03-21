@@ -14,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URI;
@@ -54,6 +55,8 @@ public class BlobDir2TokenProcessor {
 
     private static List<Thread> uploadThread = new ArrayList<>();
 
+    private static FileWriter logWriter;
+
     public static synchronized void write(String key, List<String> tokens) throws IOException {
         if (!key.matches("^[1-2][0-9][0-9][0-9](00|01|02|03|04|05|06|07|08|09|10|11|12)$")) {
             return;
@@ -84,6 +87,12 @@ public class BlobDir2TokenProcessor {
         writer.newLine();
     }
 
+    public static synchronized void logMessage(String message) throws IOException {
+        logWriter.write(message);
+        logWriter.write("\n");
+        logWriter.flush();
+    }
+
     /**
      *
      * @param args The first argument is the prefix in the storage container
@@ -97,6 +106,8 @@ public class BlobDir2TokenProcessor {
             storeContainer.createIfNotExists();
             File tmpDir = new File(props.getProperty("tempDir"));
             tmpDir.mkdirs();
+            logWriter = new FileWriter("ukwac-tk-" + uuid + ".log");
+            logMessage("UUID: "+uuid);
             LOG.log(Level.INFO, "Processing block dir {0}", args[0]);
             final ConcurrentLinkedQueue<CloudBlockMsg> queue = new ConcurrentLinkedQueue<>();
             int nt = Integer.parseInt(props.getProperty("mt.n"));
@@ -124,7 +135,7 @@ public class BlobDir2TokenProcessor {
                                             uploadThread.remove(k);
                                         }
                                     }
-                                    Thread.sleep(3 * 1000);
+                                    Thread.sleep(3 * 10);
                                 } catch (InterruptedException ex) {
                                     Logger.getLogger(BlobDir2TokenProcessor.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -169,7 +180,13 @@ public class BlobDir2TokenProcessor {
                     LOG.log(Level.SEVERE, null, ex);
                 }
             }
+            logWriter.write("Processed blocks: " + c);
             LOG.log(Level.INFO, "Processed blocks {0}", c);
+            logWriter.close();
+            LOG.info("Upload log...");
+            CloudBlockBlob blockBlobReference = storeContainer.getBlockBlobReference("ukwac-tk/logs/ukwac-tk-" + uuid + ".log");
+            blockBlobReference.uploadFromFile("ukwac-tk-" + uuid + ".log");
+            new File("ukwac-tk-" + uuid + ".log").delete();
         } catch (StorageException | IOException | URISyntaxException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }

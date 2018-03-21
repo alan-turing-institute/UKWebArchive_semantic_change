@@ -11,6 +11,7 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -80,12 +81,22 @@ public class Blob2TokenThread extends Thread {
                             }
                         } catch (Exception ex) {
                             LOG.log(Level.WARNING, "Skip block: " + blockname, ex);
+                            try {
+                                BlobDir2TokenProcessor.logMessage("Skip block: " + blockname + "\t" + ex.getMessage());
+                            } catch (IOException ex1) {
+                                Logger.getLogger(Blob2TokenThread.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
                         } finally {
                             if (tmpPath != null) {
                                 tmpPath.delete();
                             }
                         }
                         LOG.log(Level.INFO, "Block {0}, ok {1}, error {2}", new Object[]{blockname, ok, error});
+                        try {
+                            BlobDir2TokenProcessor.logMessage("Processed block " + blockname + "\t" + ok + "\t" + error);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Blob2TokenThread.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         System.gc();
                     }
                 } else {
