@@ -29,7 +29,7 @@ public class TestReadWet {
      */
     public static void main(String[] args) throws IOException {
 
-        File warcFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.wet.gz");
+        File warcFile = new File(args[0]);
         WarcReader warcReader = WarcReaderFactory.getReader(new FileInputStream(warcFile));
         int records = 0;
         WarcRecord record;
@@ -39,12 +39,12 @@ public class TestReadWet {
             System.out.println(record.header.warcTargetUriStr);
             System.out.println(record.header.contentTypeStr);
             System.out.println(record.header.contentLength);
-            InputStream is = record.getPayloadContent();
+            /*InputStream is = record.getPayloadContent();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             while (reader.ready()) {
                 System.out.println(reader.readLine());
             }
-            reader.close();
+            reader.close();*/
             records++;
 
         }

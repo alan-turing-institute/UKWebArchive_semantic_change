@@ -29,6 +29,7 @@ import org.jwat.warc.WarcRecord;
  *
  * @author pierpaolo
  */
+@Deprecated
 public class ContentThread extends Thread {
 
     private final ConcurrentLinkedQueue<CloudBlockMsg> queue;

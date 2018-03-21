@@ -28,7 +28,7 @@ public class TestReadWarc2 {
      */
     public static void main(String[] args) throws IOException {
 
-        File warcFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.warc.gz");
+        File warcFile = new File(args[0]);
         WarcReader warcReader = WarcReaderFactory.getReader(new FileInputStream(warcFile));
         int records = 0;
         WarcRecord record;

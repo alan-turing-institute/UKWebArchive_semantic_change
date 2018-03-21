@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ati.ukwebarchive.azure.test;
+package ati.ukwebarchive.azure;
 
 import com.microsoft.azure.batch.BatchClient;
 import com.microsoft.azure.batch.DetailLevel;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
+import com.microsoft.azure.batch.protocol.models.AllocationState;
 import com.microsoft.azure.batch.protocol.models.ApplicationPackageReference;
 import com.microsoft.azure.batch.protocol.models.AutoUserScope;
 import com.microsoft.azure.batch.protocol.models.AutoUserSpecification;
@@ -43,18 +44,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class executes a batch on a pool of VMs on Azure.
+ * A single job is created in the pool. Each blob in the main storage container is executed as a single task in the pool.
+ * This approach is slow since it creates a lot of taks in the job queue.
+ * 
+ * @see ati.ukwebarchive.azure.BatchMulti
+ * 
  * @author pierpaolo
  */
-public class BatchTest {
+public class WetBatchSingle {
 
-    private static final Logger LOG = Logger.getLogger(BatchTest.class.getName());
+    private static final Logger LOG = Logger.getLogger(WetBatchSingle.class.getName());
 
-    private static final String poolId = "testBatchUkwac";
+    private static final String poolId = "ukwac";
 
-    private static final String jobId = "testCount";
-
-    private static final int nTask = 10;
+    private static final String jobId = "ukwac2wet1996-2010";
 
     private static void printBatchException(BatchErrorException err) {
         LOG.log(Level.SEVERE, "BatchError {0}", err.toString());
@@ -108,20 +112,22 @@ public class BatchTest {
                     .withId(poolId)
                     .withApplicationPackageReferences(appList)
                     .withVirtualMachineConfiguration(configuration)
-                    .withVmSize("STANDARD_A1")
+                    .withVmSize(props.getProperty("pool.vmSize"))
                     .withStartTask(instJava)
-                    .withTargetDedicatedNodes(2));
+                    .withTargetDedicatedNodes(Integer.parseInt(props.getProperty("pool.nodes"))));
             LOG.info("Create job...");
             PoolInformation poolInfo = new PoolInformation();
             poolInfo.withPoolId(poolId);
             client.jobOperations().createJob(jobId, poolInfo);
-
-            LOG.info("Creating client task...");
+            LOG.info("Waiting for pool...");
+            while (client.poolOperations().getPool(poolId).allocationState() != AllocationState.STEADY) {
+                Thread.sleep(10000);
+            }
+            LOG.info("Creating task...");
             final String uri = props.getProperty("uri");
             CloudBlobContainer mainContainer = new CloudBlobContainer(new URI(uri));
             Iterable<ListBlobItem> listBlobs = mainContainer.listBlobs(props.getProperty("mainContainer"));
             int n = 0;
-            boolean exit = false;
             for (ListBlobItem item : listBlobs) {
                 if (item instanceof CloudBlobDirectory) {
                     CloudBlobDirectory cdir = (CloudBlobDirectory) item;
@@ -131,25 +137,24 @@ public class BatchTest {
                             CloudBlockBlob block = (CloudBlockBlob) itemBlock;
                             if (block.getName().endsWith(".arc.gz") || block.getName().endsWith(".warc.gz")) {
                                 TaskAddParameter taskClientPar = new TaskAddParameter();
-                                taskClientPar.withId("client-" + n).withCommandLine("/bin/bash -c '${AZ_BATCH_APP_PACKAGE_ukwac}/run.sh ati.ukwebarchive.azure.test.ClientTestTask " + block.getName() + "'");
+                                taskClientPar.withId("client-" + n).withCommandLine("/bin/bash -c '${AZ_BATCH_APP_PACKAGE_ukwac}/run.sh ati.ukwebarchive.azure.BlobWarc2WetProcessor " + block.getName() + "'");
                                 client.taskOperations().createTask(jobId, taskClientPar);
                                 n++;
-                                if (n >= nTask) {
-                                    exit = true;
-                                    break;
+                                if (n % 100 == 0) {
+                                    Thread.sleep(30000);
+                                    if (n % 1000 == 0) {
+                                        LOG.log(Level.INFO, "Added task {0}", n);
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (exit) {
-                        break;
                     }
                 }
             }
             LOG.info("Wait for task to complete...");
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
-            Duration expiryTime = Duration.ofMinutes(15);
+            Duration expiryTime = Duration.ofHours(48);
             boolean terminate = false;
             while (elapsedTime < expiryTime.toMillis() && !terminate) {
                 List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId, new DetailLevel.Builder().withSelectClause("id, state").build());
@@ -173,15 +178,15 @@ public class BatchTest {
             } else {
                 LOG.warning("TIMEOUT");
             }
-            //LOG.info("Cleaning...");
-            //client.jobOperations().deleteJob(jobId);
-            //client.poolOperations().deletePool(poolId);
+            LOG.info("Cleaning...");
+            client.jobOperations().deleteJob(jobId);
+            client.poolOperations().deletePool(poolId);
         } catch (BatchErrorException err) {
             printBatchException(err);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         } catch (InterruptedException | URISyntaxException | StorageException ex) {
-            Logger.getLogger(BatchTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WetBatchSingle.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

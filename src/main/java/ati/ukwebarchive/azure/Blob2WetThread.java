@@ -5,6 +5,7 @@
  */
 package ati.ukwebarchive.azure;
 
+import ati.ukwebarchive.data.CloudBlockMsg;
 import ati.ukwebarchive.utils.Utils;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
@@ -30,12 +31,14 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
+ * A thread that processes blob blocks from a queue and converts them in wet
+ * file.
  *
  * @author pierpaolo
  */
-public class ClientTaskMultiThread extends Thread {
+public class Blob2WetThread extends Thread {
 
-    private final ConcurrentLinkedQueue<BlockThreadObj> queue;
+    private final ConcurrentLinkedQueue<CloudBlockMsg> queue;
 
     private final Properties props;
 
@@ -45,9 +48,9 @@ public class ClientTaskMultiThread extends Thread {
 
     private boolean run = true;
 
-    private static final Logger LOG = Logger.getLogger(ClientTaskMultiThread.class.getName());
+    private static final Logger LOG = Logger.getLogger(Blob2WetThread.class.getName());
 
-    public ClientTaskMultiThread(ConcurrentLinkedQueue<BlockThreadObj> queue, Properties props, Set<String> validTypeSet, CloudBlobContainer storeContainer) {
+    public Blob2WetThread(ConcurrentLinkedQueue<CloudBlockMsg> queue, Properties props, Set<String> validTypeSet, CloudBlobContainer storeContainer) {
         this.queue = queue;
         this.props = props;
         this.validTypeSet = validTypeSet;
@@ -57,7 +60,7 @@ public class ClientTaskMultiThread extends Thread {
     @Override
     public void run() {
         while (run) {
-            BlockThreadObj obj = queue.poll();
+            CloudBlockMsg obj = queue.poll();
             if (obj != null) {
                 if (obj.isValid()) {
                     CloudBlockBlob block = obj.getBlock();
@@ -196,7 +199,7 @@ public class ClientTaskMultiThread extends Thread {
                 try {
                     this.sleep(3 * 1000);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ClientTaskMultiThread.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Blob2WetThread.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

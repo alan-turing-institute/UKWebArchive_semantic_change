@@ -25,13 +25,13 @@ import org.jwat.warc.WarcRecord;
 public class TestReadWarc {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments The first argument is the CDX file the second one the WAR file
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
 
-        File cdxFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.warc.os.cdx.gz");
-        File warcFile = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.warc.gz");
+        File cdxFile = new File(args[0]);
+        File warcFile = new File(args[1]);
         BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(cdxFile))));
         WarcReader warcReader = new WarcReaderCompressed();
         warcReader.setBlockDigestEnabled(true);

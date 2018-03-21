@@ -29,9 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class computes some statistics extracted from CDX files
  * @author pierpaolo
  */
+@Deprecated
 public class CdxStatisticsMT {
 
     /**

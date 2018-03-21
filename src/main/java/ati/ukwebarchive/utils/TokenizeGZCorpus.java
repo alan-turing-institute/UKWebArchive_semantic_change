@@ -25,6 +25,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
  *
  * @author pierpaolo
  */
+@Deprecated
 public class TokenizeGZCorpus {
 
     private static final Logger LOG = Logger.getLogger(TokenizeGZCorpus.class.getName());

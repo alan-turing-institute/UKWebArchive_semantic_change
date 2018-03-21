@@ -22,7 +22,7 @@ public class TestExtraction {
      */
     public static void main(String[] args) {
         try {
-            System.out.println(Utils.getContent(new File("/home/pierpaolo/Scaricati/jsoup.html")));
+            System.out.println(Utils.getContent(new File(args[0])));
         } catch (IOException ex) {
             Logger.getLogger(TestExtraction.class.getName()).log(Level.SEVERE, null, ex);
         }

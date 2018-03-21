@@ -5,7 +5,6 @@
  */
 package ati.ukwebarchive.azure;
 
-import ati.ukwebarchive.content.ContentThread;
 import ati.ukwebarchive.utils.Utils;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -35,10 +34,11 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
+ * This class processes a single blob (arc or warc) from a storage container
  *
  * @author pierpaolo
  */
-public class ClientTask {
+public class BlobWarc2WetProcessor {
 
     /**
      * Store properties
@@ -51,7 +51,7 @@ public class ClientTask {
      */
     public static Set<String> validTypeSet;
 
-    private static final Logger LOG = Logger.getLogger(ClientTask.class.getName());
+    private static final Logger LOG = Logger.getLogger(BlobWarc2WetProcessor.class.getName());
 
     private static CloudBlobContainer mainContainer;
 
@@ -120,7 +120,7 @@ public class ClientTask {
                                     }
                                 }
                             } catch (Exception ex) {
-                                Logger.getLogger(ContentThread.class.getName()).log(Level.WARNING, "Skip record in block: " + block.getName(), ex);
+                                Logger.getLogger(BlobWarc2WetProcessor.class.getName()).log(Level.WARNING, "Skip record in block: " + block.getName(), ex);
                                 error++;
                             }
                         }
@@ -167,7 +167,7 @@ public class ClientTask {
                                     }
                                 }
                             } catch (Exception ex) {
-                                Logger.getLogger(ContentThread.class.getName()).log(Level.WARNING, "Skip record in block: " + block.getName(), ex);
+                                Logger.getLogger(BlobWarc2WetProcessor.class.getName()).log(Level.WARNING, "Skip record in block: " + block.getName(), ex);
                                 error++;
                             }
                         }
@@ -185,13 +185,13 @@ public class ClientTask {
                     }*/
                 }
             } catch (Exception ex) {
-                Logger.getLogger(ContentThread.class.getName()).log(Level.WARNING, "Skip block: " + blockname, ex);
+                Logger.getLogger(BlobWarc2WetProcessor.class.getName()).log(Level.WARNING, "Skip block: " + blockname, ex);
                 if (tmpPath != null) {
                     tmpPath.delete();
                 }
             }
         } catch (StorageException | IOException | URISyntaxException ex) {
-            Logger.getLogger(ClientTask.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BlobWarc2WetProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

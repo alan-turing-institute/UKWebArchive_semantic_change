@@ -20,13 +20,14 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
- *
+ * This is a utility class that converts an Arc file to a Wet file
+ * 
  * @author pierpaolo
  */
-public class ArcToWet {
+public class Arc2Wet {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments: the first argument is the arc file the secondo is one is the wet file
      */
     public static void main(String[] args) {
         try {
@@ -78,7 +79,7 @@ public class ArcToWet {
                     record.close();
                     records++;
                 } catch (Exception ex) {
-                    Logger.getLogger(ArcToWet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
+                    Logger.getLogger(Arc2Wet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
                     errors++;
                 }
             }
@@ -86,7 +87,7 @@ public class ArcToWet {
             warcWriter.close();
             System.out.println(records + "\t" + errors + "\t" + notValidHeader + "\t" + notValidPayload + "\t" + zeroL + "\t" + ok);
         } catch (Exception ex) {
-            Logger.getLogger(ArcToWet.class.getName()).log(Level.SEVERE, "Main error", ex);
+            Logger.getLogger(Arc2Wet.class.getName()).log(Level.SEVERE, "Main error", ex);
         }
     }
 

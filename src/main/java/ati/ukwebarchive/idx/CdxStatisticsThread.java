@@ -16,9 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * A thread used by the CdxStatisticsMT class
  * @author pierpaolo
  */
+@Deprecated
 public class CdxStatisticsThread extends Thread {
 
     private final ConcurrentLinkedQueue<CloudBlockMsg> queue;

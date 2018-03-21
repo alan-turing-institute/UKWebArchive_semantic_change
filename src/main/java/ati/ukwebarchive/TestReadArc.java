@@ -24,7 +24,7 @@ public class TestReadArc {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        File file = new File("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-GROUP-AA-XAAAAA-20110428000000-00000.arc.gz");
+        File file = new File(args[0]);
         
         int records = 0;
         int errors = 0;

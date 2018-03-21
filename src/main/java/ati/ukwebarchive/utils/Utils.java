@@ -26,16 +26,18 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 /**
- *
+ * Some utility methods
+ * 
  * @author pierpaolo
  */
 public class Utils {
 
     /**
-     *
-     * @param file
-     * @param filterComment
-     * @return
+     * Loads a file in a set. Each row in the file is an entry in the set.
+     * 
+     * @param file The input file
+     * @param filterComment Filter rows that start with the char '#'
+     * @return The set of strings
      * @throws IOException
      */
     public static Set<String> loadFileInSet(File file, boolean filterComment) throws IOException {
@@ -56,7 +58,7 @@ public class Utils {
     }
 
     /**
-     *
+     * Format the date form warc/arc record in YYYYMM
      * @param dateString
      * @return
      */
@@ -64,37 +66,13 @@ public class Utils {
         return dateString.substring(0, 6);
     }
 
-    /*public static void printStatistics(Map<String, Map<String, Long>> statistics) {
-        System.out.println();
-        Set<String> dateKeySet = statistics.keySet();
-        for (String dateKey : dateKeySet) {
-            Map<String, Long> tmap = statistics.get(dateKey);
-            Set<String> typeKeySet = tmap.keySet();
-            for (String typeKey : typeKeySet) {
-                System.out.println(dateKey + "\t" + typeKey + "\t" + tmap.get(typeKey));
-            }
-        }
-    }
-
-    public static void saveStatistics(Map<String, Map<String, Long>> statistics, File file) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        Set<String> dateKeySet = statistics.keySet();
-        for (String dateKey : dateKeySet) {
-            Map<String, Long> tmap = statistics.get(dateKey);
-            Set<String> typeKeySet = tmap.keySet();
-            for (String typeKey : typeKeySet) {
-                writer.append(dateKey + "\t" + typeKey + "\t" + tmap.get(typeKey));
-                writer.newLine();
-            }
-        }
-        writer.close();
-    }*/
     /**
      *
      * @param statistics
      * @param file
      * @throws IOException
      */
+    @Deprecated
     public static void saveStatistics(Map<String, Long> statistics, File file) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         List<String> list = new ArrayList<>(statistics.keySet());
@@ -110,6 +88,7 @@ public class Utils {
      *
      * @param statistics
      */
+    @Deprecated
     public static void printStatistics(Map<String, Long> statistics) {
         System.out.println();
         List<String> list = new ArrayList<>(statistics.keySet());
@@ -120,11 +99,11 @@ public class Utils {
     }
 
     /**
-     *
-     * @param analyzer
-     * @param fieldname
-     * @param reader
-     * @return
+     * Returns a list of tokens from a reader. The text is tokenized by the analyzer 
+     * @param analyzer The Analyzer used to tokenize the text
+     * @param fieldname The name of the field
+     * @param reader The input reader
+     * @return The list of tokens
      * @throws IOException
      */
     public static List<String> getTokens(Analyzer analyzer, String fieldname, Reader reader) throws IOException {
@@ -142,9 +121,9 @@ public class Utils {
     }
 
     /**
-     *
-     * @param file
-     * @return
+     * Extracts the text from html pages by using Jsoup library
+     * @param file The input file
+     * @return The text
      * @throws IOException
      */
     public static String getContent(File file) throws IOException {
@@ -153,9 +132,9 @@ public class Utils {
     }
 
     /**
-     *
-     * @param stream
-     * @return
+     * Extracts the text from html pages by using Jsoup library
+     * @param stream The input stream
+     * @return The text
      * @throws IOException
      */
     public static String getContent(InputStream stream) throws IOException {
@@ -164,9 +143,9 @@ public class Utils {
     }
 
     /**
-     *
-     * @param contentType
-     * @return
+     * Return the base mime content type
+     * @param contentType The input content type
+     * @return The mime content type
      */
     public static String getBaseContentType(String contentType) {
         return contentType.split(";")[0].trim();

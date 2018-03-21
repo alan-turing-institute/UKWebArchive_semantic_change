@@ -36,6 +36,7 @@ import java.util.zip.GZIPOutputStream;
  * This class extracts txt content from arc and warc blocks from Azure data storage using a multi-thread approach on a single VM 
  * @author pierpaolo
  */
+@Deprecated
 public class ContentExtractorMT {
 
     /**

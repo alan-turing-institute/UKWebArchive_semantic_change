@@ -21,6 +21,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author pierpaolo
  */
+@Deprecated
 public class FixCorpusGZ {
 
     private static final Logger LOG = Logger.getLogger(FixCorpusGZ.class.getName());

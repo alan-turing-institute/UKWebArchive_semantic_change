@@ -5,6 +5,7 @@
  */
 package ati.ukwebarchive.azure;
 
+import ati.ukwebarchive.data.CloudBlockMsg;
 import ati.ukwebarchive.utils.Utils;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -24,10 +25,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class processes all blobs (arc or warc) that belong to a particular prefix in a storage container
+ * 
  * @author pierpaolo
  */
-public class ClientTaskMulti {
+public class BlobDir2WetProcessor {
 
     /**
      * Store properties
@@ -40,12 +42,16 @@ public class ClientTaskMulti {
      */
     private static Set<String> validTypeSet;
 
-    private static final Logger LOG = Logger.getLogger(ClientTaskMulti.class.getName());
+    private static final Logger LOG = Logger.getLogger(BlobDir2WetProcessor.class.getName());
 
     private static CloudBlobContainer mainContainer;
 
     private static CloudBlobContainer storeContainer;
 
+    /**
+     *
+     * @param args The first argument is the prefix in the storage container
+     */
     public static void main(String[] args) {
         try {
             props = new Properties();
@@ -59,11 +65,11 @@ public class ClientTaskMulti {
             File tmpDir = new File(props.getProperty("tempDir"));
             tmpDir.mkdirs();
             LOG.log(Level.INFO, "Processing block dir {0}", args[0]);
-            final ConcurrentLinkedQueue<BlockThreadObj> queue = new ConcurrentLinkedQueue<>();
+            final ConcurrentLinkedQueue<CloudBlockMsg> queue = new ConcurrentLinkedQueue<>();
             int nt = Integer.parseInt(props.getProperty("mt.n"));
             List<Thread> lt = new ArrayList<>();
             for (int i = 0; i < nt; i++) {
-                ClientTaskMultiThread thread = new ClientTaskMultiThread(queue, props, validTypeSet, storeContainer);
+                Blob2WetThread thread = new Blob2WetThread(queue, props, validTypeSet, storeContainer);
                 lt.add(thread);
                 thread.start();
             }
@@ -74,24 +80,24 @@ public class ClientTaskMulti {
                     CloudBlockBlob block = (CloudBlockBlob) itemBlock;
                     if (block.getName().endsWith(".arc.gz") || block.getName().endsWith(".warc.gz")) {
                         if (queue.size() < 1000) {
-                            queue.offer(new BlockThreadObj(block, true));
+                            queue.offer(new CloudBlockMsg(block, true));
                             c++;
                         } else {
                             while (queue.size() >= 1000) {
                                 try {
                                     Thread.sleep(3 * 1000);
                                 } catch (InterruptedException ex) {
-                                    Logger.getLogger(ClientTaskMulti.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(BlobDir2WetProcessor.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             }
-                            queue.offer(new BlockThreadObj(block, true));
+                            queue.offer(new CloudBlockMsg(block, true));
                             c++;
                         }
                     }
                 }
             }
             for (int i = 0; i < nt; i++) {
-                queue.offer(new BlockThreadObj(null, false));
+                queue.offer(new CloudBlockMsg(null, false));
             }
             LOG.info("Wait for threads...");
             for (int i = 0; i < nt; i++) {

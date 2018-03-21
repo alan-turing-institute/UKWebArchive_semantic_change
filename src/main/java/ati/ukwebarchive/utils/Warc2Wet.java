@@ -19,13 +19,14 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
- *
+ * This is a utility class that converts an Warc file to a Wet file
+ * 
  * @author pierpaolo
  */
-public class WarcToWet {
+public class Warc2Wet {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments: the first argument is the warc file the secondo is one is the wet file
      */
     public static void main(String[] args) {
         try {
@@ -77,7 +78,7 @@ public class WarcToWet {
                     record.close();
                     records++;
                 } catch (Exception ex) {
-                    Logger.getLogger(WarcToWet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
+                    Logger.getLogger(Warc2Wet.class.getName()).log(Level.WARNING, "Error in wat record", ex);
                     errors++;
                 }
             }
@@ -85,7 +86,7 @@ public class WarcToWet {
             warcWriter.close();
             System.out.println(records + "\t" + errors + "\t" + notValidHeader + "\t" + notValidPayload + "\t" + zeroL + "\t" + ok);
         } catch (Exception ex) {
-            Logger.getLogger(WarcToWet.class.getName()).log(Level.SEVERE, "Main error", ex);
+            Logger.getLogger(Warc2Wet.class.getName()).log(Level.SEVERE, "Main error", ex);
         }
     }
 

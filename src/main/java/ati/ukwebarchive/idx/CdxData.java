@@ -8,7 +8,7 @@ package ati.ukwebarchive.idx;
 import java.util.Objects;
 
 /**
- *
+ * An entry of a CDX file
  * @author pierpaolo
  */
 public class CdxData {

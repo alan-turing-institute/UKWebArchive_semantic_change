@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
- *
+ * A redear for CDX files
+ * 
  * @author pierpaolo
  */
 public class CdxReader implements Iterator<CdxData> {
@@ -31,8 +32,8 @@ public class CdxReader implements Iterator<CdxData> {
     private Map<String, Integer> fields = null;
 
     /**
-     *
-     * @param filename
+     * Class constructor
+     * @param filename The file name of the input CDX file
      * @throws IOException
      */
     public CdxReader(String filename) throws IOException {
@@ -40,8 +41,8 @@ public class CdxReader implements Iterator<CdxData> {
     }
 
     /**
-     *
-     * @param file
+     * Class constructor
+     * @param file The file of the input CDX file
      * @throws IOException
      */
     public CdxReader(File file) throws IOException {
@@ -130,8 +131,7 @@ public class CdxReader implements Iterator<CdxData> {
      */
     public static void main(String[] args) {
         try {
-            CdxReader reader = new CdxReader("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-GROUP-AA-XAAAAA-20110428000000-00000.arc.os.cdx.gz");
-            //CdxReader reader = new CdxReader("/home/pierpaolo/dataset/ukwebarchive/DOTUK-HISTORICAL-1996-2010-PHASE2WARCS-XAAAAA-20111115000000-000000.warc.os.cdx.gz");
+            CdxReader reader = new CdxReader(args[0]);
             int c = 0;
             while (reader.hasNext()) {
                 CdxData next = reader.next();
