@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * This class computes the number of wet blobs that belong to a specific prefix into the storage container
  * @author pierpaolo
  */
-public class CheckNumberArcWarc {
+public class CheckNumberWarc {
 
     /**
      * @param args the command line arguments, args[0] is the prefix
@@ -35,7 +35,7 @@ public class CheckNumberArcWarc {
             for (ListBlobItem itemBlock : listBlobs) {
                 if (itemBlock instanceof CloudBlockBlob) {
                     CloudBlockBlob block = (CloudBlockBlob) itemBlock;
-                    if (block.getName().endsWith(".wet.gz")) {
+                    if (block.getName().endsWith(".warc.gz") || block.getName().endsWith(".arc.gz")) {
                         c++;
                         if (c % 100 == 0) {
                             System.out.print(".");
@@ -48,7 +48,7 @@ public class CheckNumberArcWarc {
             }
             System.out.println(c);
         } catch (Exception ex) {
-            Logger.getLogger(CheckNumberArcWarc.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CheckNumberWarc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

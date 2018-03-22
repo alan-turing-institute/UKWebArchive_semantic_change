@@ -49,7 +49,7 @@ public class BlobDir2TokenProcessor {
 
     private static Map<String, WriterInfo> map = new HashMap<>();
 
-    private static long BLOCK_MAX_SIZE = 16 * 1024 * 1024; //512 Mbyte
+    private static long BLOCK_MAX_SIZE = 256 * 1024 * 1024; //512 Mbyte
 
     private static String uuid = UUID.randomUUID().toString().replace("-", "");
 

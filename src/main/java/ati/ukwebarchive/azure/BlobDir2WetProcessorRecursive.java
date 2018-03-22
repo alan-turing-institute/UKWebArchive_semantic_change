@@ -9,6 +9,7 @@ import ati.ukwebarchive.data.CloudBlockMsg;
 import ati.ukwebarchive.utils.Utils;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlobDirectory;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.File;
@@ -25,8 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * EXPERIMENTAL. This class processes recursively all blobs (arc or warc) that belong to a
- * particular prefix in a storage container
+ * EXPERIMENTAL. This class processes recursively all blobs (arc or warc) that
+ * belong to a particular prefix in a storage container
  *
  * @author pierpaolo
  */
@@ -53,7 +54,7 @@ public class BlobDir2WetProcessorRecursive {
 
     private static int c;
 
-    private static void process(ListBlobItem item) {
+    private static void process(ListBlobItem item) throws StorageException, URISyntaxException {
         if (item instanceof CloudBlockBlob) {
             CloudBlockBlob block = (CloudBlockBlob) item;
             if (block.getName().endsWith(".arc.gz") || block.getName().endsWith(".warc.gz")) {
@@ -72,9 +73,12 @@ public class BlobDir2WetProcessorRecursive {
                     c++;
                 }
             }
-        } else {
-            LOG.log(Level.INFO, "Go into: {0}", item.getUri().toString());
-            process(item);
+        } else if (item instanceof CloudBlobDirectory) {
+            CloudBlobDirectory dir = (CloudBlobDirectory) item;
+            Iterable<ListBlobItem> listBlobs = dir.listBlobs();
+            for (ListBlobItem initem : listBlobs) {
+                process(initem);
+            }
         }
     }
 

@@ -92,7 +92,7 @@ public class WetBatchMulti {
             String skuId = null;
             ImageReference imageRef = null;
             for (NodeAgentSku sku : skus) {
-                if (sku.osType() == OSType.LINUX) {
+                if (sku.osType() == OSType.LINUX && sku.id().equals("batch.node.ubuntu 16.04")) {
                     for (ImageReference imgRef : sku.verifiedImageReferences()) {
                         if (imgRef.publisher().equalsIgnoreCase(osPublisher) && imgRef.offer().equalsIgnoreCase(osOffer)) {
                             imageRef = imgRef;

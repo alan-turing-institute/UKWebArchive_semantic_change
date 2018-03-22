@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ati.ukwebarchive.azure;
+package ati.ukwebarchive.azure.tokenize;
 
 import com.microsoft.azure.batch.BatchClient;
 import com.microsoft.azure.batch.DetailLevel;
@@ -29,7 +29,6 @@ import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,22 +43,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class executes a batch on a pool of VMs on Azure.
- * A single job is created in the pool. Each blob in the main storage container is executed as a single task in the pool.
- * This approach is slow since it creates a lot of taks in the job queue.
- * 
- * @see ati.ukwebarchive.azure.BatchMulti
- * 
+ * This class executes a batch on a pool of VMs on Azure. A single job is
+ * created in the pool. Each blob directory in the main storage container is
+ * executed as a single task in the pool.
+ *
  * @author pierpaolo
  */
-public class WetBatchSingle {
+public class TokenBatchMulti_F {
 
-    private static final Logger LOG = Logger.getLogger(WetBatchSingle.class.getName());
+    private static final Logger LOG = Logger.getLogger(TokenBatchMulti_F.class.getName());
 
     private static final String poolId = "ukwac";
 
-    private static final String jobId = "ukwac2wet1996-2010";
+    private static final String jobId = "ukwac2token1996-2010-ab-ak";
 
+    private static final String[] prefix = new String[]{
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ab-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ac-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ad-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ae-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-af-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ag-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ah-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ai-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-aj-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ak-arcs/"
+    };
+
+    // Log for a batch error
     private static void printBatchException(BatchErrorException err) {
         LOG.log(Level.SEVERE, "BatchError {0}", err.toString());
         if (err.body() != null) {
@@ -77,14 +88,18 @@ public class WetBatchSingle {
      */
     public static void main(String[] args) {
         try {
+            //Load properties
             Properties props = new Properties();
             props.load(new FileReader("config.properties"));
+            //Connect to a batch account in Azure
             LOG.info("Connecting...");
             BatchSharedKeyCredentials cred = new BatchSharedKeyCredentials(props.getProperty("azure.batch.uri"),
                     props.getProperty("azure.batch.account"),
                     props.getProperty("azure.batch.key"));
             BatchClient client = BatchClient.open(cred);
+            //Create a pool in the batch
             LOG.info("Creating pool of VMs...");
+            //Find information about the Linux Ubuntu IMG for the VM
             String osPublisher = "Canonical";
             String osOffer = "UbuntuServer";
             List<NodeAgentSku> skus = client.accountOperations().listNodeAgentSkus();
@@ -101,13 +116,18 @@ public class WetBatchSingle {
                     }
                 }
             }
+            //Config VM
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
             configuration.withNodeAgentSKUId(skuId).withImageReference(imageRef);
+            //Create an application for the pool. You need to load in the batch an application named ukwac with version 1.0. See https://docs.microsoft.com/en-us/azure/batch/batch-application-packages
+            //The application is a zip file containing the jar of this process all the resource files (properties and contentFilter) and the script run.sh
             List<ApplicationPackageReference> appList = new ArrayList<>();
             appList.add(new ApplicationPackageReference().withApplicationId("ukwac").withVersion("1.0"));
+            //IMPORTANT create a start task for installing JAVA on VMs in the pool
             StartTask instJava = new StartTask().withUserIdentity(new UserIdentity()
                     .withAutoUser(new AutoUserSpecification()
-                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
+                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y update && apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
+            //create the pool of VMs
             client.poolOperations().createPool(new PoolAddParameter()
                     .withId(poolId)
                     .withApplicationPackageReferences(appList)
@@ -115,46 +135,45 @@ public class WetBatchSingle {
                     .withVmSize(props.getProperty("pool.vmSize"))
                     .withStartTask(instJava)
                     .withTargetDedicatedNodes(Integer.parseInt(props.getProperty("pool.nodes"))));
+            //create the job
             LOG.info("Create job...");
             PoolInformation poolInfo = new PoolInformation();
             poolInfo.withPoolId(poolId);
             client.jobOperations().createJob(jobId, poolInfo);
+            //waitining for the pool creation
             LOG.info("Waiting for pool...");
             while (client.poolOperations().getPool(poolId).allocationState() != AllocationState.STEADY) {
                 Thread.sleep(10000);
             }
+            //create tasks in the job
             LOG.info("Creating task...");
-            final String uri = props.getProperty("uri");
-            CloudBlobContainer mainContainer = new CloudBlobContainer(new URI(uri));
-            Iterable<ListBlobItem> listBlobs = mainContainer.listBlobs(props.getProperty("mainContainer"));
+            //final String uri = props.getProperty("uriStore");
+            //CloudBlobContainer mainContainer = new CloudBlobContainer(new URI(uri));
+            //Iterable<ListBlobItem> listBlobs = mainContainer.listBlobs(props.getProperty("mainContainer"));
             int n = 0;
-            for (ListBlobItem item : listBlobs) {
-                if (item instanceof CloudBlobDirectory) {
+            //for (ListBlobItem item : listBlobs) {
+            for (String pre : prefix) {
+                //for each directory in the main container create a new task
+                /*if (item instanceof CloudBlobDirectory) {
                     CloudBlobDirectory cdir = (CloudBlobDirectory) item;
-                    Iterable<ListBlobItem> listBlobs1 = cdir.listBlobs();
-                    for (ListBlobItem itemBlock : listBlobs1) {
-                        if (itemBlock instanceof CloudBlockBlob) {
-                            CloudBlockBlob block = (CloudBlockBlob) itemBlock;
-                            if (block.getName().endsWith(".arc.gz") || block.getName().endsWith(".warc.gz")) {
-                                TaskAddParameter taskClientPar = new TaskAddParameter();
-                                taskClientPar.withId("client-" + n).withCommandLine("/bin/bash -c '${AZ_BATCH_APP_PACKAGE_ukwac}/run.sh ati.ukwebarchive.azure.BlobWarc2WetProcessor " + block.getName() + "'");
-                                client.taskOperations().createTask(jobId, taskClientPar);
-                                n++;
-                                if (n % 100 == 0) {
-                                    Thread.sleep(30000);
-                                    if (n % 1000 == 0) {
-                                        LOG.log(Level.INFO, "Added task {0}", n);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                    TaskAddParameter taskClientPar = new TaskAddParameter();
+                    taskClientPar.withId("client-" + n).withCommandLine("/bin/bash -c '${AZ_BATCH_APP_PACKAGE_ukwac}/run.sh ati.ukwebarchive.azure.tokenize.BlobDir2TokenProcessor " + cdir.getPrefix() + "'");
+                    client.taskOperations().createTask(jobId, taskClientPar);
+                    n++;
+                    LOG.log(Level.INFO, "Added task {0}", n);
+                }*/
+                TaskAddParameter taskClientPar = new TaskAddParameter();
+                taskClientPar.withId("client-" + n).withCommandLine("/bin/bash -c '${AZ_BATCH_APP_PACKAGE_ukwac}/run.sh ati.ukwebarchive.azure.tokenize.BlobDir2TokenProcessor " + pre + "'");
+                client.taskOperations().createTask(jobId, taskClientPar);
+                n++;
+                LOG.log(Level.INFO, "Added task {0}", n);
             }
+            //wait for task to complete 
             LOG.info("Wait for task to complete...");
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
-            Duration expiryTime = Duration.ofHours(48);
+            //the max duration of a job on Azure is 7 days
+            Duration expiryTime = Duration.ofMinutes(20);
             boolean terminate = false;
             while (elapsedTime < expiryTime.toMillis() && !terminate) {
                 List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId, new DetailLevel.Builder().withSelectClause("id, state").build());
@@ -168,9 +187,9 @@ public class WetBatchSingle {
                 if (allComplete) {
                     terminate = true;
                 }
-                LOG.info("wait 30 seconds for tasks to complete...");
-                // Check again after 10 seconds
-                Thread.sleep(30 * 1000);
+                LOG.info("wait 1 minute for tasks to complete...");
+                // Check again after 1 minute
+                Thread.sleep(60 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             if (terminate) {
@@ -178,15 +197,16 @@ public class WetBatchSingle {
             } else {
                 LOG.warning("TIMEOUT");
             }
-            LOG.info("Cleaning...");
-            client.jobOperations().deleteJob(jobId);
-            client.poolOperations().deletePool(poolId);
+            //Eventually remove job and pool
+            //LOG.info("Cleaning...");
+            //client.jobOperations().deleteJob(jobId);
+            //client.poolOperations().deletePool(poolId);
         } catch (BatchErrorException err) {
             printBatchException(err);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
-        } catch (InterruptedException | URISyntaxException | StorageException ex) {
-            Logger.getLogger(WetBatchSingle.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TokenBatchMulti_F.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
