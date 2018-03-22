@@ -115,7 +115,7 @@ public class Blob2WetThread extends Thread {
                                                                     warcWriter.streamPayload(wis);
                                                                     ok++;
                                                                 }
-                                                            } catch (Exception | NoClassDefFoundError ex) {
+                                                            } catch (Exception | Error ex) {
                                                                 error++;
                                                             }
                                                         }
@@ -160,7 +160,7 @@ public class Blob2WetThread extends Thread {
                                                                     warcWriter.streamPayload(wis);
                                                                     ok++;
                                                                 }
-                                                            } catch (Exception | NoClassDefFoundError ex) {
+                                                            } catch (Exception | Error ex) {
                                                                 error++;
                                                             }
                                                         }

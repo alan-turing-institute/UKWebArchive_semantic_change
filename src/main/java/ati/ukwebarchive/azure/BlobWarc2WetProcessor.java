@@ -113,7 +113,7 @@ public class BlobWarc2WetProcessor {
                                                     warcWriter.streamPayload(wis);
                                                     ok++;
                                                 }
-                                            } catch (Exception ex) {
+                                            } catch (Exception | Error ex) {
                                                 error++;
                                             }
                                         }
@@ -160,7 +160,7 @@ public class BlobWarc2WetProcessor {
                                                     warcWriter.streamPayload(wis);
                                                     ok++;
                                                 }
-                                            } catch (Exception ex) {
+                                            } catch (Exception | Error ex) {
                                                 error++;
                                             }
                                         }

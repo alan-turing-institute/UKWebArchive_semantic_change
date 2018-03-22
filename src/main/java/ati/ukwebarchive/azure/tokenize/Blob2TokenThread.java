@@ -73,7 +73,7 @@ public class Blob2TokenThread extends Thread {
                                         List<String> tokens = Utils.getTokens(new StandardAnalyzer(), "text", new InputStreamReader(is));
                                         BlobDir2TokenProcessor.write(datestr, tokens);
                                         ok++;
-                                    } catch (Exception ex) {
+                                    } catch (Exception | Error ex) {
                                         error++;
                                     }
                                 }
