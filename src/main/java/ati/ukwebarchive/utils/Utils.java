@@ -58,7 +58,7 @@ public class Utils {
     }
 
     /**
-     * Format the date form warc/arc record in YYYYMM
+     * Format the date from a WARC/ARC record in YYYYMM
      * @param dateString
      * @return
      */
@@ -100,7 +100,7 @@ public class Utils {
 
     /**
      * Returns a list of tokens from a reader. The text is tokenized by the analyzer 
-     * @param analyzer The Analyzer used to tokenize the text
+     * @param analyzer The analyzer used to tokenize the text
      * @param fieldname The name of the field
      * @param reader The input reader
      * @return The list of tokens
@@ -121,7 +121,7 @@ public class Utils {
     }
 
     /**
-     * Extracts the text from html pages by using Jsoup library
+     * Extracts the text from a html page using Jsoup library
      * @param file The input file
      * @return The text
      * @throws IOException
@@ -132,7 +132,7 @@ public class Utils {
     }
 
     /**
-     * Extracts the text from html pages by using Jsoup library
+     * Extracts the text from a html page using Jsoup library
      * @param stream The input stream
      * @return The text
      * @throws IOException
@@ -145,7 +145,7 @@ public class Utils {
     /**
      * Return the base mime content type
      * @param contentType The input content type
-     * @return The mime content type
+     * @return The base mime content type
      */
     public static String getBaseContentType(String contentType) {
         return contentType.split(";")[0].trim();

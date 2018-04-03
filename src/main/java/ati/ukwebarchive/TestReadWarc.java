@@ -25,7 +25,7 @@ import org.jwat.warc.WarcRecord;
 public class TestReadWarc {
 
     /**
-     * @param args the command line arguments The first argument is the CDX file the second one the WAR file
+     * @param args the command line arguments args[0] is the CDX file, args[1] the WAR file
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {

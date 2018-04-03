@@ -12,23 +12,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This thread executes an upload of a file on a CloudBlobContainer
  * @author pierpaolo
  */
 public class UploadThread extends Thread {
-    
+
     private final CloudBlobContainer storeContainer;
-    
+
     private final String blockReference;
-    
+
     private final File file;
 
+    /**
+     * The class constructor
+     * @param storeContainer The storage container
+     * @param blockReference The reference to the cloud blob
+     * @param file The file to upload
+     */
     public UploadThread(CloudBlobContainer storeContainer, String blockReference, File file) {
         this.storeContainer = storeContainer;
         this.blockReference = blockReference;
         this.file = file;
     }
-    
+
     @Override
     public void run() {
         try {
@@ -40,7 +46,5 @@ public class UploadThread extends Thread {
             file.delete();
         }
     }
-    
-    
-    
+
 }

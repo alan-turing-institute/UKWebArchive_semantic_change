@@ -50,7 +50,7 @@ public class BlobDir2WetProcessor {
 
     /**
      *
-     * @param args The first argument is the prefix in the storage container
+     * @param args args[0] is the prefix in the storage container
      */
     public static void main(String[] args) {
         try {

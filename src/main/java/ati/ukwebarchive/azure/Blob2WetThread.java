@@ -50,6 +50,13 @@ public class Blob2WetThread extends Thread {
 
     private static final Logger LOG = Logger.getLogger(Blob2WetThread.class.getName());
 
+    /**
+     * The class constructor
+     * @param queue The queue
+     * @param props The properties
+     * @param validTypeSet The set of valid mime types
+     * @param storeContainer The Azure store container
+     */
     public Blob2WetThread(ConcurrentLinkedQueue<CloudBlockMsg> queue, Properties props, Set<String> validTypeSet, CloudBlobContainer storeContainer) {
         this.queue = queue;
         this.props = props;

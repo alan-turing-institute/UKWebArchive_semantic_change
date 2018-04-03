@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * This class extracts txt content from arc and warc blocks from Azure data storage using a multi-thread approach on a single VM 
+ * This class extracts text content from arc and warc blocks from Azure data storage using a multi-thread approach on a single VM 
  * @author pierpaolo
  */
 @Deprecated

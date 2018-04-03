@@ -19,14 +19,14 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
- * This is a utility class that converts an Warc file to a Wet file
+ * This class converts a WARC file to a WET file
  * 
  * @author pierpaolo
  */
 public class Warc2Wet {
 
     /**
-     * @param args the command line arguments: the first argument is the warc file the secondo is one is the wet file
+     * @param args the command line arguments: args[0] is the WARC  file, args[1] is the WET file
      */
     public static void main(String[] args) {
         try {

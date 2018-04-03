@@ -21,8 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class shows the progress of a wet conversion process.
- * In particular, it compares the arc/wat files in the main container with respect to the wet files in the store container
+ * This class shows the progress of a WET conversion process.
+ * In particular, it compares the ARC/WARC files in the main container with respect to the WET files in the store container
  * 
  * @author pierpaolo
  */

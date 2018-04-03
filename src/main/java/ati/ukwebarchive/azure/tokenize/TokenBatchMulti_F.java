@@ -26,14 +26,8 @@ import com.microsoft.azure.batch.protocol.models.TaskAddParameter;
 import com.microsoft.azure.batch.protocol.models.TaskState;
 import com.microsoft.azure.batch.protocol.models.UserIdentity;
 import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlobDirectory;
-import com.microsoft.azure.storage.blob.ListBlobItem;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +38,7 @@ import java.util.logging.Logger;
 
 /**
  * This class executes a batch on a pool of VMs on Azure. A single job is
- * created in the pool. Each blob directory in the main storage container is
+ * created in the pool. Each blob directory in the prefix array is
  * executed as a single task in the pool.
  *
  * @author pierpaolo
@@ -53,21 +47,16 @@ public class TokenBatchMulti_F {
 
     private static final Logger LOG = Logger.getLogger(TokenBatchMulti_F.class.getName());
 
-    private static final String poolId = "ukwac";
+    private static final String poolId = "ukwac-3";
 
-    private static final String jobId = "ukwac2token1996-2010-ab-ak";
+    private static final String jobId = "ukwac2token1996-2010-an";
 
+    //Arrays of blob directories to process
     private static final String[] prefix = new String[]{
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ab-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ac-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ad-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ae-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-af-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ag-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ah-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ai-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-aj-arcs/",
-        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ak-arcs/"
+        //"jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-al-arcs/",
+        //"jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-am-arcs/",
+        "jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-an-arcs/",
+        //"jisc-uk-web-domain-dataset-1996-2013/ia/1996-2010/phase1-ao-arcs/"
     };
 
     // Log for a batch error

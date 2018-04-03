@@ -20,14 +20,14 @@ import org.jwat.warc.WarcWriter;
 import org.jwat.warc.WarcWriterFactory;
 
 /**
- * This is a utility class that converts an Arc file to a Wet file
+ * This class converts an ARC file to a WET file
  * 
  * @author pierpaolo
  */
 public class Arc2Wet {
 
     /**
-     * @param args the command line arguments: the first argument is the arc file the secondo is one is the wet file
+     * @param args the command line arguments: args[0] is the ARC file, args[1] is the WET file
      */
     public static void main(String[] args) {
         try {

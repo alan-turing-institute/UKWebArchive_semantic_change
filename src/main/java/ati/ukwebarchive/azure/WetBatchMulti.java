@@ -112,7 +112,7 @@ public class WetBatchMulti {
             //IMPORTANT create a start task for installing JAVA on VMs in the pool
             StartTask instJava = new StartTask().withUserIdentity(new UserIdentity()
                     .withAutoUser(new AutoUserSpecification()
-                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
+                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y update && apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
             //create the pool of VMs
             client.poolOperations().createPool(new PoolAddParameter()
                     .withId(poolId)

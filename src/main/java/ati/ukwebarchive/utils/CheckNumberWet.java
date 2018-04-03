@@ -15,13 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class computes the number of wet blobs that belong to a specific prefix into the storage container
+ * This class computes the number of WET blobs that belong to a specific prefix into the storage container
  * @author pierpaolo
  */
 public class CheckNumberWet {
 
     /**
-     * @param args the command line arguments, args[0] is the prefix
+     * @param args the command line arguments, args[0] is the prefix of the storage container
      */
     public static void main(String[] args) {
         try {

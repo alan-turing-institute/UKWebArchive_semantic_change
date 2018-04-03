@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 /**
  * This class executes a batch on a pool of VMs on Azure.
  * A single job is created in the pool. Each blob in the main storage container is executed as a single task in the pool.
- * This approach is slow since it creates a lot of taks in the job queue.
+ * NOTE: This approach is slow since it creates a lot of taks in the job queue. Please use WetBatchMulti.
  * 
  * @see ati.ukwebarchive.azure.BatchMulti
  * 
@@ -107,7 +107,7 @@ public class WetBatchSingle {
             appList.add(new ApplicationPackageReference().withApplicationId("ukwac").withVersion("1.0"));
             StartTask instJava = new StartTask().withUserIdentity(new UserIdentity()
                     .withAutoUser(new AutoUserSpecification()
-                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
+                            .withElevationLevel(ElevationLevel.ADMIN).withScope(AutoUserScope.POOL))).withCommandLine("/bin/bash -c 'apt-get -y update && apt-get -y install openjdk-8-jre'").withWaitForSuccess(Boolean.TRUE);
             client.poolOperations().createPool(new PoolAddParameter()
                     .withId(poolId)
                     .withApplicationPackageReferences(appList)

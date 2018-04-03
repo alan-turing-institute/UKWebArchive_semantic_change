@@ -5,12 +5,9 @@
  */
 package ati.ukwebarchive;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import org.jwat.common.HttpHeader;
 import org.jwat.warc.WarcReader;
 import org.jwat.warc.WarcReaderFactory;
@@ -23,7 +20,7 @@ import org.jwat.warc.WarcRecord;
 public class TestReadWarc2 {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments args[0] is the WARC file
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {

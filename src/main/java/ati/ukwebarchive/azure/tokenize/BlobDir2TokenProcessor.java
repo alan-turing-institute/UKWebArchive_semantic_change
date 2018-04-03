@@ -57,6 +57,12 @@ public class BlobDir2TokenProcessor {
 
     private static FileWriter logWriter;
 
+    /**
+     *
+     * @param key
+     * @param tokens
+     * @throws IOException
+     */
     public static synchronized void write(String key, List<String> tokens) throws IOException {
         if (!key.matches("^[1-2][0-9][0-9][0-9](00|01|02|03|04|05|06|07|08|09|10|11|12)$")) {
             return;
@@ -87,6 +93,11 @@ public class BlobDir2TokenProcessor {
         writer.newLine();
     }
 
+    /**
+     *
+     * @param message
+     * @throws IOException
+     */
     public static synchronized void logMessage(String message) throws IOException {
         logWriter.write(message);
         logWriter.write("\n");
@@ -95,7 +106,7 @@ public class BlobDir2TokenProcessor {
 
     /**
      *
-     * @param args The first argument is the prefix in the storage container
+     * @param args args[0] is the prefix in the storage container
      */
     public static void main(String[] args) {
         try {

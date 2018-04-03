@@ -12,13 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * This class extracts textual content from a file
  * @author pierpaolo
  */
 public class TestExtraction {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments args[0] is the filename
      */
     public static void main(String[] args) {
         try {

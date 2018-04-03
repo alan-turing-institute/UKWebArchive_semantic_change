@@ -20,9 +20,12 @@ public class CloudBlockMsg {
     private final boolean valid;
 
     /**
+     * The class constructor
      *
-     * @param block
-     * @param valid
+     * @param block The cloud blob reference
+     * @param valid true: the message is valid / false: the message is not valid
+     * and it is interpreted as STOP_EXECUTION from the thread that receives
+     * this message
      */
     public CloudBlockMsg(CloudBlockBlob block, boolean valid) {
         this.block = block;

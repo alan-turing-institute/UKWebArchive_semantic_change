@@ -15,13 +15,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class computes the number of wet blobs that belong to a specific prefix into the storage container
+ * This class computes the number of WARC/ARC blobs that belong to a specific prefix into the storage container
  * @author pierpaolo
  */
 public class CheckNumberWarc {
 
     /**
-     * @param args the command line arguments, args[0] is the prefix
+     * @param args the command line arguments, args[0] is the prefix of the storage container
      */
     public static void main(String[] args) {
         try {

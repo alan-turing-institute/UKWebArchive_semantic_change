@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class shows the wet files in the store container
+ * This class shows the WET files in the store container
  * @author pierpaolo
  */
 public class ProgressStatWet {

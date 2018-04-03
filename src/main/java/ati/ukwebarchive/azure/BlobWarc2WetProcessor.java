@@ -57,6 +57,10 @@ public class BlobWarc2WetProcessor {
 
     private static CloudBlobContainer storeContainer;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             props = new Properties();

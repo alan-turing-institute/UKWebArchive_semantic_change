@@ -39,6 +39,11 @@ public class Blob2TokenThread extends Thread {
 
     private static final Logger LOG = Logger.getLogger(Blob2TokenThread.class.getName());
 
+    /**
+     * The class constructor
+     * @param queue The queue
+     * @param props The properties
+     */
     public Blob2TokenThread(ConcurrentLinkedQueue<CloudBlockMsg> queue, Properties props) {
         this.queue = queue;
         this.props = props;

@@ -14,13 +14,13 @@ import org.jwat.arc.ArcReaderFactory;
 import org.jwat.arc.ArcRecordBase;
 
 /**
- * Dummy test class for reading ARC files
+ * Dummy test class for reading ARC file
  * @author pierpaolo
  */
 public class TestReadArc {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments args[0] is the input ARC file
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
