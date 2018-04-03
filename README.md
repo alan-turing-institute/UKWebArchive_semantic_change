@@ -34,7 +34,7 @@ Main classes (for VMs pool)
 Main classes for processing without VMs pool
 -----------------------------------------------
 * *ati.ukwebarchive.azure.tokenize.BlobDir2WetProcessor*: this class processes all blobs (arc or warc) that belong to a particular prefix in a storage container.
-* *ati.ukwebarchive.azure.tokenize.BlobDir2WetProcessorRecursive*: this class is *EXPERIMENTAL*. The class processes recursively all blobs (arc or warc) that belong to a particular prefix in a storage container.
+* *ati.ukwebarchive.azure.tokenize.BlobDir2WetProcessorRecursive*: this class is **EXPERIMENTAL**. The class processes recursively all blobs (arc or warc) that belong to a particular prefix in a storage container.
 * *ati.ukwebarchive.azure.tokenize.BlobDir2TokenProcessor*: this class processes (tokenizes) all blobs (wet) that belong to a particular prefix in a storage container.
 
 Statistics about the first extraction process (March 2018)
@@ -44,6 +44,6 @@ Statistics about the first extraction process (March 2018)
 * WET extraction process: 445,580 (99.64%) blobs for 1996-2010 and 67,830 (99.99%) for 2011-2013. Some blobs were not processed due to errors. Some errors occur for corrupted ARC/WARC files, sometimes the JWAT library recognizes ARC/WARC files as corrupted. In the first part of the processing, the Apache Tika library reported a lot of errors. Tika was replaced by the Jsoup library.
 * The extraction process produces about 3,01 Terabytes of WET files.
 
-For other details see the *javadoc* and *comments* in source files.
+For other details see the **javadoc** and **comments** in source files.
 
-This code is *under development* and *experimental*, for any doubts please contact pierpaolo.basile@gmail.com.
+This code is **under development** and **experimental**, for any doubts please contact pierpaolo.basile@gmail.com.
