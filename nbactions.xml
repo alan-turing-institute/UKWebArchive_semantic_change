@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath ati.ukwebarchive.utils.CountBlockSize https://diachronicukwac.blob.core.windows.net/ukwacwet?sv=2017-07-29&amp;ss=b&amp;srt=sco&amp;sp=rwdlac&amp;se=2018-04-30T22:59:59Z&amp;st=2018-03-16T11:59:24Z&amp;spr=https&amp;sig=%2ByedUbjff88pI5309hRTnzoOHhgdhqq%2BlKCkuKxKrRA%3D ukwac-tk .gz</exec.args>
+                <exec.args>-classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -24,7 +24,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ati.ukwebarchive.utils.CountBlockSize https://diachronicukwac.blob.core.windows.net/ukwacwet?sv=2017-07-29&amp;ss=b&amp;srt=sco&amp;sp=rwdlac&amp;se=2018-04-30T22:59:59Z&amp;st=2018-03-16T11:59:24Z&amp;spr=https&amp;sig=%2ByedUbjff88pI5309hRTnzoOHhgdhqq%2BlKCkuKxKrRA%3D ukwac-tk .gz</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
@@ -39,7 +39,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath ati.ukwebarchive.utils.CountBlockSize https://diachronicukwac.blob.core.windows.net/ukwacwet?sv=2017-07-29&amp;ss=b&amp;srt=sco&amp;sp=rwdlac&amp;se=2018-04-30T22:59:59Z&amp;st=2018-03-16T11:59:24Z&amp;spr=https&amp;sig=%2ByedUbjff88pI5309hRTnzoOHhgdhqq%2BlKCkuKxKrRA%3D ukwac-tk .gz</exec.args>
+                <exec.args>-classpath %classpath ${packageClassName}</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
