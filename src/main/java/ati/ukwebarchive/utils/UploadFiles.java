@@ -35,11 +35,11 @@ public class UploadFiles {
             try {
                 CloudBlobContainer mainContainer = new CloudBlobContainer(new URI(args[0]));
                 LOG.log(Level.INFO, "Container prefix: {0}", args[1]);
-                File occdir = new File(args[2]);
-                LOG.log(Level.INFO, "Occ. matrix dir: {0}", occdir.getAbsolutePath());
+                File localDir = new File(args[2]);
+                LOG.log(Level.INFO, "Local directory: {0}", localDir.getAbsolutePath());
                 int n = 0;
                 long l = 0;
-                File[] listFiles = occdir.listFiles();
+                File[] listFiles = localDir.listFiles();
                 for (File file : listFiles) {
                     if (file.isFile() && file.getName().endsWith(args[3])) {
                         CloudBlockBlob ref = mainContainer.getBlockBlobReference(args[1] + "/" + file.getName());
