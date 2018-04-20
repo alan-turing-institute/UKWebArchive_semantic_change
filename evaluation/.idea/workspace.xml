@@ -15,8 +15,8 @@
       <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/create_word_lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="189" column="16" lean-forward="true" selection-start-line="189" selection-start-column="16" selection-end-line="189" selection-end-column="16" />
+            <state relative-caret-position="3071">
+              <caret line="201" column="45" lean-forward="false" selection-start-line="201" selection-start-column="45" selection-end-line="201" selection-end-column="45" />
               <folding>
                 <element signature="e#405#418#0" expanded="true" />
               </folding>
@@ -46,7 +46,7 @@
         <entry file="file://$PROJECT_DIR$/../../Hartlib/prepare_lemmatization_v1.0.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="646">
-              <caret line="48" column="27" lean-forward="true" selection-start-line="47" selection-start-column="4" selection-end-line="48" selection-end-column="27" />
+              <caret line="48" column="27" lean-forward="false" selection-start-line="47" selection-start-column="4" selection-end-line="48" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -55,7 +55,7 @@
       <file leaf-file-name="clean_letters_v1.7.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../Hartlib/clean_letters_v1.7.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
+            <state relative-caret-position="16575">
               <caret line="986" column="16" lean-forward="false" selection-start-line="986" selection-start-column="16" selection-end-line="986" selection-end-column="16" />
               <folding />
             </state>
@@ -65,7 +65,7 @@
       <file leaf-file-name="exercises_friday_1.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../Hartlib/exercises_friday_1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-749">
+            <state relative-caret-position="357">
               <caret line="24" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding>
                 <element signature="e#532#543#0" expanded="true" />
@@ -77,8 +77,8 @@
       <file leaf-file-name="basic_NLP_script_exercise_McGillivray.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
+            <state relative-caret-position="731">
+              <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -87,7 +87,7 @@
       <file leaf-file-name="basic_NLP_script_McGillivray.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
+            <state relative-caret-position="1037">
               <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
               <folding />
             </state>
@@ -118,10 +118,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1885" />
-    <option name="y" value="28" />
-    <option name="width" value="1920" />
-    <option name="height" value="974" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="794" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -138,8 +137,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -154,6 +151,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -257,7 +256,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1885" y="28" width="1920" height="974" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="794" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -288,19 +287,27 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/evaluate_OED.py">
+    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#405#418#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/evaluate_OED.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="145" column="55" lean-forward="false" selection-start-line="145" selection-start-column="55" selection-end-line="145" selection-end-column="55" />
-          <folding />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="-1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="-1" />
         </state>
       </provider>
     </entry>
@@ -314,7 +321,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Hartlib/clean_letters_v1.7.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
+        <state relative-caret-position="16575">
           <caret line="986" column="16" lean-forward="false" selection-start-line="986" selection-start-column="16" selection-end-line="986" selection-end-column="16" />
           <folding />
         </state>
@@ -322,7 +329,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../Hartlib/exercises_friday_1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-749">
+        <state relative-caret-position="357">
           <caret line="24" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
             <element signature="e#532#543#0" expanded="true" />
@@ -332,7 +339,7 @@
     </entry>
     <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
+        <state relative-caret-position="731">
           <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
           <folding />
         </state>
@@ -340,7 +347,51 @@
     </entry>
     <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
+        <state relative-caret-position="1037">
+          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/evaluate_OED.py" />
+    <entry file="file://$PROJECT_DIR$/evaluate_OED.py" />
+    <entry file="file://$PROJECT_DIR$/../../Hartlib/prepare_lemmatization_v1.0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="48" column="27" lean-forward="false" selection-start-line="47" selection-start-column="4" selection-end-line="48" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Hartlib/clean_letters_v1.7.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16575">
+          <caret line="986" column="16" lean-forward="false" selection-start-line="986" selection-start-column="16" selection-end-line="986" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../Hartlib/exercises_friday_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#532#543#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
           <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
           <folding />
         </state>
@@ -362,8 +413,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="189" column="16" lean-forward="true" selection-start-line="189" selection-start-column="16" selection-end-line="189" selection-end-column="16" />
+        <state relative-caret-position="3071">
+          <caret line="201" column="45" lean-forward="false" selection-start-line="201" selection-start-column="45" selection-end-line="201" selection-end-column="45" />
           <folding>
             <element signature="e#405#418#0" expanded="true" />
           </folding>

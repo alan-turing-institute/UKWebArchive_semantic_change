@@ -35,6 +35,8 @@ from nltk.corpus import stopwords  # stopwords
 # --------------------------------------------
 
 freq_filter = 100 # frequency filter for candidate words
+method = "cum" # alternative: "cum"
+pvalue = "001" # alternatives: "01", "05
 
 
 # Directory and file names:
@@ -43,12 +45,14 @@ dir = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan 
                    "Visiting researcher Basile McGillivray - Documents")
 dir_in = os.path.join(dir, "tri")
 dir_out = os.path.join(dir, "Evaluation", "output")
-english_terms_file = "words_alpha.txt" # list of 400,000 English terms
-candidate_words_file = "ukwac_s20_year_cum_CPD_001_label.csv" # candidate words for semantic change detection,
+english_terms_file_name = "words_alpha.txt" # list of 400,000 English terms
+candidate_words_file_name = "ukwac_s20_year_cum_CPD_001_label.csv" # candidate words for semantic change detection,
 # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
-corpus_words_file = "dict.sample.all"
-file_out = "words_for_lookup_freq_"+str(freq_filter)+".txt"
-file_out_lemmas = "words_for_lookup_freq_"+str(freq_filter)+"_lemmas.txt"
+corpus_words_file_name = "dict.sample.all"
+file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_"+str(freq_filter)+".txt"
+histogram_corpus_filename = method + "_" + pvalue + "histogram_corpus_freq.png"
+histogram_0_filename = method + "_" + pvalue + "histogram_corpus_freq_filtered0.png"
+histogram_1_filename = method + "_" + pvalue + "histogram_corpus_freq_filtered1.png"
 
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
@@ -68,17 +72,24 @@ word_freq = dict()
 
 print("Reading corpus frequencies...")
 
-corpus_words_file = open(os.path.join(dir_in, corpus_words_file), 'r')
+corpus_words_file = open(os.path.join(dir_in, corpus_words_file_name), 'r')
 corpus_words_reader = csv.reader(corpus_words_file, delimiter='\t')  # , quotechar='|')
 
+row_count = sum(1 for row in corpus_words_reader)
+corpus_words_file.close()
+
+corpus_words_file = open(os.path.join(dir_in, corpus_words_file_name), 'r')
+corpus_words_reader = csv.reader(corpus_words_file, delimiter='\t')  # , quotechar='|')
 count = 0
 for row in corpus_words_reader:  # , max_col=5, max_row=max_number+1):
     count += 1
     #if count < 100:
-    print("count", str(count))
+    print("Corpus frequencies: count", str(count), " out of ", str(row_count))
     word = row[0]
     freq = int(row[1])
     word_freq[word] = freq
+
+corpus_words_file.close()
 
 # plot histogram of corpus frequencies of all the words:
 
@@ -86,7 +97,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 numBins = 100
 ax.hist(list(word_freq.values()), numBins, color='green')
-fig.savefig(os.path.join(dir_out, "histogram_corpus_freq.png"))
+fig.savefig(os.path.join(dir_out, histogram_corpus_filename))
 plt.close(fig)
 
 
@@ -101,18 +112,23 @@ candidate_words_changepoint = dict()
 # English terms:
 english_terms = list()
 
-
 # Read candidate words list and their changepoints:
 
 print("Reading candidate words list...")
 
-candidates_file = open(os.path.join(dir_in, "year", candidate_words_file), 'r')
+candidates_file = open(os.path.join(dir_in, "year", candidate_words_file_name), 'r')
+candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
+
+row_count = sum(1 for row in candidates_reader)
+candidates_file.close()
+
+candidates_file = open(os.path.join(dir_in, "year", candidate_words_file_name), 'r')
 candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 
 count = 0
 for row in candidates_reader:  # , max_col=5, max_row=max_number+1):
     count += 1
-    print("count", str(count))
+    print("Candidate: count", str(count), " out of ", str(row_count))
     word = row[0]
     changepoint = row[1]
     if word in candidate_words_changepoint:
@@ -122,10 +138,11 @@ for row in candidates_reader:  # , max_col=5, max_row=max_number+1):
     else:
         candidate_words_changepoint[word] = [changepoint]
 
+candidates_file.close()
 
 # Read list of English terms:
 
-english_terms_file = open(os.path.join(dir_in, english_terms_file))
+english_terms_file = open(os.path.join(dir_in, english_terms_file_name))
 english_terms = english_terms_file.read().splitlines()
 
 # For every candidate word, select it if it occurs in the list of 400,000 English terms:
@@ -134,21 +151,28 @@ candidates_filtered0 = list()
 
 print("Filtering candidates against list of English terms...")
 
+count = 0
 for candidate in candidate_words_changepoint:
-    print(candidate)
+    count += 1
+    print("Filter 1, count: "+str(count), " out of ", str(len(candidate_words_changepoint)))
     if candidate in english_terms:
         candidates_filtered0.append(candidate)
 
+english_terms_file.close()
 #print(str(candidates_filtered0))
 
 
 # For every candidate word selected in ii, look up its corpus frequency in dict.sample.all and filter it at 100
 
+print("Filtering candidates against list of English terms...")
 candidates_filtered1 = list()
 word_freq_filtered0 = dict()
 word_freq_filtered1 = dict()
 
+count = 0
 for word in candidates_filtered0:
+    count += 1
+    print("Filter 2, count: " + str(count), " out of ", str(len(candidates_filtered0)))
     if word in word_freq:
         word_freq_filtered0[word] = word_freq[word]
         if word_freq[word] > freq_filter:
@@ -164,7 +188,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 numBins = 100
 ax.hist(list(word_freq_filtered0.values()), numBins, color='green')
-fig.savefig(os.path.join(dir_out, "histogram_corpus_freq_filtered0.png"))
+fig.savefig(os.path.join(dir_out, histogram_0_filename))
 plt.close(fig)
 
 # plot histogram of corpus frequencies of the candidates filtered against English terms and frequency filter:
@@ -175,7 +199,7 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 numBins = 100
 ax.hist(list(word_freq_filtered1.values()), numBins, color='green')
-fig.savefig(os.path.join(dir_out, "histogram_corpus_freq_filtered1.png"))
+fig.savefig(os.path.join(dir_out, histogram_1_filename))
 plt.close(fig)
 
 
@@ -208,40 +232,28 @@ tokenizer = WordPunctTokenizer()  # assigning WordPunctTokenizer function to be 
 
 #tokens = nltk.word_tokenize(candidates_filtered1)
 pos = nltk.pos_tag(candidates_filtered1)
-print(str(pos))
+#print(str(pos))
 
 wordnet_lemmatizer = nltk.WordNetLemmatizer()
 lemmas = [wordnet_lemmatizer.lemmatize(t) for t in candidates_filtered1]
 
-candidates_filtered1_lemmas = list()
-for i in range(len(candidates_filtered1)):
-    lemma = wordnet_lemmatizer.lemmatize(candidates_filtered1[i], pos=get_new_pos(pos[i]))
-    candidates_filtered1_lemmas.append(lemma)
 
 # ------------------------------------
-# Create outputs
+# Create output
 # ------------------------------------
 
-print("Writing to output files...")
+print("Writing to output file...")
 
-# list of candidate words to look up in OED:
-output_file = open(os.path.join(dir_out, file_out), "w")
+# list of candidate words to look up in OED with their pos, lemma, corpus frequency, and changepoint year:
+output_file = open(os.path.join(dir_out, file_out_name), "w")
 
 writer_output = csv.writer(output_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
                                 lineterminator='\n')
-writer_output.writerow(['word', 'changepoint'])
+writer_output.writerow(['word', 'pos', 'lemma', 'frequency', 'changepoints'])
 
-for word in candidates_filtered1:
-    writer_output.writerow([word, candidate_words_changepoint[word]])
+for i in range(len(candidates_filtered1)):
+    print("Writing word, count: ", str(i), " out of ", str(len(candidates_filtered1)))
+    changepoints = "_".join(candidate_words_changepoint[candidates_filtered1[i]])
+    writer_output.writerow([candidates_filtered1[i], pos[i][1], lemmas[i], word_freq_filtered1[candidates_filtered1[i]],
+                            changepoints])
 
-
-# list of lemmas to look up in OED:
-
-output_file_lemmas = open(os.path.join(dir_out, file_out_lemmas), "w")
-
-writer_output_lemmas = csv.writer(output_file_lemmas, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
-                                lineterminator='\n')
-writer_output_lemmas.writerow(['lemma', 'changepoint'])
-
-for word in candidates_filtered1_lemmas:
-    writer_output_lemmas.writerow([word, candidate_words_changepoint[word]])
