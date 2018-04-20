@@ -35,8 +35,8 @@ from nltk.corpus import stopwords  # stopwords
 # --------------------------------------------
 
 freq_filter = 100 # frequency filter for candidate words
-method = "cum" # alternative: "cum"
-pvalue = "001" # alternatives: "01", "05
+method = "cum" # alternative: "point" and "cum"
+pvalue = "01" # alternatives: "001", "01", and "05
 
 
 # Directory and file names:
@@ -46,13 +46,13 @@ dir = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan 
 dir_in = os.path.join(dir, "tri")
 dir_out = os.path.join(dir, "Evaluation", "output")
 english_terms_file_name = "words_alpha.txt" # list of 400,000 English terms
-candidate_words_file_name = "ukwac_s20_year_cum_CPD_001_label.csv" # candidate words for semantic change detection,
+candidate_words_file_name = "ukwac_s20_year_"+method+"_CPD_"+pvalue+"_label.csv" # candidate words for semantic change detection,
 # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
 corpus_words_file_name = "dict.sample.all"
 file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_"+str(freq_filter)+".txt"
-histogram_corpus_filename = method + "_" + pvalue + "histogram_corpus_freq.png"
-histogram_0_filename = method + "_" + pvalue + "histogram_corpus_freq_filtered0.png"
-histogram_1_filename = method + "_" + pvalue + "histogram_corpus_freq_filtered1.png"
+histogram_corpus_filename = method + "_" + pvalue + "_histogram_corpus_freq.png"
+histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
+histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
 
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
