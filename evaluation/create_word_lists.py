@@ -3,8 +3,8 @@
 # Date: 19/04/2018
 # Python version: 3
 # Script version: 1.0
-# Script for evaluating the candidate words for semantic change outputted by the Temporal Random Indexing semantic
-# change detection algorithm against the OED
+# Script for creating wordlists used for evaluating the candidate words for semantic change outputted by the Temporal
+# Random Indexing semantic change detection algorithm against the OED
 
 # ----------------------------
 # Initialization
@@ -24,6 +24,18 @@ import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 from nltk.tokenize import sent_tokenize
 import re
+import nltk
+from nltk.tokenize import WordPunctTokenizer  # tokenizer
+from nltk.stem import SnowballStemmer  # stemmer
+from nltk.corpus import stopwords  # stopwords
+
+
+# --------------------------------------------
+# Parameters
+# --------------------------------------------
+
+freq_filter = 100 # frequency filter for candidate words
+
 
 # Directory and file names:
 
@@ -35,18 +47,14 @@ english_terms_file = "words_alpha.txt" # list of 400,000 English terms
 candidate_words_file = "ukwac_s20_year_cum_CPD_001_label.csv" # candidate words for semantic change detection,
 # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
 corpus_words_file = "dict.sample.all"
+file_out = "words_for_lookup_freq_"+str(freq_filter)+".txt"
+file_out_lemmas = "words_for_lookup_freq_"+str(freq_filter)+"_lemmas.txt"
 
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
     os.makedirs(dir_out)
 
 
-
-# --------------------------------------------
-# Parameters
-# --------------------------------------------
-
-freq_filter = 100 # frequency filter for candidate words
 
 # --------------------------------------------
 # Analyse distribution of corpus frequencies
@@ -127,15 +135,16 @@ candidates_filtered0 = list()
 print("Filtering candidates against list of English terms...")
 
 for candidate in candidate_words_changepoint:
-    #print(candidate)
+    print(candidate)
     if candidate in english_terms:
         candidates_filtered0.append(candidate)
 
-print(str(candidates_filtered0))
+#print(str(candidates_filtered0))
 
 
 # For every candidate word selected in ii, look up its corpus frequency in dict.sample.all and filter it at 100
 
+candidates_filtered1 = list()
 word_freq_filtered0 = dict()
 word_freq_filtered1 = dict()
 
@@ -143,12 +152,13 @@ for word in candidates_filtered0:
     if word in word_freq:
         word_freq_filtered0[word] = word_freq[word]
         if word_freq[word] > freq_filter:
-            ...
+            word_freq_filtered1[word] = word_freq[word]
+            candidates_filtered1.append(word)
 
 
 # plot histogram of corpus frequencies of the candidates filtered against English terms:
 
-print(str(word_freq_filtered0))
+#print(str(word_freq_filtered0))
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -157,19 +167,81 @@ ax.hist(list(word_freq_filtered0.values()), numBins, color='green')
 fig.savefig(os.path.join(dir_out, "histogram_corpus_freq_filtered0.png"))
 plt.close(fig)
 
+# plot histogram of corpus frequencies of the candidates filtered against English terms and frequency filter:
+
+#print(str(word_freq_filtered1))
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+numBins = 100
+ax.hist(list(word_freq_filtered1.values()), numBins, color='green')
+fig.savefig(os.path.join(dir_out, "histogram_corpus_freq_filtered1.png"))
+plt.close(fig)
 
 
+# ------------------------------------
+# Lemmatization
+# ------------------------------------
 
-# Initialize lemmatizer:
+print("Lemmatizing...")
 
-#lemmatizer = LemmaReplacer('latin')
+def get_new_pos(old_pos):
 
-# Read input files:
+    new_pos = ""
 
-#print(str((dir_in)))
-#files = [f for f in listdir(dir_in) if isfile(join(dir_in, f)) and f.endswith('_la')]
+    if old_pos.startswith('J'):
+        new_pos = "a"
+    elif old_pos.startswith('V'):
+        new_pos = "v"
+    elif old_pos.startswith('N'):
+        new_pos = "n"
+    elif old_pos.startswith('R'):
+        new_pos = "r"
+    else:
+        new_pos = ""
 
-#for file in files:
+    return new_pos
 
-#    print("file:" + file)
-#    text = codecs.open(os.path.join(dir_in, file), 'r').read()
+#stop_words = set(stopwords.words("english"))  # setting and selecting stopwords to be in english
+
+tokenizer = WordPunctTokenizer()  # assigning WordPunctTokenizer function to be a variable.
+
+#tokens = nltk.word_tokenize(candidates_filtered1)
+pos = nltk.pos_tag(candidates_filtered1)
+print(str(pos))
+
+wordnet_lemmatizer = nltk.WordNetLemmatizer()
+lemmas = [wordnet_lemmatizer.lemmatize(t) for t in candidates_filtered1]
+
+candidates_filtered1_lemmas = list()
+for i in range(len(candidates_filtered1)):
+    lemma = wordnet_lemmatizer.lemmatize(candidates_filtered1[i], pos=get_new_pos(pos[i]))
+    candidates_filtered1_lemmas.append(lemma)
+
+# ------------------------------------
+# Create outputs
+# ------------------------------------
+
+print("Writing to output files...")
+
+# list of candidate words to look up in OED:
+output_file = open(os.path.join(dir_out, file_out), "w")
+
+writer_output = csv.writer(output_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
+                                lineterminator='\n')
+writer_output.writerow(['word', 'changepoint'])
+
+for word in candidates_filtered1:
+    writer_output.writerow([word, candidate_words_changepoint[word]])
+
+
+# list of lemmas to look up in OED:
+
+output_file_lemmas = open(os.path.join(dir_out, file_out_lemmas), "w")
+
+writer_output_lemmas = csv.writer(output_file_lemmas, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
+                                lineterminator='\n')
+writer_output_lemmas.writerow(['lemma', 'changepoint'])
+
+for word in candidates_filtered1_lemmas:
+    writer_output_lemmas.writerow([word, candidate_words_changepoint[word]])
