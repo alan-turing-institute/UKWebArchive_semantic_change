@@ -116,17 +116,18 @@ candidate_words_file.close()
 
 for lemmapos in candidate2changepoints:
     changepoints = candidate2changepoints[lemmapos]
-    if lemmapos in oed_lemmapos2years and lemmapos.startswith("oligarch"):
-        print(lemmapos)
+    if lemmapos in oed_lemmapos2years:
+        #print(lemmapos)
         oedyears = oed_lemmapos2years[lemmapos]
-        print("OED years:", oedyears)
-        print("Changepoints:", changepoints)
+        #print("OED years:", oedyears)
+        #print("Changepoints:", changepoints)
 
         for changepoint in changepoints:
-            print("Changepoint:"+changepoint)
+            #print("Changepoint:"+changepoint)
             for oedyear in oedyears:
-                print("Oed year:"+oedyear)
-                if int(changepoint) == int(oedyear) or int(changepoint) == int(oedyear) - 1 or int(changepoint) == int(oedyear) + 1:
+                #print("Oed year:"+oedyear)
+                #if int(changepoint) == int(oedyear) or int(changepoint) == int(oedyear) - 1 or int(changepoint) == int(oedyear) + 1:
+                if int(changepoint) >= int(oedyear) and int(oedyear) >= 1995:
                     print("Correct changepoint for ", lemmapos, ": ", changepoint, oedyear)
 
 # Calculate precision, recall, and F-score:
