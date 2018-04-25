@@ -30,9 +30,7 @@ from nltk.stem import SnowballStemmer  # stemmer
 from nltk.corpus import stopwords  # stopwords
 
 
-# --------------------------------------------
-# Parameters
-# --------------------------------------------
+# Parameters:
 
 freq_filter = 100 # frequency filter for candidate words
 method = "cum" # alternative: "point" and "cum"
