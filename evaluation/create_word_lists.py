@@ -34,7 +34,7 @@ from nltk.corpus import stopwords  # stopwords
 
 freq_filter = 100 # frequency filter for candidate words
 method = "point" # alternative: "point" and "cum"
-pvalue = "090" # alternatives: "001", "01", and "05
+pvalue = "090" # alternatives: "090", and "095
 
 
 # Directory and file names:
@@ -255,3 +255,4 @@ for i in range(len(candidates_filtered1)):
     writer_output.writerow([candidates_filtered1[i], pos[i][1], lemmas[i], word_freq_filtered1[candidates_filtered1[i]],
                             changepoints])
 
+output_file.close()
