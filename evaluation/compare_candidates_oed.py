@@ -13,7 +13,7 @@
 
 # Import modules:
 
-import requests
+# import requests
 import os
 import csv
 
@@ -21,29 +21,70 @@ import csv
 
 freq_filter = 100  # frequency filter for candidate words
 method = "cum"  # alternative: "point" and "cum"
-pvalue = "095"  # alternatives: "001", "01", and "05
+pvalue = "090"  # alternatives: "001", "01", and "05
+freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
+baseline = "yes"  # if "yes", we are evaluating the baseline; if "no", we are evaluating TRI
 
 # Directory and file names:
 
-dir = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
-                   "Visiting researcher Basile McGillivray - Documents")
-dir_in = os.path.join(dir, "Evaluation", "OED")
-dir_out = os.path.join(dir, "Evaluation", "output")
-#oed_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed.tsv"
+directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
+                         "Visiting researcher Basile McGillivray - Documents")
+dir_in = os.path.join(directory, "Evaluation", "OED")
+dir_out = os.path.join(directory, "Evaluation", "output")
+
+# Input files:
 oed_senses_file_name = "oed.sense"
 oed_quotations_file_name = "oed.quotation"
-# candidate words for semantic change detection, checked against OED API
-file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed_evaluation.tsv"
-file_out_name_summary = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed_evaluation_summary.txt"
+dict_file_name = "dict.sample.all"
 candidate_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + ".txt"
+# oed_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed.tsv"
+
+# Output files: candidate words for semantic change detection, checked against OED API:
+file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed_evaluation.tsv"
+file_out_name_summary = method + "_" + pvalue + "_words_for_lookup_freq_" + str(
+    freq_filter) + "_oed_evaluation_summary.txt"
+
+if baseline == "yes":
+    candidate_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_baseline.txt"
+    file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + '_oed_evaluation_baseline' \
+                                                                                           '.tsv '
+    file_out_name_summary = method + "_" + pvalue + "_words_for_lookup_freq_" + str(
+        freq_filter) + "_oed_evaluation_summary_baseline.txt"
 
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
     os.makedirs(dir_out)
 
 # --------------------------------------------------------------
-# Check changepoint year of candidate words against OED years
+# Read word lists from different sources:
 # --------------------------------------------------------------
+
+
+# Read corpus frequencies:
+
+dict_file = open(os.path.join(directory, "tri", dict_file_name), 'r')
+dict_reader = csv.reader(dict_file, delimiter='\t')  # , quotechar='|')
+
+row_count = sum(1 for row in dict_reader)
+dict_file.close()
+
+dict_file = open(os.path.join(directory, "tri", dict_file_name), 'r')
+dict_reader = csv.reader(dict_file, delimiter='\t')  # , quotechar='|')
+
+count = 0
+
+dict_words = list()  # maps a candidate's lemma_pos to the list of its corpus changepoints
+
+for row in dict_reader:  # , max_col=5, max_row=max_number+1):
+    count += 1
+    if count > 1:
+        print("Corpus dictionary: count", str(count), " out of ", str(row_count))
+        word = row[0]
+        freq = int(row[1])
+        if freq > freq_threshold:
+            dict_words.append(word)
+
+dict_file.close()
 
 # Read OED content:
 
@@ -58,42 +99,43 @@ oed_senses_reader = csv.reader(oed_senses_file, delimiter='\t')  # , quotechar='
 
 count = 0
 oed_lemmapos2years = dict()  # maps OED lemma_pos to list of years from OED
-oed_lemmapos2year2senseid = dict() # maps OED lemma_pos and year to the list of its sense ids
-oed_senseid2def = dict() # maps OED sense id to its definition
+oed_lemmapos2year2senseid = dict()  # maps OED lemma_pos and year to the list of its sense ids
+oed_senseid2def = dict()  # maps OED sense id to its definition
 
-gold_standard_lemmapos = list() # list of words that have changed meaning according to the OED between 1995 and 2014
+gold_standard_lemmapos = list()  # list of words that have changed meaning according to the OED between 1995 and 2014
+# and that appear in the corpus above the frequency threshold
 
 for row in oed_senses_file:  # , max_col=5, max_row=max_number+1):
     count += 1
     fields = row.split("\t")
-    #print(str(fields))
-    #print(str(type(fields)))
-    #print(str(fields[3]))
+    # print(str(fields))
+    # print(str(type(fields)))
+    # print(str(fields[3]))
     if count > 1:
-        #print("OED senses: count", str(count), " out of ", str(row_count))
-        #word = row[0]
-        #lemma = row[1]
+        print("OED senses: count", str(count), " out of ", str(row_count))
+        # word = row[0]
+        # lemma = row[1]
         oed_senseid = fields[0]
         oed_lemma = fields[1]
-        if oed_lemma != "NA":# and oed_lemma == "blackberry":
+        if oed_lemma != "NA":  # and oed_lemma == "blackberry":
             oed_postag = fields[2]
             oed_lemmapos = oed_lemma + "_" + oed_postag
             oed_startdate = int(fields[3])
             oed_definition = fields[4]
             oed_senseid2def[oed_senseid] = oed_definition
-            if oed_startdate >=1995 and oed_startdate <= 2014:
+            if oed_startdate >= 1995 <= 2014 and oed_lemma in dict_words:
                 gold_standard_lemmapos.append(oed_lemmapos)
 
-            #if oed_lemmapos in oed_lemmapos2years:
+            # if oed_lemmapos in oed_lemmapos2years:
             if oed_lemmapos in oed_lemmapos2years:
                 years = oed_lemmapos2years[oed_lemmapos]
-                #years = oed_lemmapos2years[oed_lemma]
+                # years = oed_lemmapos2years[oed_lemma]
                 years.append(oed_startdate)
                 oed_lemmapos2years[oed_lemmapos] = years
-                #oed_lemmapos2years[oed_lemma] = years
+                # oed_lemmapos2years[oed_lemma] = years
             else:
                 oed_lemmapos2years[oed_lemmapos] = [oed_startdate]
-                #oed_lemmapos2years[oed_lemma] = [oed_startdate]
+                # oed_lemmapos2years[oed_lemma] = [oed_startdate]
 
             if oed_lemmapos in oed_lemmapos2year2senseid:
                 senseids = oed_lemmapos2year2senseid[oed_lemmapos]
@@ -101,7 +143,6 @@ for row in oed_senses_file:  # , max_col=5, max_row=max_number+1):
                 oed_lemmapos2year2senseid[oed_lemmapos] = senseids
             else:
                 oed_lemmapos2year2senseid[oed_lemmapos] = [oed_senseid]
-
 
 oed_senses_file.close()
 
@@ -117,15 +158,14 @@ oed_quotations_file = open(os.path.join(dir_in, oed_quotations_file_name), 'r')
 oed_quotations_reader = csv.reader(oed_quotations_file, delimiter='\t')  # , quotechar='|')
 
 count = 0
-oed_senseid2quotid = dict() # map each OED sense id to the list of its quotation ids
-oed_quotid2quot = dict() # map each OED quotation id to its quotation
-
+oed_senseid2quotid = dict()  # map each OED sense id to the list of its quotation ids
+oed_quotid2quot = dict()  # map each OED quotation id to its quotation
 
 for row in oed_quotations_reader:  # , max_col=5, max_row=max_number+1):
     count += 1
 
     if count > 1:
-        #print("OED quotations: count", str(count), " out of ", str(row_count))
+        print("OED quotations: count", str(count), " out of ", str(row_count))
         # word = row[0]
         # lemma = row[1]
         oed_quotid = row[0]
@@ -161,7 +201,7 @@ candidate2changepoints = dict()  # maps a candidate's lemma_pos to the list of i
 for row in candidate_words_reader:  # , max_col=5, max_row=max_number+1):
     count += 1
     if count > 1:
-        #print("Corpus frequencies: count", str(count), " out of ", str(row_count))
+        print("Corpus frequencies: count", str(count), " out of ", str(row_count))
         word = row[0]
         pos = row[1]
         lemma = row[2]
@@ -169,11 +209,15 @@ for row in candidate_words_reader:  # , max_col=5, max_row=max_number+1):
         frequency = row[3]
         changepoints = row[4]
         candidate2changepoints[lemmapos] = changepoints.split("_")
-        #candidate2changepoints[lemma] = changepoints.split("_")
+        # candidate2changepoints[lemma] = changepoints.split("_")
 
 candidate_words_file.close()
 
-# Compare the corpus changepoints  of a candidate lemma with its OED years:
+# --------------------------------------------------------------
+# Compare changepoint year of candidate words against OED years
+# --------------------------------------------------------------
+
+# Compare the corpus changepoints of a candidate lemma with its OED years:
 
 correct_candidates = list()
 candidates = list()
@@ -183,18 +227,19 @@ for lemmapos in candidate2changepoints:
     changepoints = candidate2changepoints[lemmapos]
     candidates.append(lemmapos)
     if lemmapos in oed_lemmapos2years:
-        #print(lemmapos)
+        # print(lemmapos)
         oedyears = oed_lemmapos2years[lemmapos]
-        #print("OED years:", oedyears)
-        #print("Changepoints:", changepoints)
+        # print("OED years:", oedyears)
+        # print("Changepoints:", changepoints)
         correct = 0
 
         for changepoint in changepoints:
-            #print("Changepoint:"+changepoint)
+            # print("Changepoint:"+changepoint)
             for oedyear in oedyears:
-                #print("Oed year:"+oedyear)
-                #if int(changepoint) == int(oedyear) or int(changepoint) == int(oedyear) - 1 or int(changepoint) == int(oedyear) + 1:
-                if int(changepoint) >= int(oedyear) and int(oedyear) >= 1995:
+                # print("Oed year:"+oedyear)
+                # if int(changepoint) == int(oedyear) or int(changepoint) == int(oedyear) - 1
+                # or int(changepoint) == int(oedyear) + 1:
+                if int(changepoint) >= int(oedyear) >= 1995:
                     print("Correct changepoint for ", lemmapos, ": ", changepoint, oedyear)
                     correct = 1
 
@@ -203,17 +248,18 @@ for lemmapos in candidate2changepoints:
 
 correct_candidates = list(set(correct_candidates))
 
+# --------------------------------------------------------------
 # Calculate precision, recall, and F-score:
+# --------------------------------------------------------------
 
 
 print("Total number of correct candidates:", str(len(correct_candidates)))
 print("Total number of candidates:", str(len(candidates)))
-P = len(correct_candidates)/len(candidates)
+P = len(correct_candidates) / len(candidates)
 print("Precision:", P)
 print("Total number of gold standard lemmapos:", str(len(gold_standard_lemmapos)))
-R = len(correct_candidates)/len(gold_standard_lemmapos)
+R = len(correct_candidates) / len(gold_standard_lemmapos)
 print("Recall:", R)
-
 
 # -----------------------------
 # Print to output files:
@@ -224,7 +270,7 @@ print("Recall:", R)
 output_file = open(os.path.join(dir_out, file_out_name), "w")
 
 writer_output = csv.writer(output_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
-                                lineterminator='\n')
+                           lineterminator='\n')
 writer_output.writerow(['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
 
 for correct in correct_candidates:
@@ -237,8 +283,11 @@ output_file.close()
 # Evaluation statistics:
 
 output_file_summmary = open(os.path.join(dir_out, file_out_name_summary), "w")
-output_file_summmary.write("Precision:"+str(P)+"\n")
-output_file_summmary.write("Recall:"+str(R))
+output_file_summmary.write("Total number of correct candidates:" + str(len(correct_candidates)) + "\n")
+output_file_summmary.write("Total number of candidates:" + str(len(candidates)) + "\n")
+output_file_summmary.write("Total number of gold standard lemmapos:" + str(len(gold_standard_lemmapos)) + "\n")
+output_file_summmary.write("Precision:" + str(P) + "\n")
+output_file_summmary.write("Recall:" + str(R))
 output_file_summmary.close()
 
 # ---------------------------------------------------------------------
@@ -246,7 +295,5 @@ output_file_summmary.close()
 # ---------------------------------------------------------------------
 
 
-
-
-r = requests.get('https://github.com/timeline.json')
-r.json()
+# r = requests.get('https://github.com/timeline.json')
+# r.json()

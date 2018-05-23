@@ -13,50 +13,48 @@
 
 # Import modules:
 
-import codecs
-import os
 import csv
-from os import listdir
-from os.path import isfile, join
-from cltk.stem.lemma import LemmaReplacer
-import numpy as np
-import matplotlib.mlab as mlab
+import os
+
 import matplotlib.pyplot as plt
-from nltk.tokenize import sent_tokenize
-import re
 import nltk
 from nltk.tokenize import WordPunctTokenizer  # tokenizer
-from nltk.stem import SnowballStemmer  # stemmer
-from nltk.corpus import stopwords  # stopwords
-
 
 # Parameters:
 
-freq_filter = 100 # frequency filter for candidate words
-method = "point" # alternative: "point" and "cum"
-pvalue = "090" # alternatives: "090", and "095
-
+freq_filter = 100  # frequency filter for candidate words
+method = "cum"  # alternative: "point" and "cum"
+pvalue = "090"  # alternatives: "090", and "095
+baseline = "yes"  # if "yes", we are evaluating the baseline; if "no", we are evaluating TRI
 
 # Directory and file names:
 
-dir = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
-                   "Visiting researcher Basile McGillivray - Documents")
-dir_in = os.path.join(dir, "tri")
-dir_out = os.path.join(dir, "Evaluation", "output")
-english_terms_file_name = "words_alpha.txt" # list of 400,000 English terms
-candidate_words_file_name = "ukwac_s20_year_"+ method + "_CPDv2_" + pvalue + "_label.csv" # candidate words for semantic change detection,
-# p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
+directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
+                         "Visiting researcher Basile McGillivray - Documents")
+dir_in = os.path.join(directory, "tri")
+dir_out = os.path.join(directory, "Evaluation", "output")
+
+english_terms_file_name = "words_alpha.txt"  # list of 400,000 English terms
 corpus_words_file_name = "dict.sample.all"
-file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_"+str(freq_filter)+".txt"
+
 histogram_corpus_filename = method + "_" + pvalue + "_histogram_corpus_freq.png"
 histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
 histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
 
+candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_label.csv"
+# candidate words for semantic change detection,
+# p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
+file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + ".txt"
+if baseline == "yes":
+    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_baseline.csv"
+    file_out_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_baseline.txt"
+    histogram_corpus_filename = method + "_" + pvalue + "_histogram_corpus_freq_baseline.png"
+    histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0_baseline.png"
+    histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1_baseline.png"
+
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
     os.makedirs(dir_out)
-
-
 
 # --------------------------------------------
 # Analyse distribution of corpus frequencies
@@ -81,7 +79,7 @@ corpus_words_reader = csv.reader(corpus_words_file, delimiter='\t')  # , quotech
 count = 0
 for row in corpus_words_reader:  # , max_col=5, max_row=max_number+1):
     count += 1
-    #if count < 100:
+    # if count < 100:
     print("Corpus frequencies: count", str(count), " out of ", str(row_count))
     word = row[0]
     freq = int(row[1])
@@ -98,7 +96,6 @@ ax.hist(list(word_freq.values()), numBins, color='green')
 fig.savefig(os.path.join(dir_out, histogram_corpus_filename))
 plt.close(fig)
 
-
 # ----------------------------------------------
 # Check candidate words against English terms
 # ----------------------------------------------
@@ -108,19 +105,27 @@ plt.close(fig)
 candidate_words_changepoint = dict()
 
 # English terms:
-english_terms = list()
+# english_terms = list()
 
 # Read candidate words list and their changepoints:
 
 print("Reading candidate words list...")
 
-candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+if baseline == "yes":
+    candidates_file = open(os.path.join(dir_in, "year", candidate_words_file_name), 'r')
+else:
+    candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+
 candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 
 row_count = sum(1 for row in candidates_reader)
 candidates_file.close()
 
-candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+if baseline == "yes":
+    candidates_file = open(os.path.join(dir_in, "year", candidate_words_file_name), 'r')
+else:
+    candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+
 candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 
 count = 0
@@ -152,12 +157,12 @@ print("Filtering candidates against list of English terms...")
 count = 0
 for candidate in candidate_words_changepoint:
     count += 1
-    print("Filter 1, count: "+str(count), " out of ", str(len(candidate_words_changepoint)))
+    print("Filter 1, count: " + str(count), " out of ", str(len(candidate_words_changepoint)))
     if candidate in english_terms:
         candidates_filtered0.append(candidate)
 
 english_terms_file.close()
-#print(str(candidates_filtered0))
+# print(str(candidates_filtered0))
 
 
 # For every candidate word selected in ii, look up its corpus frequency in dict.sample.all and filter it at 100
@@ -177,10 +182,9 @@ for word in candidates_filtered0:
             word_freq_filtered1[word] = word_freq[word]
             candidates_filtered1.append(word)
 
-
 # plot histogram of corpus frequencies of the candidates filtered against English terms:
 
-#print(str(word_freq_filtered0))
+# print(str(word_freq_filtered0))
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -191,7 +195,7 @@ plt.close(fig)
 
 # plot histogram of corpus frequencies of the candidates filtered against English terms and frequency filter:
 
-#print(str(word_freq_filtered1))
+# print(str(word_freq_filtered1))
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -200,16 +204,15 @@ ax.hist(list(word_freq_filtered1.values()), numBins, color='green')
 fig.savefig(os.path.join(dir_out, histogram_1_filename))
 plt.close(fig)
 
-
 # ------------------------------------
 # Lemmatization
 # ------------------------------------
 
 print("Lemmatizing...")
 
-def get_new_pos(old_pos):
 
-    new_pos = ""
+def get_new_pos(old_pos):
+    # new_pos = ""
 
     if old_pos.startswith('J'):
         new_pos = "a"
@@ -224,17 +227,17 @@ def get_new_pos(old_pos):
 
     return new_pos
 
-#stop_words = set(stopwords.words("english"))  # setting and selecting stopwords to be in english
+
+# stop_words = set(stopwords.words("english"))  # setting and selecting stopwords to be in english
 
 tokenizer = WordPunctTokenizer()  # assigning WordPunctTokenizer function to be a variable.
 
-#tokens = nltk.word_tokenize(candidates_filtered1)
+# tokens = nltk.word_tokenize(candidates_filtered1)
 pos = nltk.pos_tag(candidates_filtered1)
-#print(str(pos))
+# print(str(pos))
 
 wordnet_lemmatizer = nltk.WordNetLemmatizer()
 lemmas = [wordnet_lemmatizer.lemmatize(t) for t in candidates_filtered1]
-
 
 # ------------------------------------
 # Create output
@@ -246,7 +249,7 @@ print("Writing to output file...")
 output_file = open(os.path.join(dir_out, file_out_name), "w")
 
 writer_output = csv.writer(output_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
-                                lineterminator='\n')
+                           lineterminator='\n')
 writer_output.writerow(['word', 'pos', 'lemma', 'frequency', 'changepoints'])
 
 for i in range(len(candidates_filtered1)):
