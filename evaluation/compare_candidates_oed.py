@@ -23,7 +23,7 @@ freq_filter = 100  # frequency filter for candidate words
 method_values = ["point", "cum", "occ"]
 pvalue_values = ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
-changepoint_detection_values = ["simple_valley", "mean_shift"]
+changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED years;
  # if "greater", then we match any changepoint that is >= OED year
 lemmatization_values = ["yes", "no"]
@@ -60,17 +60,15 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
                 for year_window in year_window_values:
                     for lemmatization in lemmatization_values:
 
-                        candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
-                                "changepoint-detection_" + changepoint_detection + ".txt"
+                        candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + \
+                                                    str(pvalue) + "changepoint-detection_" + changepoint_detection + ".txt"
+
+                        if changepoint_detection.startswith("valley_var"):
+                            candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + \
+                                        "changepoint-detection_" + changepoint_detection + ".txt"
                         # oed_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed.tsv"
 
                         # Output files: candidate words for semantic change detection, checked against OED API:
-                        file_out_name = method + "_" + pvalue + "_words_freq-" + str(freq_filter) + "_yearwindow-" + str(year_window) + \
-                                        "lemmatization-" + lemmatization + "_oed_evaluation.tsv"
-                        file_out_name_summary = method + "_" + pvalue + "_words_freq-" + str(
-                            freq_filter) + "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + "_oed_evaluation_summary.txt"
-
-
 
                         file_out_name = method + '_words_freq-' + str(freq_filter) + "pvalue-" + str(pvalue) + "_yearwindow-" + str(year_window) \
                                             + "lemmatization-" + lemmatization + "changepoint-detection_" + changepoint_detection +\

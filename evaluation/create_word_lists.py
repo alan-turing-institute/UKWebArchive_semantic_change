@@ -25,7 +25,9 @@ from nltk.tokenize import WordPunctTokenizer  # tokenizer
 freq_filter = 100  # frequency filter for candidate words
 method_values = ["point", "cum", "occ"]
 pvalue_values = ["090", "095"]
-changepoint_detection_values = ["simple_valley", "mean_shift"]
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+# under the "valley_var" approach we consider the number after of times the down-ward trend needs
+# to be higher than the variance in order to lead to a changepoint
 
 # Directory and file names:
 
@@ -97,6 +99,9 @@ for method in method_values:
             # candidate words for semantic change detection,
             # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
 
+            file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
+                            "changepoint-detection_" + changepoint_detection + ".txt"
+
             if method == "occ":
                 if changepoint_detection == "simple_valley":
                     candidate_words_file_name = method + "_s20_year_CPD_baseline.csv"
@@ -108,9 +113,10 @@ for method in method_values:
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_baseline.csv"
                 elif changepoint_detection == "mean_shift":
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
-
-            file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
-                            "changepoint-detection_" + changepoint_detection + ".txt"
+                elif changepoint_detection.startswith("valley_var"):
+                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + changepoint_detection + ".csv"
+                    file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
+                                    "changepoint-detection_" + changepoint_detection + ".txt"
 
             # ----------------------------------------------
             # Check candidate words against English terms
