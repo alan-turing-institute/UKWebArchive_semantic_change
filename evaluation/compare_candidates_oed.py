@@ -23,7 +23,7 @@ freq_filter = 100  # frequency filter for candidate words
 method_values = ["point", "cum", "occ"]
 pvalue_values = ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
-changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+changepoint_detection_values = ["valley_var_4"]# ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED years;
  # if "greater", then we match any changepoint that is >= OED year
 lemmatization_values = ["yes", "no"]
@@ -327,7 +327,10 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
                         print("Total number of gold standard lemmapos:", str(len(gold_standard_lemmapos)))
                         R = len(correct_candidates) / len(gold_standard_lemmapos)
                         print("Recall:", R)
-                        F = 2*P*R/float(P+R)
+                        if (P+R) > 0:
+                            F = 2*P*R/float(P+R)
+                        else:
+                            F = 0
 
                         # -----------------------------
                         # Print to output files:
