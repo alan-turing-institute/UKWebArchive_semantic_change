@@ -114,7 +114,8 @@ for method in method_values:
                 elif changepoint_detection == "mean_shift":
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
                 elif changepoint_detection.startswith("valley_var"):
-                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + changepoint_detection + ".csv"
+                    var = changepoint_detection.split("_")[2]
+                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + var + ".csv"
                     file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
                                     "changepoint-detection_" + changepoint_detection + ".txt"
 
