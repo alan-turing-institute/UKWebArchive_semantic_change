@@ -54,9 +54,14 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
     writer_all_output.writerow(['method', 'changepoint detection', 'significance', 'year_window', 'lemmatization',
                                 'num correct', 'num candidates', 'num gold standard', 'Precision', 'Recall', 'F1-score'])
 
-    for method in method_values:
-        for pvalue in pvalue_values:
-            for changepoint_detection in changepoint_detection_values:
+    for changepoint_detection in changepoint_detection_values:
+        if changepoint_detection.startswith("valley_var"):
+            method_values = ["point", "cum"]
+            pvalue_values = ["0"]
+
+        for method in method_values:
+            for pvalue in pvalue_values:
+
                 for year_window in year_window_values:
                     for lemmatization in lemmatization_values:
 

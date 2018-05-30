@@ -82,7 +82,7 @@ english_terms_file.close()
 
 # plot histogram of corpus frequencies of all the words:
 
-histogram_corpus_filename = "histogram_corpus_freq_" +  str(freq_filter) + ".png"
+histogram_corpus_filename = "histogram_corpus_freq_" + str(freq_filter) + ".png"
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -93,18 +93,28 @@ plt.close(fig)
 
 for changepoint_detection in changepoint_detection_values:
 
+    print("Changepoint detection:", changepoint_detection)
     if changepoint_detection.startswith("valley_var"):
         method_values = ["cum"]#["point", "cum"]
-        pvalue_values = []
+        pvalue_values = ["0"]
 
     for method in method_values:
+        print("Method:",method)
+
         for pvalue in pvalue_values:
+            print("P-value:",pvalue_values)
 
             # candidate words for semantic change detection,
             # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
 
             file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
                             "changepoint-detection_" + changepoint_detection + ".txt"
+            histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
+            histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
+
+            if changepoint_detection.startswith("valley_var"):
+                histogram_0_filename = method + "_histogram_corpus_freq_filtered0.png"
+                histogram_1_filename = method + "_histogram_corpus_freq_filtered1.png"
 
             if method == "occ":
                 if changepoint_detection == "simple_valley":
@@ -201,11 +211,6 @@ for changepoint_detection in changepoint_detection_values:
                         candidates_filtered1.append(word)
 
             # plot histogram of corpus frequencies of the candidates filtered against English terms:
-
-            histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
-            histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
-
-            # print(str(word_freq_filtered0))
 
             fig = plt.figure()
             ax = fig.add_subplot(111)
