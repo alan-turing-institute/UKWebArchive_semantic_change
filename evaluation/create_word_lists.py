@@ -23,9 +23,9 @@ from nltk.tokenize import WordPunctTokenizer  # tokenizer
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 method_values = ["point", "cum", "occ"]
 pvalue_values = ["090", "095"]
-changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 # under the "valley_var" approach we consider the number after of times the down-ward trend needs
 # to be higher than the variance in order to lead to a changepoint
 
@@ -91,10 +91,14 @@ ax.hist(list(word_freq.values()), numBins, color='green')
 fig.savefig(os.path.join(dir_out, histogram_corpus_filename))
 plt.close(fig)
 
+for changepoint_detection in changepoint_detection_values:
 
-for method in method_values:
-    for pvalue in pvalue_values:
-        for changepoint_detection in changepoint_detection_values:
+    if changepoint_detection.startswith("valley_var"):
+        method_values = ["cum"]#["point", "cum"]
+        pvalue_values = []
+
+    for method in method_values:
+        for pvalue in pvalue_values:
 
             # candidate words for semantic change detection,
             # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
