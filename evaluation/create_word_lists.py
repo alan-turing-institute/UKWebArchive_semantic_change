@@ -23,7 +23,7 @@ from nltk.tokenize import WordPunctTokenizer  # tokenizer
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 method_values = ["point", "cum", "occ"]
 pvalue_values = ["090", "095"]
 # under the "valley_var" approach we consider the number after of times the down-ward trend needs
