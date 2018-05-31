@@ -27,13 +27,11 @@ stop_words = set(stopwords.words('english'))
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-method_values = ["point"]  # ["point", "cum", "occ"]
-pvalue_values = ["090"]  # ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
+method_values =  ["point", "cum", "occ"]
+pvalue_values =  ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
-changepoint_detection_values = [
-    "simple_valley"]  # ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
-year_window_values = [
-    "greater"]  # ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED
+changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED
 # years;
 # if "greater", then we match any changepoint that is >= OED year
 lemmatization_values = ["yes", "no"]
@@ -59,7 +57,7 @@ file_out_all_name = "oed_evaluation_overview.csv"
 
 # Read corpus neighbours:
 
-neighbour_file = open(os.path.join(directory, "tri", "v2", "neighborhood_100",
+neighbour_file = open(os.path.join(directory, "tri", "year", "v2", "neighborhood_100",
                                    neighbour_file_name), 'r')
 
 row_count_neighbour = sum(1 for line in neighbour_file)
@@ -67,7 +65,7 @@ neighbour_file.close()
 
 # read list of neighbours from corpus:
 
-neighbour_file = open(os.path.join(directory, "tri", "v2", "neighborhood_100",
+neighbour_file = open(os.path.join(directory, "tri", "year", "v2", "neighborhood_100",
                                    neighbour_file_name), 'r')
 count_n = 0
 
@@ -208,12 +206,12 @@ for row in oed_senses_file:  # , max_col=5, max_row=max_number+1):
                     oed_lemmapos2years[oed_lemmapos] = [oed_startdate]
                     # oed_lemmapos2years[oed_lemma] = [oed_startdate]
 
-                if [oed_lemmapos, oed_startdate] in oed_lemmapos2year2senseid:
-                    senseids = oed_lemmapos2year2senseid[oed_lemmapos, oed_startdate]
+                if (oed_lemmapos, oed_startdate) in oed_lemmapos2year2senseid.keys():
+                    senseids = oed_lemmapos2year2senseid[(oed_lemmapos, oed_startdate)]
                     senseids.append(oed_senseid)
-                    oed_lemmapos2year2senseid[oed_lemmapos, oed_startdate] = senseids
+                    oed_lemmapos2year2senseid[(oed_lemmapos, oed_startdate)] = senseids
                 else:
-                    oed_lemmapos2year2senseid[oed_lemmapos, oed_startdate] = [oed_senseid]
+                    oed_lemmapos2year2senseid[(oed_lemmapos, oed_startdate)] = [oed_senseid]
 
                 # OED lemmas:
 
@@ -229,12 +227,12 @@ for row in oed_senses_file:  # , max_col=5, max_row=max_number+1):
                     oed_lemma2years[oed_lemma] = [oed_startdate]
                     # oed_lemmapos2years[oed_lemma] = [oed_startdate]
 
-                if [oed_lemma, oed_startdate] in oed_lemma2year2senseid:
-                    senseids = oed_lemma2year2senseid[oed_lemma]
+                if (oed_lemma, oed_startdate) in oed_lemma2year2senseid.keys():
+                    senseids = oed_lemma2year2senseid[(oed_lemma, oed_startdate)]
                     senseids.append(oed_senseid)
-                    oed_lemma2year2senseid[oed_lemma, oed_startdate] = senseids
+                    oed_lemma2year2senseid[(oed_lemma, oed_startdate)] = senseids
                 else:
-                    oed_lemma2year2senseid[oed_lemma, oed_startdate] = [oed_senseid]
+                    oed_lemma2year2senseid[(oed_lemma, oed_startdate)] = [oed_senseid]
 
 oed_senses_file.close()
 
@@ -379,15 +377,18 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
             if changepoint_detection.startswith("valley_var"):
                 method_values = ["point", "cum"]
                 pvalue_values = ["0"]
+            else:
+                method_values = ["point", "cum", "occ"]
+                pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 
             for method in method_values:
                 for pvalue in pvalue_values:
 
                     for year_window in year_window_values:
 
-                        candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + \
-                                                    str(
-                                                        pvalue) + "changepoint-detection_" + changepoint_detection + ".txt"
+                        candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + \
+                                                    "pvalue-" + str(pvalue) + "changepoint-detection_" + \
+                                                    changepoint_detection + ".txt"
 
                         if changepoint_detection.startswith("valley_var"):
                             candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + \
@@ -397,14 +398,12 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
                         # Output files: candidate words for semantic change detection, checked against OED API:
 
                         file_out_name = method + '_words_freq-' + str(freq_filter) + "pvalue-" + str(
-                            pvalue) + "_yearwindow-" + str(year_window) \
-                                        + "lemmatization-" + lemmatization + "changepoint-detection_" + changepoint_detection + \
-                                        "_oed_evaluation.tsv "
-                        file_out_name_summary = method + "_words_freq-" + str(freq_filter) + "pvalue-" + str(
-                            pvalue) + "_yearwindow-" + \
-                                                str(
-                                                    year_window) + "lemmatization-" + lemmatization + "changepoint-detection_" + \
-                                                changepoint_detection + "_oed_evaluation_summary.txt"
+                            pvalue) + "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
+                                        "changepoint-detection_" + changepoint_detection + "_oed_evaluation.tsv "
+                        file_out_name_summary = method + "_words_freq-" + str(freq_filter) + "pvalue-" + str(pvalue) + \
+                                                "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
+                                                "changepoint-detection_" + changepoint_detection + \
+                                                "_oed_evaluation_summary.txt"
 
                         # --------------------------------------------------------------
                         # Read word lists from different sources:
@@ -544,11 +543,11 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
                             writer_output.writerow(
                                 ['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
 
-                            for correct in correct_candidates:
-                                lemma = correct.split("_")[0]
-                                pos = correct.split("_")[1]
+                            for c in correct_candidates:
+                                lemma = c.split("_")[0]
+                                pos = c.split("_")[1]
                                 writer_output.writerow(
-                                    [lemma, pos, candidate2changepoints[correct], oed_lemmapos2years[correct]])
+                                    [lemma, pos, candidate2changepoints[c], oed_lemmapos2years[c]])
 
                         else:
                             writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
@@ -556,10 +555,11 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
                                                        lineterminator='\n')
                             writer_output.writerow(['correct_lemma', 'changepoints', 'oed_years'])
 
-                            for correct in correct_candidates:
-                                lemma = correct
-                                writer_output.writerow(
-                                    [lemma, candidate2changepoints[correct], oed_lemmapos2years[correct]])
+                            for c in correct_candidates:
+                                lemma = c
+                                if c in candidate2changepoints and c in oed_lemmapos2years:
+                                    writer_output.writerow(
+                                        [lemma, candidate2changepoints[c], oed_lemmapos2years[c]])
 
                         output_file.close()
 
