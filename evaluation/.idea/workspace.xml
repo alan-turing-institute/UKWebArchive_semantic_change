@@ -12,11 +12,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/create_word_lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+            <state relative-caret-position="368">
+              <caret line="89" column="1" lean-forward="false" selection-start-line="89" selection-start-column="1" selection-end-line="89" selection-end-column="1" />
               <folding>
                 <element signature="e#405#415#0" expanded="true" />
               </folding>
@@ -24,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="compare_candidates_oed.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="compare_candidates_oed.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="561" column="40" lean-forward="false" selection-start-line="561" selection-start-column="40" selection-end-line="561" selection-end-column="40" />
+            <state relative-caret-position="342">
+              <caret line="559" column="23" lean-forward="false" selection-start-line="559" selection-start-column="23" selection-end-line="559" selection-end-column="23" />
               <folding>
                 <element signature="e#560#569#0" expanded="true" />
                 <element signature="e#18461#19303#0" expanded="false" />
@@ -59,7 +59,6 @@
       <find>baseline</find>
       <find>year_window</find>
       <find>englis</find>
-      <find>english</find>
       <find>file_out_name</find>
       <find>oed_senseid2def</find>
       <find>gold_standard_lemmapos</find>
@@ -73,6 +72,7 @@
       <find>neigh</find>
       <find>...</find>
       <find>..</find>
+      <find>english</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -84,8 +84,8 @@
         <option value="$PROJECT_DIR$/evaluate_OED.py" />
         <option value="$PROJECT_DIR$/query_oed.py" />
         <option value="$PROJECT_DIR$/compare_neighbours_oed.py" />
-        <option value="$PROJECT_DIR$/create_word_lists.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed.py" />
+        <option value="$PROJECT_DIR$/create_word_lists.py" />
       </list>
     </option>
   </component>
@@ -228,7 +228,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="794" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="794" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -649,23 +649,23 @@
     </entry>
     <entry file="file:///private/var/folders/wz/jny4kryn4p76mdcdzbp_gf0c0000gq/T/Read emails from mailing lists and seminars and events in Outlook.ics" />
     <entry file="file://$PROJECT_DIR$/compare_neighbours_oed.py" />
-    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
+    <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
+        <state relative-caret-position="342">
+          <caret line="559" column="23" lean-forward="false" selection-start-line="559" selection-start-column="23" selection-end-line="559" selection-end-column="23" />
           <folding>
-            <element signature="e#405#415#0" expanded="true" />
+            <element signature="e#560#569#0" expanded="true" />
+            <element signature="e#18461#19303#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
+    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="561" column="40" lean-forward="false" selection-start-line="561" selection-start-column="40" selection-end-line="561" selection-end-column="40" />
+        <state relative-caret-position="368">
+          <caret line="89" column="1" lean-forward="false" selection-start-line="89" selection-start-column="1" selection-end-line="89" selection-end-column="1" />
           <folding>
-            <element signature="e#560#569#0" expanded="true" />
-            <element signature="e#18461#19303#0" expanded="false" />
+            <element signature="e#405#415#0" expanded="true" />
           </folding>
         </state>
       </provider>

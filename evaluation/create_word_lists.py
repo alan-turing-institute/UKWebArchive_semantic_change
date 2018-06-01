@@ -41,6 +41,7 @@ if not os.path.exists(dir_out):
     os.makedirs(dir_out)
 
 english_terms_file_name = "words_alpha.txt"  # list of 400,000 English terms
+oed_terms_file_name = "oed_words.tsv"
 corpus_words_file_name = "dict.sample.all"
 
 # --------------------------------------------
@@ -74,10 +75,19 @@ for row in corpus_words_reader:  # , max_col=5, max_row=max_number+1):
 
 corpus_words_file.close()
 
-# Read list of English terms:
+# Read list of OED terms:
 
-english_terms_file = open(os.path.join(dir_in, english_terms_file_name))
-english_terms = english_terms_file.read().splitlines()
+c = 0
+english_terms_file = open(os.path.join(dir_in, oed_terms_file_name))
+english_terms = list()
+for line in english_terms_file:
+    c += 1
+    if c > 1:
+        fields = line.split("\t")
+        term = fields[1]
+        english_terms.append(term)
+
+#english_terms = english_terms_file.read().splitlines()
 english_terms_file.close()
 
 # plot histogram of corpus frequencies of all the words:
