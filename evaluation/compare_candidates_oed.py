@@ -39,7 +39,7 @@ lemmatization_values = ["yes", "no"]
 # Directory and file names:
 
 directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
-                         "Visiting researcher Basile - Documents")
+                         "Visiting researcher Basile McGillivray - Documents")
 dir_in = os.path.join(directory, "Evaluation", "OED")
 dir_out = os.path.join(directory, "Evaluation", "output")
 

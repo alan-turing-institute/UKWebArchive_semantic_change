@@ -32,7 +32,7 @@ pvalue_values = ["090", "095"]
 # Directory and file names:
 
 directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
-                         "Visiting researcher Basile - Documents")
+                         "Visiting researcher Basile McGillivray - Documents")
 dir_in = os.path.join(directory, "tri")
 dir_out = os.path.join(directory, "Evaluation", "output")
 
@@ -78,7 +78,7 @@ corpus_words_file.close()
 # Read list of OED terms:
 
 c = 0
-english_terms_file = open(os.path.join(dir_in, oed_terms_file_name))
+english_terms_file = open(os.path.join(directory, "Evaluation", "OED", oed_terms_file_name))
 english_terms = list()
 for line in english_terms_file:
     c += 1
