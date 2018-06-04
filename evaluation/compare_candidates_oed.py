@@ -399,7 +399,7 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
 
                         file_out_name = method + '_words_freq-' + str(freq_filter) + "pvalue-" + str(
                             pvalue) + "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
-                                        "changepoint-detection_" + changepoint_detection + "_oed_evaluation.tsv "
+                                        "changepoint-detection_" + changepoint_detection + "_oed_evaluation.tsv"
                         file_out_name_summary = method + "_words_freq-" + str(freq_filter) + "pvalue-" + str(pvalue) + \
                                                 "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
                                                 "changepoint-detection_" + changepoint_detection + \
