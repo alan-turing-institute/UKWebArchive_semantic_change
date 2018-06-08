@@ -21,16 +21,20 @@ import os
 import csv
 from nltk import word_tokenize
 from nltk.corpus import stopwords
+import datetime
 
+
+now = datetime.datetime.now()
+today_date = str(now)[:10]
 stop_words = set(stopwords.words('english'))
 
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-method_values =  ["point", "cum", "occ"]
-pvalue_values =  ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
+method_values = ["occ"]# ["point", "cum", "occ"]
+pvalue_values = ["090", "095"] # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
-changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]#["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
 year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED
 # years;
 # if "greater", then we match any changepoint that is >= OED year
@@ -41,7 +45,9 @@ lemmatization_values = ["yes", "no"]
 directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The Alan Turing Institute",
                          "Visiting researcher Basile McGillivray - Documents")
 dir_in = os.path.join(directory, "Evaluation", "OED")
-dir_out = os.path.join(directory, "Evaluation", "output")
+dir_out = os.path.join(directory, "Evaluation", "output", str(today_date))
+if not os.path.exists(dir_out):
+    os.makedirs(dir_out)
 
 # create output directory if it doesn't exist:
 if not os.path.exists(dir_out):
@@ -380,6 +386,9 @@ with open(os.path.join(dir_out, file_out_all_name), "w") as output_all_file:
             else:
                 method_values = ["point", "cum", "occ"]
                 pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
+
+            if method == "occ":
+                pvalue_values = ['0']
 
             for method in method_values:
                 for pvalue in pvalue_values:

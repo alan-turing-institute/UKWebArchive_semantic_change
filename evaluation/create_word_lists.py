@@ -23,8 +23,8 @@ from nltk.tokenize import WordPunctTokenizer  # tokenizer
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
-method_values = ["point", "cum", "occ"]
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]#["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+method_values = ["occ"]#["point", "cum", "occ"]
 pvalue_values = ["090", "095"]
 # under the "valley_var" approach we consider the number after of times the down-ward trend needs
 # to be higher than the variance in order to lead to a changepoint
@@ -103,13 +103,20 @@ plt.close(fig)
 
 for changepoint_detection in changepoint_detection_values:
 
+    var = ""
     print("Changepoint detection:", changepoint_detection)
     if changepoint_detection.startswith("valley_var"):
-        method_values = ["cum"]#["point", "cum"]
+        var = changepoint_detection.split("_")[2]
+        method_values = ["point", "cum"]
         pvalue_values = ["0"]
+    else:
+        method_values = ["point", "cum", "occ"]
+        pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 
     for method in method_values:
         print("Method:",method)
+        if method == "occ":
+            pvalue_values = ['0']
 
         for pvalue in pvalue_values:
             print("P-value:",pvalue_values)
@@ -131,6 +138,8 @@ for changepoint_detection in changepoint_detection_values:
                     candidate_words_file_name = method + "_s20_year_CPD_baseline.csv"
                 elif changepoint_detection == "mean_shift":
                     candidate_words_file_name = method + "_s20_year_CPDv2_" + pvalue + "_down_label.csv"
+                else:
+                    candidate_words_file_name = method + "_s20_year_var_" + var + ".csv"
 
             else:
                 if changepoint_detection == "simple_valley":
@@ -138,7 +147,6 @@ for changepoint_detection in changepoint_detection_values:
                 elif changepoint_detection == "mean_shift":
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
                 elif changepoint_detection.startswith("valley_var"):
-                    var = changepoint_detection.split("_")[2]
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + var + ".csv"
                     file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
                                     "changepoint-detection_" + changepoint_detection + ".txt"
