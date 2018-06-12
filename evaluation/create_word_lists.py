@@ -15,16 +15,19 @@
 
 import csv
 import os
-
+import datetime
 import matplotlib.pyplot as plt
 import nltk
 from nltk.tokenize import WordPunctTokenizer  # tokenizer
 
+now = datetime.datetime.now()
+today_date = str(now)[:10]
+
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]#["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
-method_values = ["occ"]#["point", "cum", "occ"]
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["valley_var_1", "valley_var_2", "valley_var_4", "simple_valley", "mean_shift"]
+method_values = ["occ"]#["occ", "point", "cum"]
 pvalue_values = ["090", "095"]
 # under the "valley_var" approach we consider the number after of times the down-ward trend needs
 # to be higher than the variance in order to lead to a changepoint
@@ -105,21 +108,17 @@ for changepoint_detection in changepoint_detection_values:
 
     var = ""
     print("Changepoint detection:", changepoint_detection)
+    pvalue_values = ["090", "095"]
     if changepoint_detection.startswith("valley_var"):
         var = changepoint_detection.split("_")[2]
-        method_values = ["point", "cum"]
-        pvalue_values = ["0"]
+        pvalue_values = ["0"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
     else:
-        method_values = ["point", "cum", "occ"]
-        pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
+        pvalue_values = ["090", "095"]
 
     for method in method_values:
         print("Method:",method)
-        if method == "occ":
-            pvalue_values = ['0']
 
         for pvalue in pvalue_values:
-            print("P-value:",pvalue_values)
 
             # candidate words for semantic change detection,
             # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
@@ -148,8 +147,8 @@ for changepoint_detection in changepoint_detection_values:
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
                 elif changepoint_detection.startswith("valley_var"):
                     candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + var + ".csv"
-                    file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
-                                    "changepoint-detection_" + changepoint_detection + ".txt"
+                    #file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
+                    #                "changepoint-detection_" + changepoint_detection + ".txt"
 
             # ----------------------------------------------
             # Check candidate words against English terms
@@ -180,6 +179,7 @@ for changepoint_detection in changepoint_detection_values:
 
             candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 
+            print("file:", str(candidate_words_file_name))
             count = 0
             for row in candidates_reader:  # , max_col=5, max_row=max_number+1):
                 count += 1
