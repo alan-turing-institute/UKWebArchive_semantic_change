@@ -30,15 +30,17 @@ stop_words = set(stopwords.words('english'))
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-method_values = ["point", "cum", "occ"]
+method_values = ["occ", "point", "cum"]
 pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
-changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4"]
+changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]#, "simple_valley", "mean_shift"]
 year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED
 # years;
 # if "greater", then we match any changepoint that is >= OED year
 lemmatization_values = ["yes", "no"]
 istest = input("Is this a test?")
+testword = "aapa"
+#testyear = 1998
 
 # Directory and file names:
 
@@ -47,11 +49,11 @@ directory = os.path.join("/Users", "bmcgillivray", "Documents", "OneDrive", "The
 dir_in = os.path.join(directory, "Evaluation", "OED")
 dir_out = os.path.join(directory, "Evaluation", "output")
 
-
 # create output directory if it doesn't exist:
-if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date))):
-    os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date)))
-
+if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "neighbours")):
+    os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "neighbours"))
+if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall")):
+    os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall"))
 
 # Input files:
 oed_senses_file_name = "oed.sense"
@@ -59,7 +61,9 @@ oed_quotations_file_name = "oed.quotation"
 dict_file_name = "dict.sample.all"
 neighbour_file_name = "neighborhood_100.csv"
 
-file_out_all_name = "oed_evaluation_overview.csv"
+file_out_all_name = "oed_evaluation_overview"+str(today_date)+".csv"
+if istest == "yes":
+    file_out_all_name = file_out_all_name.replace(".csv", "_test.csv")
 
 # Read corpus neighbours:
 
@@ -79,24 +83,24 @@ neighbour_words = dict()  # maps a candidate and a year to the list of its top 1
 
 for line in neighbour_file:
     count_n += 1
-    #if istest == "yes":
-    #    if count_n < 1000:
-    #        print("Neighbour dictionary: count", str(count_n), " out of ",
-    #              str(row_count_neighbour))
-    #        fields = line.split("\t")
-    #        word = fields[0]
-    #        year = int(fields[1])
-    #        neighbours = fields[2:102]
-    #        neighbour_words[(word, year)] = neighbours
-    #        print("neighbour_words of word year:", word, str(year), str(neighbours))
-    #else:
-    print("Neighbour dictionary: count", str(count_n), " out of ",
-          str(row_count_neighbour))
-    fields = line.split("\t")
-    word = fields[0]
-    year = int(fields[1])
-    neighbours = fields[2:102]
-    neighbour_words[(word, year)] = neighbours
+    if istest == "yes":
+        if count_n < 1000:
+            #print("Neighbour dictionary: count", str(count_n), " out of ",
+            #      str(row_count_neighbour))
+            fields = line.split("\t")
+            word = fields[0]
+            year = int(fields[1])
+            neighbours = fields[2:102]
+            neighbour_words[(word, year)] = neighbours
+            #print("neighbour_words of word year:", word, str(year), str(neighbours))
+    else:
+        print("Neighbour dictionary: count", str(count_n), " out of ",
+              str(row_count_neighbour))
+        fields = line.split("\t")
+        word = fields[0]
+        year = int(fields[1])
+        neighbours = fields[2:102]
+        neighbour_words[(word, year)] = neighbours
 
 neighbour_file.close()
 
@@ -120,7 +124,7 @@ for row in dict_reader:  # , max_col=5, max_row=max_number+1):
     if count > 1:
         if istest == "yes":
             if count < 1000:
-                print("Corpus dictionary: count", str(count), " out of ", str(row_count))
+                #print("Corpus dictionary: count", str(count), " out of ", str(row_count))
                 word = row[0]
                 freq = int(row[1])
                 if freq > freq_threshold:
@@ -155,7 +159,7 @@ for row in oed_quotations_reader:  # , max_col=5, max_row=max_number+1):
     if count > 1:
         if istest == "yes":
             if count < 1000:
-                print("OED quotations: count", str(count), " out of ", str(row_count))
+                #print("OED quotations: count", str(count), " out of ", str(row_count))
                 # word = row[0]
                 # lemma = row[1]
                 oed_quotid = row[0]
@@ -293,6 +297,8 @@ oed_senses_file.close()
 # Function that compares a list of change points from the corpus with a list of years from OED:
 
 def compare_years(year_window_par, changepoints_list, oedyears_list):
+
+    print("----- Compare years.....")
     is_correct_var = 0
     correct_changepoints_list = list()  # list of changepoints for which there is at least a matching OED year
     # (there could be repetitions)
@@ -306,29 +312,53 @@ def compare_years(year_window_par, changepoints_list, oedyears_list):
             # or int(changepoint) == int(oedyear) + 1:
             if year_window_par == "greater":
                 if int(ch) >= int(oedyear) >= 1995:
-                    print("\t\t\tCorrect changepoint (greater) for ", l, ": ", str(ch), str(oedyear))
+                    print("\t\t\tCorrect changepoint (greater)", ": ", str(ch), str(oedyear))
                     is_correct_var = 1
                     correct_changepoints_list.append(ch)
                     matching_oedyears_list.append(oedyear)
             else:
-                if not (not (int(oedyear) - int(year_window_par) <= int(ch) <= int(oedyear) + int(
-                        year_window_par)) or not (int(oedyear) >= 1995)):
-                    print("\t\t\tCorrect changepoint (window) for ", l, ": ", str(ch), str(oedyear))
+                if ((int(oedyear) - int(year_window_par) <= int(ch) <= int(oedyear) + int(
+                        year_window_par)) and (int(oedyear) >= 1995)):
+                    print("\t\t\tCorrect changepoint (window)", ": ", str(ch), str(oedyear))
                     is_correct_var = 1
                     correct_changepoints_list.append(ch)
                     matching_oedyears_list.append(oedyear)
 
     return [is_correct_var, correct_changepoints_list, matching_oedyears_list]
 
+# Function to calculate the Jaccard index betweent two sets
+# (from https://stackoverflow.com/questions/49255121/jaccard-index-python):
+
+def jaccard_index(first_set, second_set):
+    """ Computes jaccard index of two sets
+        Arguments:
+          first_set(set):
+          second_set(set):
+        Returns:
+          index(float): Jaccard index between two sets; it is
+            between 0.0 and 1.0
+    """
+    # If both sets are empty, jaccard index is defined to be 1
+    index = 1.0
+    if first_set or second_set:
+        index = (float(len(first_set.intersection(second_set)))
+                 / len(first_set.union(second_set)))
+
+    return index
 
 # Function that calculates the overlap between corpus neighbours and OED definition+quotation for a given matching year:
 
 def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_oedyear):
+
+    print("-------Calculate overlap....")
+    changepoint_year = int(changepoint_year)
     # and preprocessed OED definition+quotation words at matching year
-    year2jaccard_dict = dict()  # maps a year >= 1995 with the Jaccard similarity score between corpus neighbours of l at
-    # changeppoint_year and preprocessed OED definition+quotation words in that year
+    year2jaccard_dict = dict()  # maps a year >= 1995 to the Jaccard similarity score between corpus neighbours of
+    # l at changeppoint_year and preprocessed OED definition+quotation words in that year
+    year2overlap_dict = dict()  # maps a year >= 1995 to the list of words overlapping between corpus neighbours
+    # of l at changepoint_year and pre-processed OED definition+quotation words in that year
     year2jaccard_ranked_dict = dict()  # year2jaccard, ranked by decreasing value
-    #max_overlap = 0  # maximum among number of words shared between corpus neighbours of l at changeppoint_year
+    # max_overlap = 0  # maximum among number of words shared between corpus neighbours of l at changeppoint_year
     # and preprocessed OED definition+quotation words in any year >= 1995
     rank_var = 0  # rank of the candidate's neighbours in the list of OED content ordered by decreasing Jaccard
     # similarity
@@ -356,7 +386,7 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
     else:
         oed_senseids = oed_lemma2year2senseid[candidate, matching_oedyear]
 
-    print("oed_senseids: ", str(oed_senseids))
+    #print("oed_senseids: ", str(oed_senseids))
 
     oed_years_candidate = list()  # list of years associated to candidate in OED
     if lemmatization_par == "yes":
@@ -367,20 +397,20 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
     print("oed years candidate:", oed_years_candidate)
 
     for oedy in oed_years_candidate:
-        print("OED year:", str(oedy))
+        print("\tOED year:", str(oedy))
         oed_words_list = list()
         for oed_sid in oed_senseids:
 
-            print("OED id:", oed_sid)
+            #print("OED id:", oed_sid)
             oed_def = oed_senseid2def[oed_sid]
             oed_definition_words = word_tokenize(oed_def)
-            print("OED def:", oed_def, str(oed_definition_words))
+            #print("OED def:", oed_def, str(oed_definition_words))
 
             for w in oed_definition_words:
                 w = w.lower()
                 if w not in stop_words:
                     oed_words_list.append(w)
-                    if oedy in matching_oedyears:
+                    if oedy == matching_oedyear:
                         oed_content_words_matching_year.append(w)
 
             # retrieve quotations of this sense id in OED:
@@ -396,28 +426,55 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
                             if w not in stop_words:
                                 oed_words_list.append(w)
 
-                            if oedy in matching_oedyears:
+                            if oedy == matching_oedyear:
                                 oed_content_words_matching_year.append(w)
 
         oed_content_words_all_years[oedy] = list(set(oed_words_list))
 
     oed_content_words_matching_year = list(set(oed_content_words_matching_year))
-    print("oed_content_words_matching_year:", str(oed_content_words_matching_year))
+    #print("oed_content_words_matching_year:", str(oed_content_words_matching_year))
     print("oed_content_words_all_years:", oed_content_words_all_years)
 
     # Calculate the Jaccard similarity between the corpus neighbours of the candidate and the OED definition+quotation
     # words for each year, and rank them in descending order:
 
-    if (lemm, changepoint_year) in neighbour_words:
+    #print("neighbour_words:", str(neighbour_words))
+    #print("keys:", neighbour_words.keys())
+    #print(str(type(changepoint_year)))
+    # if any(k[0] == lemm for k in neighbour_words):
+    #     kk = [k for k in neighbour_words if k[0] == lemm]
+    #     print("yes!!")
+    #     print(str(kk))
+    #     print(str(kk[0][1]))
+    #     print(str(type(kk[0][1])))
+    #     if str(kk[0][1]) == str(changepoint_year):
+    #         print("same as ", str(changepoint_year))
+    #     print(str(kk[1][1]))
+    #     print(str(type(kk[1][1])))
+    #     if str(kk[1][1]) == str(changepoint_year):
+    #         print("same as ", str(changepoint_year))
+    #
+    #     if any(x[1] == changepoint_year for x in kk):
+    #         print("yes year")
+    #         kkk = [x[1] == changepoint_year for x in kk]
+    #         print(str(kkk))
+
+    if (lemm, changepoint_year) in neighbour_words.keys():
         neighbour_ws = neighbour_words[(lemm, changepoint_year)]
 
         neighbour_ws = list(set(neighbour_ws))
-        print("neighbour words:", neighbour_ws)
+        #print("neighbour words for ", lemm, ": ", neighbour_ws)
 
         for oedy in oed_years_candidate:
-
-            year2jaccard_dict[oedy] = jaccard_similarity_score(neighbour_ws,oed_content_words_all_years[oedy])
-            print("oed year, jaccard:", str(oedy), str(year2jaccard_dict[oedy]))
+            #print("oedy:", str(oedy))
+            #print("oed_content_words_all_years[oedy]:", str(oed_content_words_all_years[oedy]))
+            #print("this was a ", str(type(oed_content_words_all_years[oedy])))
+            #print("neighbour words for ", lemm, ": ", neighbour_ws)
+            #print("this was a ", str(type(neighbour_ws)))
+            #year2jaccard_dict[oedy] = jaccard_similarity_score(neighbour_ws, oed_content_words_all_years[oedy])
+            year2jaccard_dict[oedy] = jaccard_index(set(neighbour_ws), set(oed_content_words_all_years[oedy]))
+            year2overlap_dict[oedy] = set(neighbour_ws).intersection(set(oed_content_words_all_years[oedy]))
+            #print("oed year, jaccard:", str(oedy), str(year2jaccard_dict[oedy]))
 
         year2jaccard_ranked_dict = sorted(year2jaccard_dict.items(), key=lambda kv: kv[1], reverse=True)
         print("year2jaccard_ranked_dict:", str(year2jaccard_ranked_dict))
@@ -434,14 +491,14 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
 
     # return outputs:
 
-    return [rank_var, year2jaccard_ranked_dict]
+    return [rank_var, year2jaccard_ranked_dict, year2overlap_dict]
 
 
 # -----------------------------------------
 # Write to output
 # -----------------------------------------
 
-with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as output_all_file:
+with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_all_name), "w") as output_all_file:
     writer_all_output = csv.writer(output_all_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
                                    lineterminator='\n')
     writer_all_output.writerow(['method', 'changepoint detection', 'significance', 'year_window', 'lemmatization',
@@ -451,28 +508,24 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
     for lemmatization in lemmatization_values:
 
         for changepoint_detection in changepoint_detection_values:
-            if changepoint_detection.startswith("valley_var"):
-                pvalue_values = ["0"]
-            else:
-                pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
+            pvalue_values = ["090", "095"]
+            #if changepoint_detection.startswith("valley_var"):
+            #    pvalue_values = ["0"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 
             for method in method_values:
 
-                if method == "occ":
-                    pvalue_values = ['0']
+                if changepoint_detection.startswith("valley_var"):
+                    pvalue_values = ["0"]
+                else:
+                    pvalue_values = ["090", "095"]
 
                 for pvalue in pvalue_values:
 
                     for year_window in year_window_values:
 
-                        candidate_words_file_name = method + "_words_freq_" + str(freq_filter) + \
+                        candidate_words_file_name = method + "_words_for_lookup_freq_" + str(freq_filter) + \
                                                     "pvalue-" + str(pvalue) + "changepoint-detection_" + \
                                                     changepoint_detection + ".txt"
-
-                        #if changepoint_detection.startswith("valley_var"):
-                        #    candidate_words_file_name = method + "_words_freq_" + str(freq_filter) + \
-                        #                                "changepoint-detection_" + changepoint_detection + ".txt"
-                        # oed_words_file_name = method + "_" + pvalue + "_words_for_lookup_freq_" + str(freq_filter) + "_oed.tsv"
 
                         # Output files: candidate words for semantic change detection, checked against OED API:
 
@@ -485,23 +538,23 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
                                                 "_oed_evaluation_summary.txt"
                         file_out_neigh_name = method + '_words_freq-' + str(freq_filter) + "pvalue-" + str(
                             pvalue) + "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
-                                        "changepoint-detection_" + changepoint_detection + "_oed_neighbour_evaluation.tsv"
+                                              "changepoint-detection_" + changepoint_detection + "_oed_neighbour_evaluation.tsv"
 
-                        neigh_output_file = open(os.path.join(dir_out, str(today_date), file_out_neigh_name), "w")
+                        neigh_output_file = open(os.path.join(dir_out, str(today_date), "neighbours", file_out_neigh_name), "w")
 
                         if lemmatization == "yes":
                             writer_neigh_output = csv.writer(neigh_output_file, delimiter='\t', quotechar='|',
-                                                       quoting=csv.QUOTE_MINIMAL,
-                                                       lineterminator='\n')
+                                                             quoting=csv.QUOTE_MINIMAL,
+                                                             lineterminator='\n')
                             writer_neigh_output.writerow(
-                                ['candidate', 'pos', 'changepoint', 'oed_year', 'jaccard_similarity', 'rank'])
+                                ['candidate', 'pos', 'changepoint', 'oed_year', 'jaccard_similarity', 'rank', 'overlap'])
 
                         else:
                             writer_neigh_output = csv.writer(neigh_output_file, delimiter='\t', quotechar='|',
-                                                       quoting=csv.QUOTE_MINIMAL,
-                                                       lineterminator='\n')
+                                                             quoting=csv.QUOTE_MINIMAL,
+                                                             lineterminator='\n')
                             writer_neigh_output.writerow(
-                                ['candidate', 'changepoint', 'oed_year', 'jaccard_similarity', 'rank'])
+                                ['candidate', 'changepoint', 'oed_year', 'jaccard_similarity', 'rank', 'overlap'])
 
                         # --------------------------------------------------------------
                         # Read word lists from different sources:
@@ -510,6 +563,7 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
 
                         # Read corpus changepoints for candidate words:
 
+                        print("Reading candidates from ", str(os.path.join(dir_out, candidate_words_file_name)))
                         candidate_words_file = open(os.path.join(dir_out, candidate_words_file_name), 'r')
 
                         candidate_words_reader = csv.reader(candidate_words_file, delimiter='\t')  # , quotechar='|')
@@ -527,8 +581,8 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
 
                         for row in candidate_words_reader:  # , max_col=5, max_row=max_number+1):
                             count += 1
-                            if count > 1:
-                                print("Corpus frequencies: count", str(count), " out of ", str(row_count))
+                            if istest == "yes":
+                                #print("Corpus frequencies: count", str(count), " out of ", str(row_count))
                                 word = row[0]
                                 pos = row[1]
                                 lemma = row[2]
@@ -536,11 +590,26 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
                                 frequency = row[3]
                                 changepoints = row[4]
 
-                                if lemmatization == "yes":
-                                    candidate2changepoints[lemmapos] = changepoints.split("_")
-                                else:
+                                if lemmatization == "yes" and lemmapos.startswith(testword):
+                                        candidate2changepoints[lemmapos] = changepoints.split("_")
+                                elif lemma == testword:
                                     candidate2changepoints[lemma] = changepoints.split("_")
                                     # candidate2changepoints[lemma] = changepoints.split("_")
+                            else:
+                                if count > 1:
+                                    print("Corpus frequencies: count", str(count), " out of ", str(row_count))
+                                    word = row[0]
+                                    pos = row[1]
+                                    lemma = row[2]
+                                    lemmapos = lemma + "_" + pos
+                                    frequency = row[3]
+                                    changepoints = row[4]
+
+                                    if lemmatization == "yes":
+                                        candidate2changepoints[lemmapos] = changepoints.split("_")
+                                    else:
+                                        candidate2changepoints[lemma] = changepoints.split("_")
+                                        # candidate2changepoints[lemma] = changepoints.split("_")
 
                         candidate_words_file.close()
 
@@ -582,21 +651,43 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
 
                                         # calculate overlap between corpus neighbours and OED definition+quotation:
 
-                                        for changepoint in correct_changepoints:
-                                            for matching_oedyear in matching_oedyears:
-                                                [rank, year2jaccard_ranked] = \
-                                                    calculate_overlap(lemmatization, l, changepoint, matching_oedyear)
+                                        if istest == "yes":
+                                            #changepoint = testyear
+                                            for changepoint in correct_changepoints:
+                                                for matching_oedyear in matching_oedyears:
+                                                    [rank, year2jaccard_ranked, year2overlap] = \
+                                                        calculate_overlap(lemmatization, l, changepoint,
+                                                                          matching_oedyear)
 
-                                                for k in year2jaccard_ranked:
-                                                    oedy = k[0]  # the OED year
-                                                    jacc = k[1]  # Jaccard similarity between oedy and candidate's neighbours
+                                                    for k in year2jaccard_ranked:
+                                                        oedy = k[0]  # the OED year
+                                                        jacc = k[1]  # Jaccard similarity between oedy and candidate's neighbours
 
-                                                    # write to neighbour output file:
-                                                    print("Output neighbours:", candidate_lemma, candidate_pos,
-                                                                                  str(changepoint),
-                                                          str(matching_oedyear), str(oedy), str(jacc), str(rank))
-                                                    writer_neigh_output.writerow([candidate_lemma, candidate_pos,
-                                                                                  changepoint, matching_oedyear, oedy, jacc, rank])
+                                                        # write to neighbour output file:
+                                                        print("Output neighbours:", candidate_lemma, candidate_pos,
+                                                              str(changepoint),
+                                                              str(matching_oedyear), str(oedy), str(jacc), str(rank))
+                                                        writer_neigh_output.writerow([candidate_lemma, candidate_pos,
+                                                                                      changepoint, matching_oedyear,
+                                                                                      oedy, jacc, rank, str(year2overlap[oedy])])
+                                        else:
+                                            for changepoint in correct_changepoints:
+                                                for matching_oedyear in matching_oedyears:
+                                                    print("\tMatching oedyear:", str(matching_oedyear))
+                                                    print("\tCalculating overlap for ", l)
+                                                    [rank, year2jaccard_ranked, year2overlap] = \
+                                                         calculate_overlap(lemmatization, l, changepoint, matching_oedyear)
+
+                                                    for k in year2jaccard_ranked:
+                                                        oedy = k[0]  # the OED year
+                                                        jacc = k[1]  # Jaccard similarity between oedy and candidate's neighbours
+
+                                                        # write to neighbour output file:
+                                                        print("Output neighbours:", candidate_lemma, candidate_pos,
+                                                                                        str(changepoint),
+                                                                str(matching_oedyear), str(oedy), str(jacc), str(rank))
+                                                        writer_neigh_output.writerow([candidate_lemma, candidate_pos,
+                                                                                        changepoint, matching_oedyear, oedy, jacc, rank, str(year2overlap[oedy])])
 
                             else:
 
@@ -616,21 +707,22 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
                                         # calculate overlap between corpus neighbours and OED definition+quotation:
 
                                         for changepoint in changepoints:
+                                            print("Changepoint:", str(changepoint))
                                             for matching_oedyear in matching_oedyears:
-                                                [rank, year2jaccard_ranked] = \
+                                                print("\tMatching oedyear:", str(matching_oedyear))
+                                                print("\tCalculating overlap for ", l)
+                                                [rank, year2jaccard_ranked, year2overlap] = \
                                                     calculate_overlap(lemmatization, l, changepoint, matching_oedyear)
 
                                                 for k in year2jaccard_ranked:
+                                                    print("\t\tRank ", str(k))
                                                     oedy = k[0]  # the OED year
                                                     jacc = k[1]  # Jaccard similarity between oedy and candidate's neighbours
 
                                                     # write to neighbour output file:
                                                     print("Output neighbours:", l, str(changepoint),
-                                                          str(matching_oedyear), str(oedy), str(jacc), str(rank))
-                                                    writer_neigh_output.writerow([l, changepoint, matching_oedyear, oedy, jacc, rank])
-
-
-                        neighbour_file.close()
+                                                            str(matching_oedyear), str(oedy), str(jacc), str(rank))
+                                                    writer_neigh_output.writerow([l, changepoint, matching_oedyear, oedy, jacc, rank, str(year2overlap[oedy])])
 
                         # Correct candidates:
 
@@ -661,40 +753,39 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
 
                         # List of correct candidates, and their years:
 
-                        output_file = open(os.path.join(dir_out, str(today_date), file_out_name), "w")
+                        with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_name), "w") as output_file:
 
-                        if lemmatization == "yes":
-                            writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
-                                                       quoting=csv.QUOTE_MINIMAL,
-                                                       lineterminator='\n')
-                            writer_output.writerow(
-                                ['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
-
-                            for c in correct_candidates:
-                                lemma = c.split("_")[0]
-                                pos = c.split("_")[1]
+                            if lemmatization == "yes":
+                                writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
+                                                           quoting=csv.QUOTE_MINIMAL,
+                                                           lineterminator='\n')
                                 writer_output.writerow(
-                                    [lemma, pos, candidate2changepoints[c], oed_lemmapos2years[c]])
-                                print("Output:", lemma, pos, str(candidate2changepoints[c]), str(oed_lemmapos2years[c]))
+                                    ['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
 
-                        else:
-                            writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
-                                                       quoting=csv.QUOTE_MINIMAL,
-                                                       lineterminator='\n')
-                            writer_output.writerow(['correct_lemma', 'changepoints', 'oed_years'])
-
-                            for c in correct_candidates:
-                                lemma = c
-                                if c in candidate2changepoints and c in oed_lemmapos2years:
+                                for c in correct_candidates:
+                                    lemma = c.split("_")[0]
+                                    pos = c.split("_")[1]
                                     writer_output.writerow(
-                                        [lemma, candidate2changepoints[c], oed_lemmapos2years[c]])
-                                    print("Output:", lemma, str(candidate2changepoints[c]), str(oed_lemmapos2years[c]))
+                                        [lemma, pos, candidate2changepoints[c], oed_lemmapos2years[c]])
+                                    print("Output:", lemma, pos, str(candidate2changepoints[c]),
+                                          str(oed_lemmapos2years[c]))
 
-                        output_file.close()
+                            else:
+                                writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
+                                                           quoting=csv.QUOTE_MINIMAL,
+                                                           lineterminator='\n')
+                                writer_output.writerow(['correct_lemma', 'changepoints', 'oed_years'])
+
+                                for c in correct_candidates:
+                                    lemma = c
+                                    if c in candidate2changepoints and c in oed_lemma2years:
+                                        writer_output.writerow(
+                                            [lemma, candidate2changepoints[c], oed_lemma2years[c]])
+                                        print("Output:", lemma, str(candidate2changepoints[c]), str(oed_lemma2years[c]))
 
                         # Evaluation statistics:
 
-                        output_file_summmary = open(os.path.join(dir_out, str(today_date), file_out_name_summary), "w")
+                        output_file_summmary = open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_name_summary), "w")
                         output_file_summmary.write(
                             "Total number of correct candidates:" + str(len(correct_candidates)) + "\n")
                         output_file_summmary.write("Total number of candidates:" + str(len(candidates)) + "\n")
@@ -708,11 +799,8 @@ with open(os.path.join(dir_out, str(today_date), file_out_all_name), "w") as out
                             [method, changepoint_detection, pvalue, year_window, lemmatization,
                              str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)), P, R,
                              F])
+                        print(method, changepoint_detection, pvalue, str(year_window), lemmatization,
+                              str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)),
+                              str(P), str(R), str(F))
 
-# ---------------------------------------------------------------------
-# Compare OED vector for candidate words with their corpus neighbours
-# ---------------------------------------------------------------------
-
-
-# r = requests.get('https://github.com/timeline.json')
-# r.json()
+                        output_file_summmary.close()
