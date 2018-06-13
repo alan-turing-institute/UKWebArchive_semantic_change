@@ -44,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="663">
-              <caret line="432" column="47" lean-forward="false" selection-start-line="432" selection-start-column="47" selection-end-line="432" selection-end-column="47" />
+              <caret line="432" column="69" lean-forward="false" selection-start-line="432" selection-start-column="69" selection-end-line="432" selection-end-column="69" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
                 <element signature="e#8635#11854#0" expanded="false" />
@@ -718,7 +718,7 @@
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
-          <caret line="432" column="47" lean-forward="false" selection-start-line="432" selection-start-column="47" selection-end-line="432" selection-end-column="47" />
+          <caret line="432" column="69" lean-forward="false" selection-start-line="432" selection-start-column="69" selection-end-line="432" selection-end-column="69" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
             <element signature="e#8635#11854#0" expanded="false" />
