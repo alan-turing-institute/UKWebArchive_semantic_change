@@ -430,6 +430,7 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
                                 oed_content_words_matching_year.append(w)
 
         oed_content_words_all_years[oedy] = list(set(oed_words_list))
+        oed_content_words_all_years.remove(lemm)
 
     oed_content_words_matching_year = list(set(oed_content_words_matching_year))
     #print("oed_content_words_matching_year:", str(oed_content_words_matching_year))
@@ -463,6 +464,7 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
         neighbour_ws = neighbour_words[(lemm, changepoint_year)]
 
         neighbour_ws = list(set(neighbour_ws))
+        neighbour_ws.remove(lemm)
         #print("neighbour words for ", lemm, ": ", neighbour_ws)
 
         for oedy in oed_years_candidate:
