@@ -43,8 +43,8 @@
       <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="766" column="53" lean-forward="false" selection-start-line="766" selection-start-column="53" selection-end-line="766" selection-end-column="53" />
+            <state relative-caret-position="789">
+              <caret line="841" column="0" lean-forward="true" selection-start-line="841" selection-start-column="0" selection-end-line="841" selection-end-column="0" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
                 <element signature="e#8795#12014#0" expanded="false" />
@@ -64,7 +64,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dir_out</find>
       <find>look</find>
       <find>oed_senses_file</find>
       <find>looku</find>
@@ -93,6 +92,7 @@
       <find>year2jaccard_ranked</find>
       <find>writer_neigh_output</find>
       <find>remove</find>
+      <find>file_out_name_summary</find>
       <find>writer_all_output</find>
     </findStrings>
     <replaceStrings>
@@ -717,8 +717,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="766" column="53" lean-forward="false" selection-start-line="766" selection-start-column="53" selection-end-line="766" selection-end-column="53" />
+        <state relative-caret-position="789">
+          <caret line="841" column="0" lean-forward="true" selection-start-line="841" selection-start-column="0" selection-end-line="841" selection-end-column="0" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
             <element signature="e#8795#12014#0" expanded="false" />

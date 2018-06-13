@@ -542,6 +542,10 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
                                                 "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
                                                 "changepoint-detection_" + changepoint_detection + \
                                                 "_oed_evaluation_summary.txt"
+                        file_out_name_summary_neigh = method + "_words_freq-" + str(freq_filter) + "pvalue-" + str(pvalue) + \
+                                                "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
+                                                "changepoint-detection_" + changepoint_detection + \
+                                                "_neighbours_summary.txt"
                         file_out_neigh_name = method + '_words_freq-' + str(freq_filter) + "pvalue-" + str(
                             pvalue) + "_yearwindow-" + str(year_window) + "lemmatization-" + lemmatization + \
                                               "changepoint-detection_" + changepoint_detection + "_oed_neighbour_evaluation.tsv"
@@ -765,6 +769,10 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
                         if len(ranks)>0:
                             av_rank = statistics.mean(ranks)
                         print("Mean of ranks:", str(av_rank))
+                        med_rank = "NA"
+                        if len(ranks) > 0:
+                            med_rank = statistics.median(ranks)
+                        print("Median of ranks:", str(med_rank))
 
                         # -----------------------------
                         # Print to output files:
@@ -814,6 +822,16 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
                         output_file_summmary.write("Recall:" + str(R))
                         output_file_summmary.close()
 
+                        # Neighbour statistics:
+                        output_file_summmary_neigh = open(
+                            os.path.join(dir_out, str(today_date), "neighbours", file_out_name_summary_neigh), "w")
+                        output_file_summmary_neigh.write(
+                            "Total number of ranks:" + str(len(ranks)) + "\n")
+                        output_file_summmary_neigh.write("Average rank:" + str(av_rank) + "\n")
+                        output_file_summmary_neigh.write(
+                            "Median rank:" + str(med_rank) + "\n")
+                        output_file_summmary_neigh.close()
+
                         writer_all_output.writerow(
                             [method, changepoint_detection, pvalue, year_window, lemmatization,
                              str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)), P, R,
@@ -822,4 +840,3 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
                               str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)),
                               str(P), str(R), str(F), str(av_rank))
 
-                        output_file_summmary.close()
