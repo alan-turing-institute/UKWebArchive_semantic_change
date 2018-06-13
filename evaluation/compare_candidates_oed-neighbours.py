@@ -21,7 +21,7 @@ import csv
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 import datetime
-from sklearn.metrics import jaccard_similarity_score
+import statistics
 
 now = datetime.datetime.now()
 today_date = str(now)[:10]
@@ -54,6 +54,8 @@ if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_
     os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "neighbours"))
 if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall")):
     os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall"))
+if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "overview")):
+    os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "overview"))
 
 # Input files:
 oed_senses_file_name = "oed.sense"
@@ -502,12 +504,12 @@ def calculate_overlap(lemmatization_par, candidate, changepoint_year, matching_o
 # Write to output
 # -----------------------------------------
 
-with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_all_name), "w") as output_all_file:
+with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name), "w") as output_all_file:
     writer_all_output = csv.writer(output_all_file, delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL,
                                    lineterminator='\n')
     writer_all_output.writerow(['method', 'changepoint detection', 'significance', 'year_window', 'lemmatization',
                                 'num correct', 'num candidates', 'num gold standard', 'Precision', 'Recall',
-                                'F1-score'])
+                                'F1-score', 'average_rank'])
 
     for lemmatization in lemmatization_values:
 
@@ -626,6 +628,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                         correct_candidates = list()
                         candidates = list()
                         correct = 0
+                        ranks = list()  # lists all ranks of candidates in OED senses
 
                         # correct_changepoints2overlap = dict() # maps a correct candidate and its correct changepoint to
                         # the number of overlapping words between its neighbours and the OED definition+quotation of
@@ -662,6 +665,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                     [rank, year2jaccard_ranked, year2overlap] = \
                                                         calculate_overlap(lemmatization, l, changepoint,
                                                                           matching_oedyear)
+                                                    ranks.append(rank)
 
                                                     for k in year2jaccard_ranked:
                                                         oedy = k[0]  # the OED year
@@ -673,7 +677,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                               str(matching_oedyear), str(oedy), str(jacc), str(rank))
                                                         writer_neigh_output.writerow([candidate_lemma, candidate_pos,
                                                                                       changepoint, matching_oedyear,
-                                                                                      oedy, jacc, rank, str(year2overlap[oedy])])
+                                                                                      oedy, jacc, rank, '-'.join(year2overlap[oedy])])
                                         else:
                                             for changepoint in correct_changepoints:
                                                 for matching_oedyear in matching_oedyears:
@@ -681,6 +685,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                     print("\tCalculating overlap for ", l)
                                                     [rank, year2jaccard_ranked, year2overlap] = \
                                                          calculate_overlap(lemmatization, l, changepoint, matching_oedyear)
+                                                    ranks.append(rank)
 
                                                     for k in year2jaccard_ranked:
                                                         oedy = k[0]  # the OED year
@@ -691,7 +696,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                                                         str(changepoint),
                                                                 str(matching_oedyear), str(oedy), str(jacc), str(rank))
                                                         writer_neigh_output.writerow([candidate_lemma, candidate_pos,
-                                                                                        changepoint, matching_oedyear, oedy, jacc, rank, str(year2overlap[oedy])])
+                                                                                        changepoint, matching_oedyear, oedy, jacc, rank, '-'.join(year2overlap[oedy])])
 
                             else:
 
@@ -717,6 +722,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                 print("\tCalculating overlap for ", l)
                                                 [rank, year2jaccard_ranked, year2overlap] = \
                                                     calculate_overlap(lemmatization, l, changepoint, matching_oedyear)
+                                                ranks.append(rank)
 
                                                 for k in year2jaccard_ranked:
                                                     print("\t\tRank ", str(k))
@@ -726,7 +732,7 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                                                     # write to neighbour output file:
                                                     print("Output neighbours:", l, str(changepoint),
                                                             str(matching_oedyear), str(oedy), str(jacc), str(rank))
-                                                    writer_neigh_output.writerow([l, changepoint, matching_oedyear, oedy, jacc, rank, str(year2overlap[oedy])])
+                                                    writer_neigh_output.writerow([l, changepoint, matching_oedyear, oedy, jacc, rank, '-'.join(year2overlap[oedy])])
 
                         # Correct candidates:
 
@@ -750,6 +756,15 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                             F = 2 * P * R / float(P + R)
                         else:
                             F = 0
+
+                        # -------------------------------------
+                        # Calculate average rank of candidates
+                        # -------------------------------------
+
+                        av_rank = "NA"
+                        if len(ranks)>0:
+                            av_rank = statistics.mean(ranks)
+                        print("Mean of ranks:", str(av_rank))
 
                         # -----------------------------
                         # Print to output files:
@@ -802,9 +817,9 @@ with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_al
                         writer_all_output.writerow(
                             [method, changepoint_detection, pvalue, year_window, lemmatization,
                              str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)), P, R,
-                             F])
+                             F, av_rank])
                         print(method, changepoint_detection, pvalue, str(year_window), lemmatization,
                               str(len(correct_candidates)), str(len(candidates)), str(len(gold_standard_lemmapos)),
-                              str(P), str(R), str(F))
+                              str(P), str(R), str(F), str(av_rank))
 
                         output_file_summmary.close()

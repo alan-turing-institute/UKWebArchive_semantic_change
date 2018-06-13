@@ -43,11 +43,11 @@
       <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="468" column="4" lean-forward="false" selection-start-line="468" selection-start-column="4" selection-end-line="468" selection-end-column="4" />
+            <state relative-caret-position="353">
+              <caret line="766" column="53" lean-forward="false" selection-start-line="766" selection-start-column="53" selection-end-line="766" selection-end-column="53" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
-                <element signature="e#8635#11854#0" expanded="false" />
+                <element signature="e#8795#12014#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -72,7 +72,6 @@
       <find>pvalues</find>
       <find>file_out_name</find>
       <find>tsv</find>
-      <find>writer_all_output</find>
       <find>neighbour_file</find>
       <find>correc</find>
       <find>candidates</find>
@@ -94,6 +93,7 @@
       <find>year2jaccard_ranked</find>
       <find>writer_neigh_output</find>
       <find>remove</find>
+      <find>writer_all_output</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -717,11 +717,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="468" column="4" lean-forward="false" selection-start-line="468" selection-start-column="4" selection-end-line="468" selection-end-column="4" />
+        <state relative-caret-position="353">
+          <caret line="766" column="53" lean-forward="false" selection-start-line="766" selection-start-column="53" selection-end-line="766" selection-end-column="53" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#8635#11854#0" expanded="false" />
+            <element signature="e#8795#12014#0" expanded="false" />
           </folding>
         </state>
       </provider>
