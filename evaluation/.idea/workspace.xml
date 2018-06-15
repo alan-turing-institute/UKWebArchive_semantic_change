@@ -27,7 +27,7 @@
       <file leaf-file-name="compare_candidates_oed.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3836">
+            <state relative-caret-position="3587">
               <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
@@ -43,11 +43,12 @@
       <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2336">
-              <caret line="798" column="26" lean-forward="true" selection-start-line="798" selection-start-column="26" selection-end-line="798" selection-end-column="26" />
+            <state relative-caret-position="-11153">
+              <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
-                <element signature="e#8848#12067#0" expanded="false" />
+                <element signature="e#8832#12051#0" expanded="false" />
+                <element signature="e#31081#35944#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -64,13 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>look</find>
-      <find>oed_senses_file</find>
-      <find>looku</find>
-      <find>compare_years</find>
-      <find>pvalues</find>
-      <find>file_out_name</find>
-      <find>tsv</find>
       <find>neighbour_file</find>
       <find>correc</find>
       <find>candidates</find>
@@ -83,17 +77,24 @@
       <find>neighbour_words</find>
       <find>oed_years_candidate</find>
       <find>words:</find>
-      <find>neighbour_words</find>
-      <find>all_years</find>
-      <find>calculate_overlap</find>
       <find>&quot;Changepoint:</find>
       <find>testyea</find>
       <find>testw</find>
       <find>year2jaccard_ranked</find>
-      <find>writer_neigh_output</find>
       <find>remove</find>
       <find>file_out_name_summary</find>
+      <find>with</find>
+      <find>output_all_file</find>
       <find>writer_all_output</find>
+      <find>ranks</find>
+      <find>jaccard</find>
+      <find>calculate_overlap</find>
+      <find>ranks</find>
+      <find>av_rank</find>
+      <find>all_years</find>
+      <find>neigh_output_file</find>
+      <find>writer_neigh_output</find>
+      <find>changepoint_detection_values</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -113,10 +114,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1757" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="877" />
+    <option name="height" value="794" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -133,6 +133,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -148,7 +149,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -252,7 +252,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1757" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="794" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -699,7 +699,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3836">
+        <state relative-caret-position="3587">
           <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
@@ -713,11 +713,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2336">
-          <caret line="798" column="26" lean-forward="true" selection-start-line="798" selection-start-column="26" selection-end-line="798" selection-end-column="26" />
+        <state relative-caret-position="-11153">
+          <caret line="70" column="0" lean-forward="true" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#8848#12067#0" expanded="false" />
+            <element signature="e#8832#12051#0" expanded="false" />
+            <element signature="e#31081#35944#0" expanded="false" />
           </folding>
         </state>
       </provider>
