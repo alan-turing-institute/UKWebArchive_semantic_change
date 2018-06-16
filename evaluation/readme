@@ -1,30 +1,20 @@
 The evaluation scripts perform the evaluation of the Temporal Random Indexing (TR) algorithm on the UK Web Archive JISC dataset 1996-2013 against the Oxford English Dictionary API.
 
-A) Evaluation of TRI:
+Evaluation of TRI:
 
-A.1) create_word_lists.py *with parameter baseline="no"*: takes an input from TRI 
-(.../tri/year/v2/ukwac_s20_year_cum_CPD_001_label.csv and ukwac_s20_year_point_CPD_001_label.csv) and, 
+1) create_word_lists.py: takes an input from TRI 
+(.../tri/year/v2/….csv) and, 
 for every candidate word, selects it if it occurs in the list of 400,000 English terms .../tri/words_alpha.txt; 
 for every candidate word selected this way, it looks up its corpus frequency in dict.sample.all and filters it at 100.
 
-A.2) an algorithm queries OED API to get all words that changed meaning between 1996 and 2013 -->
+2) an algorithm queries OED API to get all words that changed meaning between 1996 and 2013 -->
  …/Evaluation/OED/oed.quotation and oed.sense 
 
-A.3) compare_candidates_oed.py *with parameter baseline="no"*: For every candidate word that occurs in the list from A.1), uses OED list to check if 
+3) an algorithm extracts the corpus neighbours for all candidates
+
+4) compare_candidates_oed-neighbours.py: For every candidate word that occurs in the list from A.1), uses OED list to check if 
 there is a quotation dated on the year of its change point or the year before or the year after; if so, that’s a true positive 
 --> Precision = # correct candidates in OED / # detected candidates; 
 Recall = # correct candidates in OED / semantically-changed words in OED
+It also calculates the overlap between the corpus neighbours of the candidates, and the words contained in the pre-processed OED definition+quotation text of the corresponding entry.
 
-B) Evaluation of baseline which declares any word and any year for which the time series from TRI  goes up to be a semantic
-change candidate:
-
-B.1) create_word_lists.py *with parameter baseline="yes"*: takes an input from the baseline 
-(.../tri/year/ukwac_s20_year_point_CPD_baseline.csv and ukwac_s20_year_cum_CPD_baseline.csv) and, for every candidate word, 
-selects it if it occurs in the list of 400,000 English terms .../tri/words_alpha.txt; 
-for every candidate word selected this way, it looks up its corpus frequency in dict.sample.all and filters it at 100.
-
-B.2) compare_candidates_oed.py *with parameter baseline="yes"*: For every candidate word that occurs in the list from B.1), 
-uses OED list to check if there is a quotation dated on the year of its change point or the year before or the year after; 
-if so, that’s a true positive 
---> Precision = # correct candidates in OED / # detected candidates; 
-Recall = # correct candidates in OED / semantically-changed words in OED

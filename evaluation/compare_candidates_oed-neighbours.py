@@ -30,7 +30,7 @@ stop_words = set(stopwords.words('english'))
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-method_values = ["occ", "point", "cum"]
+method_values = ["point", "occ", "cum"]
 pvalue_values = ["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
 changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4", "simple_valley", "mean_shift"]
@@ -829,35 +829,35 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
 
                         # List of correct candidates, and their years:
 
-                        # with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_name), "w") as output_file:
-                        #
-                        #     if lemmatization == "yes":
-                        #         writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
-                        #                                    quoting=csv.QUOTE_MINIMAL,
-                        #                                    lineterminator='\n')
-                        #         writer_output.writerow(
-                        #             ['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
-                        #
-                        #         for c in correct_candidates:
-                        #             lemma = c.split("_")[0]
-                        #             pos = c.split("_")[1]
-                        #             writer_output.writerow(
-                        #                 [lemma, pos, candidate2changepoints[c], oed_lemmapos2years[c]])
-                        #             print("Output:", lemma, pos, str(candidate2changepoints[c]),
-                        #                   str(oed_lemmapos2years[c]))
-                        #
-                        #     else:
-                        #         writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
-                        #                                    quoting=csv.QUOTE_MINIMAL,
-                        #                                    lineterminator='\n')
-                        #         writer_output.writerow(['correct_lemma', 'changepoints', 'oed_years'])
-                        #
-                        #         for c in correct_candidates:
-                        #             lemma = c
-                        #             if c in candidate2changepoints and c in oed_lemma2years:
-                        #                 writer_output.writerow(
-                        #                     [lemma, candidate2changepoints[c], oed_lemma2years[c]])
-                        #                 print("Output:", lemma, str(candidate2changepoints[c]), str(oed_lemma2years[c]))
+                        with open(os.path.join(dir_out, str(today_date), "precision-recall", file_out_name), "w") as output_file:
+
+                            if lemmatization == "yes":
+                                writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
+                                                           quoting=csv.QUOTE_MINIMAL,
+                                                           lineterminator='\n')
+                                writer_output.writerow(
+                                    ['correct_lemma', 'correct_pos', 'changepoints', 'oed_years'])
+
+                                for c in correct_candidates:
+                                    lemma = c.split("_")[0]
+                                    pos = c.split("_")[1]
+                                    writer_output.writerow(
+                                        [lemma, pos, candidate2changepoints[c], oed_lemmapos2years[c]])
+                                    print("Output:", lemma, pos, str(candidate2changepoints[c]),
+                                          str(oed_lemmapos2years[c]))
+
+                            else:
+                                writer_output = csv.writer(output_file, delimiter='\t', quotechar='|',
+                                                           quoting=csv.QUOTE_MINIMAL,
+                                                           lineterminator='\n')
+                                writer_output.writerow(['correct_lemma', 'changepoints', 'oed_years'])
+
+                                for c in correct_candidates:
+                                    lemma = c
+                                    if c in candidate2changepoints and c in oed_lemma2years:
+                                        writer_output.writerow(
+                                            [lemma, candidate2changepoints[c], oed_lemma2years[c]])
+                                        print("Output:", lemma, str(candidate2changepoints[c]), str(oed_lemma2years[c]))
 
                         # Evaluation statistics:
 
