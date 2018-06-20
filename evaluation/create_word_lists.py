@@ -111,7 +111,7 @@ for changepoint_detection in changepoint_detection_values:
     pvalue_values = ["090", "095"]
     if changepoint_detection.startswith("valley_var"):
         var = changepoint_detection.split("_")[2]
-        pvalue_values = ["0"]  
+        pvalue_values = ["0"]
     else:
         pvalue_values = ["090", "095"]
 

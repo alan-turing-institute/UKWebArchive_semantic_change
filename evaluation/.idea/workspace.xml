@@ -12,11 +12,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/create_word_lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="113" column="31" lean-forward="false" selection-start-line="113" selection-start-column="31" selection-end-line="113" selection-end-column="31" />
+            <state relative-caret-position="2091">
+              <caret line="128" column="12" lean-forward="false" selection-start-line="128" selection-start-column="12" selection-end-line="128" selection-end-column="12" />
               <folding>
                 <element signature="e#405#415#0" expanded="true" />
               </folding>
@@ -27,7 +27,7 @@
       <file leaf-file-name="compare_candidates_oed.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="637">
+            <state relative-caret-position="3587">
               <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
@@ -40,15 +40,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+            <state relative-caret-position="215">
+              <caret line="663" column="33" lean-forward="false" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
               <folding>
                 <element signature="e#505#514#0" expanded="true" />
-                <element signature="e#8832#12051#0" expanded="false" />
-                <element signature="e#31081#35944#0" expanded="false" />
+                <element signature="e#8867#12086#0" expanded="false" />
+                <element signature="e#31117#35980#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -65,7 +65,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>open</find>
       <find>&quot;w&quot;</find>
       <find>istest</find>
       <find>word</find>
@@ -95,6 +94,7 @@
       <find>output</find>
       <find>file_out_name</find>
       <find>baseline</find>
+      <find>[1</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -108,8 +108,8 @@
         <option value="$PROJECT_DIR$/compare_neighbours_oed.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed_0.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed.py" />
-        <option value="$PROJECT_DIR$/compare_candidates_oed-neighbours.py" />
         <option value="$PROJECT_DIR$/create_word_lists.py" />
+        <option value="$PROJECT_DIR$/compare_candidates_oed-neighbours.py" />
       </list>
     </option>
   </component>
@@ -133,8 +133,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -149,6 +147,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -689,7 +689,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="637">
+        <state relative-caret-position="3587">
           <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
           <folding>
             <element signature="e#505#514#0" expanded="true" />
@@ -701,24 +701,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
+    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="32" column="31" lean-forward="false" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
+        <state relative-caret-position="2091">
+          <caret line="128" column="12" lean-forward="false" selection-start-line="128" selection-start-column="12" selection-end-line="128" selection-end-column="12" />
           <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#8832#12051#0" expanded="false" />
-            <element signature="e#31081#35944#0" expanded="false" />
+            <element signature="e#405#415#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
+    <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
-          <caret line="113" column="31" lean-forward="false" selection-start-line="113" selection-start-column="31" selection-end-line="113" selection-end-column="31" />
+          <caret line="663" column="33" lean-forward="false" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
           <folding>
-            <element signature="e#405#415#0" expanded="true" />
+            <element signature="e#505#514#0" expanded="true" />
+            <element signature="e#8867#12086#0" expanded="false" />
+            <element signature="e#31117#35980#0" expanded="false" />
           </folding>
         </state>
       </provider>

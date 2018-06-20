@@ -37,7 +37,7 @@ changepoint_detection_values = ["simple_valley", "mean_shift", "valley_var_1", "
 year_window_values = ["greater", "2", "3"]  # this is the size of the window of years for matching changepoints to OED
 # years;
 # if "greater", then we match any changepoint that is >= OED year
-lemmatization_values = ["yes", "no"]
+lemmatization_values = ["no", "yes"]
 istest = input("Is this a test?")
 testword = "aapa"
 #testyear = 1998
@@ -50,7 +50,7 @@ dir_in = os.path.join(directory, "Evaluation", "OED")
 dir_out = os.path.join(directory, "Evaluation", "output")
 
 # create output directory if it doesn't exist:
-if not os.path.exists(os.path.join(directory, "Evalu    ation", "output", str(today_date), "neighbours")):
+if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "neighbours")):
     os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "neighbours"))
 if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall")):
     os.makedirs(os.path.join(directory, "Evaluation", "output", str(today_date), "precision-recall"))
@@ -61,7 +61,7 @@ if not os.path.exists(os.path.join(directory, "Evaluation", "output", str(today_
 oed_senses_file_name = "oed.sense"
 oed_quotations_file_name = "oed.quotation"
 dict_file_name = "dict.sample.all"
-neighbour_file_name = "neighborhood_100.csv"
+neighbour_file_name = "neighborhood_dsPaper_100_plain.csv"#  "neighborhood_100.csv"
 
 file_out_all_name = "oed_evaluation_overview"+str(today_date)+".csv"
 if istest == "yes":
@@ -661,7 +661,7 @@ with open(os.path.join(dir_out, str(today_date), "overview", file_out_all_name),
                             if lemmatization == "yes":
                                 candidate_lemma = l.split("_")[0]
                                 candidate_pos = l.split("_")[1]
-                                writer_all_output.writerow(["1"])
+                                #writer_all_output.writerow(["1"])
                                 if l in oed_lemmapos2years:
                                     oedyears = oed_lemmapos2years[l]
                                     # print("OED years:", oedyears)
