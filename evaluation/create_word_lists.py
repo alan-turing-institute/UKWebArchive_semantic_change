@@ -58,7 +58,7 @@ word_freq = dict()
 # Read corpus words and their corpus frequencies:
 
 print("Reading corpus frequencies...")
-
+n
 corpus_words_file = open(os.path.join(dir_in, corpus_words_file_name), 'r')
 corpus_words_reader = csv.reader(corpus_words_file, delimiter='\t')  # , quotechar='|')
 

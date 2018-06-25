@@ -15,26 +15,10 @@
       <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/create_word_lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2091">
-              <caret line="128" column="12" lean-forward="false" selection-start-line="128" selection-start-column="12" selection-end-line="128" selection-end-column="12" />
+            <state relative-caret-position="2210">
+              <caret line="135" column="60" lean-forward="false" selection-start-line="135" selection-start-column="60" selection-end-line="135" selection-end-column="60" />
               <folding>
                 <element signature="e#405#415#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="compare_candidates_oed.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3587">
-              <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
-              <folding>
-                <element signature="e#505#514#0" expanded="true" />
-                <element signature="e#4274#4835#0" expanded="false" />
-                <element signature="e#5582#6972#0" expanded="false" />
-                <element signature="e#8382#11601#0" expanded="false" />
-                <element signature="e#13438#18232#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -43,13 +27,9 @@
       <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="663" column="33" lean-forward="false" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
-              <folding>
-                <element signature="e#505#514#0" expanded="true" />
-                <element signature="e#8867#12086#0" expanded="false" />
-                <element signature="e#31117#35980#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="666">
+              <caret line="520" column="54" lean-forward="false" selection-start-line="520" selection-start-column="54" selection-end-line="520" selection-end-column="54" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -65,24 +45,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;w&quot;</find>
-      <find>istest</find>
-      <find>word</find>
-      <find>candidate2changepoints</find>
-      <find>neighbour</find>
-      <find>neighbour_words</find>
-      <find>oed_years_candidate</find>
-      <find>words:</find>
-      <find>&quot;Changepoint:</find>
-      <find>testyea</find>
-      <find>testw</find>
-      <find>year2jaccard_ranked</find>
-      <find>remove</find>
       <find>file_out_name_summary</find>
       <find>with</find>
       <find>output_all_file</find>
       <find>writer_all_output</find>
-      <find>ranks</find>
       <find>jaccard</find>
       <find>calculate_overlap</find>
       <find>av_rank</find>
@@ -95,6 +61,20 @@
       <find>file_out_name</find>
       <find>baseline</find>
       <find>[1</find>
+      <find>stop</find>
+      <find>stop_</find>
+      <find>n</find>
+      <find>oed_lemma2years</find>
+      <find>gold</find>
+      <find>!!</find>
+      <find>overlappin</find>
+      <find>Rank</find>
+      <find>between</find>
+      <find>oed_lemma2senseid2year</find>
+      <find>oed_lemmapos2senseid</find>
+      <find>oed_lemma2senseid</find>
+      <find>oed_lemma2senseid[</find>
+      <find>ranks</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -115,8 +95,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="794" />
+    <option name="width" value="1920" />
+    <option name="height" value="935" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -133,6 +113,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -147,8 +129,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -252,10 +232,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="794" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="935" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13333334" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -299,13 +279,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="31" selection-end-line="25" selection-end-column="31" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -323,13 +296,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -347,13 +313,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6120">
           <caret line="360" column="7" lean-forward="false" selection-start-line="360" selection-start-column="7" selection-end-line="360" selection-end-column="7" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -371,13 +330,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4233">
           <caret line="250" column="28" lean-forward="false" selection-start-line="250" selection-start-column="28" selection-end-line="250" selection-end-column="28" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -395,13 +347,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -419,13 +364,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -443,13 +381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -467,13 +398,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2159">
           <caret line="129" column="71" lean-forward="false" selection-start-line="129" selection-start-column="71" selection-end-line="129" selection-end-column="71" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -491,13 +415,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2159">
           <caret line="129" column="71" lean-forward="false" selection-start-line="129" selection-start-column="71" selection-end-line="129" selection-end-column="71" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -689,22 +606,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3587">
+        <state relative-caret-position="3502">
           <caret line="444" column="21" lean-forward="false" selection-start-line="444" selection-start-column="4" selection-end-line="444" selection-end-column="21" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#4274#4835#0" expanded="false" />
-            <element signature="e#5582#6972#0" expanded="false" />
-            <element signature="e#8382#11601#0" expanded="false" />
-            <element signature="e#13438#18232#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2091">
-          <caret line="128" column="12" lean-forward="false" selection-start-line="128" selection-start-column="12" selection-end-line="128" selection-end-column="12" />
+        <state relative-caret-position="2210">
+          <caret line="135" column="60" lean-forward="false" selection-start-line="135" selection-start-column="60" selection-end-line="135" selection-end-column="60" />
           <folding>
             <element signature="e#405#415#0" expanded="true" />
           </folding>
@@ -713,13 +623,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="663" column="33" lean-forward="false" selection-start-line="663" selection-start-column="33" selection-end-line="663" selection-end-column="33" />
-          <folding>
-            <element signature="e#505#514#0" expanded="true" />
-            <element signature="e#8867#12086#0" expanded="false" />
-            <element signature="e#31117#35980#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="666">
+          <caret line="520" column="54" lean-forward="false" selection-start-line="520" selection-start-column="54" selection-end-line="520" selection-end-column="54" />
+          <folding />
         </state>
       </provider>
     </entry>
