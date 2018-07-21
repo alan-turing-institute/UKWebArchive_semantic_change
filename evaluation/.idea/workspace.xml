@@ -12,11 +12,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="create_word_lists.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/create_word_lists.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2210">
-              <caret line="135" column="60" lean-forward="false" selection-start-line="135" selection-start-column="60" selection-end-line="135" selection-end-column="60" />
+            <state relative-caret-position="147">
+              <caret line="142" column="44" lean-forward="false" selection-start-line="142" selection-start-column="44" selection-end-line="142" selection-end-column="44" />
               <folding>
                 <element signature="e#405#415#0" expanded="true" />
               </folding>
@@ -24,11 +24,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="compare_candidates_oed-neighbours.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="666">
-              <caret line="520" column="54" lean-forward="false" selection-start-line="520" selection-start-column="54" selection-end-line="520" selection-end-column="54" />
+            <state relative-caret-position="1411">
+              <caret line="88" column="81" lean-forward="false" selection-start-line="88" selection-start-column="80" selection-end-line="88" selection-end-column="81" />
               <folding />
             </state>
           </provider>
@@ -45,10 +45,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>file_out_name_summary</find>
-      <find>with</find>
-      <find>output_all_file</find>
-      <find>writer_all_output</find>
       <find>jaccard</find>
       <find>calculate_overlap</find>
       <find>av_rank</find>
@@ -58,7 +54,6 @@
       <find>changepoint_detection_values</find>
       <find>summary</find>
       <find>output</find>
-      <find>file_out_name</find>
       <find>baseline</find>
       <find>[1</find>
       <find>stop</find>
@@ -75,6 +70,11 @@
       <find>oed_lemma2senseid</find>
       <find>oed_lemma2senseid[</find>
       <find>ranks</find>
+      <find>001</find>
+      <find>file_out_name</find>
+      <find>dir_in</find>
+      <find>method_values</find>
+      <find>CPD</find>
     </findStrings>
     <replaceStrings>
       <replace>simple_valley_baseline</replace>
@@ -88,15 +88,15 @@
         <option value="$PROJECT_DIR$/compare_neighbours_oed.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed_0.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed.py" />
-        <option value="$PROJECT_DIR$/create_word_lists.py" />
         <option value="$PROJECT_DIR$/compare_candidates_oed-neighbours.py" />
+        <option value="$PROJECT_DIR$/create_word_lists.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="1920" />
-    <option name="height" value="935" />
+    <option name="width" value="1440" />
+    <option name="height" value="794" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -114,7 +114,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -129,6 +128,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -232,7 +232,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1920" height="935" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="794" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -428,20 +428,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb" />
     <entry file="file://$PROJECT_DIR$/../../Hartlib/prepare_lemmatization_v1.0.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -463,20 +451,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py" />
     <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -487,20 +463,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb" />
     <entry file="file://$PROJECT_DIR$/../../Hartlib/prepare_lemmatization_v1.0.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -522,20 +486,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="49" column="0" lean-forward="true" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py" />
     <entry file="file://$PROJECT_DIR$/evaluate_OED.py" />
     <entry file="file://$PROJECT_DIR$/evaluate_OED.py" />
     <entry file="file://$PROJECT_DIR$/../../Hartlib/prepare_lemmatization_v1.0.py">
@@ -559,34 +511,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1037">
-          <caret line="61" column="0" lean-forward="false" selection-start-line="61" selection-start-column="0" selection-end-line="62" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="-1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_exercise_McGillivray.py" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/basic_NLP_script_McGillivray.py" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises2.ipynb" />
+    <entry file="file://$USER_HOME$/Documents/OneDrive/OneDrive - The Alan Turing Institute/Teaching/Text2Tech3/code/Text2tech_wed_exercises1.ipynb" />
     <entry file="file://$PROJECT_DIR$/query_oed.py" />
     <entry file="file://$PROJECT_DIR$/../../data-availability-statements/SCRIPTS/classify_das.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -611,21 +539,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
+    <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2210">
-          <caret line="135" column="60" lean-forward="false" selection-start-line="135" selection-start-column="60" selection-end-line="135" selection-end-column="60" />
-          <folding>
-            <element signature="e#405#415#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1411">
+          <caret line="88" column="81" lean-forward="false" selection-start-line="88" selection-start-column="80" selection-end-line="88" selection-end-column="81" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compare_candidates_oed-neighbours.py">
+    <entry file="file://$PROJECT_DIR$/create_word_lists.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="520" column="54" lean-forward="false" selection-start-line="520" selection-start-column="54" selection-end-line="520" selection-end-column="54" />
-          <folding />
+        <state relative-caret-position="147">
+          <caret line="142" column="44" lean-forward="false" selection-start-line="142" selection-start-column="44" selection-end-line="142" selection-end-column="44" />
+          <folding>
+            <element signature="e#405#415#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

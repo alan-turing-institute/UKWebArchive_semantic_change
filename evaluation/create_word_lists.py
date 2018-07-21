@@ -26,11 +26,15 @@ today_date = str(now)[:10]
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-changepoint_detection_values = ["valley_var_1", "valley_var_2", "valley_var_4"]# ["valley_var_1", "valley_var_2", "valley_var_4", "simple_valley", "mean_shift"]
-method_values = ["occ"]#["occ", "point", "cum"]
-pvalue_values = ["090", "095"]
-# under the "valley_var" approach we consider the number after of times the down-ward trend needs
+changepoint_detection_values = ["simple_valley", "mean_shift"]
+# ["valley_var_1", "valley_var_2", "valley_var_4", "simple_valley", "mean_shift"]
+method_values = ["point", "cum"]#["occ", "point", "cum"]
+pvalue_values = ["090", "095"] # under the "valley_var" approach we consider the number after of times the down-ward trend needs
 # to be higher than the variance in order to lead to a changepoint
+vector_values = ["inc"]#["sep", "inc"] # how the word vectors are built;
+# "sep" means that the word space at a time point t is built separately without taking into account the previous
+# space (at time t-1); "inc" means that the word spaces are built incrementally
+
 
 # Directory and file names:
 
@@ -58,7 +62,7 @@ word_freq = dict()
 # Read corpus words and their corpus frequencies:
 
 print("Reading corpus frequencies...")
-n
+
 corpus_words_file = open(os.path.join(dir_in, corpus_words_file_name), 'r')
 corpus_words_reader = csv.reader(corpus_words_file, delimiter='\t')  # , quotechar='|')
 
@@ -115,40 +119,57 @@ for changepoint_detection in changepoint_detection_values:
     else:
         pvalue_values = ["090", "095"]
 
-    for method in method_values:
-        print("Method:",method)
-
-        for pvalue in pvalue_values:
-
-            # candidate words for semantic change detection,
-            # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
-
-            file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
-                            "changepoint-detection_" + changepoint_detection + ".txt"
-            histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
-            histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
-
+    for vector in vector_values:
+        if vector == "inc":
+            method_values = ["point", "cum"]
+            pvalue_values = ["095"]
+        else:
             if changepoint_detection.startswith("valley_var"):
-                histogram_0_filename = method + "_histogram_corpus_freq_filtered0.png"
-                histogram_1_filename = method + "_histogram_corpus_freq_filtered1.png"
-
-            if method == "occ":
-                if changepoint_detection == "simple_valley":
-                    candidate_words_file_name = method + "_s20_year_CPD_baseline.csv"
-                elif changepoint_detection == "mean_shift":
-                    candidate_words_file_name = method + "_s20_year_CPDv2_" + pvalue + "_down_label.csv"
-                else:
-                    candidate_words_file_name = method + "_s20_year_var_" + var + ".csv"
-
+                pvalue_values = ["0"]
             else:
-                if changepoint_detection == "simple_valley":
-                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_baseline.csv"
-                elif changepoint_detection == "mean_shift":
-                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
-                elif changepoint_detection.startswith("valley_var"):
-                    candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + var + ".csv"
-                    #file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) +\
-                    #                "changepoint-detection_" + changepoint_detection + ".txt"
+                pvalue_values = ["090", "095"]
+
+        for method in method_values:
+            print("Method:", method)
+
+            for pvalue in pvalue_values:
+
+                # candidate words for semantic change detection,
+                # p-value = 0.0001, method = cumulative, dataset = 20% of Uk Web Archive JISC dataset 1996-2003
+
+                file_out_name = method + "_words_for_lookup_freq_" + str(freq_filter) + "pvalue-" + str(pvalue) + \
+                                "changepoint-detection_" + changepoint_detection + "_vector-" + vector + ".txt"
+                histogram_0_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered0.png"
+                histogram_1_filename = method + "_" + pvalue + "_histogram_corpus_freq_filtered1.png"
+
+                if changepoint_detection.startswith("valley_var"):
+                    histogram_0_filename = method + "_histogram_corpus_freq_filtered0.png"
+                    histogram_1_filename = method + "_histogram_corpus_freq_filtered1.png"
+
+                if vector == "sep":
+                    if method == "occ":
+                        if changepoint_detection == "simple_valley":
+                            candidate_words_file_name = method + "_s20_year_CPD_baseline.csv"
+                        elif changepoint_detection == "mean_shift":
+                            candidate_words_file_name = method + "_s20_year_CPDv2_" + pvalue + "_down_label.csv"
+                        else:
+                            candidate_words_file_name = method + "_s20_year_var_" + var + ".csv"
+
+                    else:
+                        if changepoint_detection == "simple_valley":
+                            candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_baseline.csv"
+                        elif changepoint_detection == "mean_shift":
+                            candidate_words_file_name = "ukwac_s20_year_" + method + "_CPDv2_" + pvalue + "_down_label.csv"
+                        elif changepoint_detection.startswith("valley_var"):
+                            candidate_words_file_name = "ukwac_s20_year_" + method + "_CPD_var_" + var + ".csv"
+                else:
+                    if changepoint_detection == "simple_valley":
+                        candidate_words_file_name = "ukwac_all_" + vector + "_" + method + "_baseline.csv"
+                    elif changepoint_detection == "mean_shift":
+                        candidate_words_file_name = "ukwac_all_" + vector + "_" + method + "_CPDv2_" + pvalue + ".csv"
+                    else:
+                        candidate_words_file_name = "ukwac_all_" + vector + "_" + method + "_var" + var + ".csv"
+
 
             # ----------------------------------------------
             # Check candidate words against English terms
@@ -162,20 +183,26 @@ for changepoint_detection in changepoint_detection_values:
 
             print("Reading candidate words list...")
 
-            if method == "occ":
-                candidates_file = open(os.path.join(dir_in, "year", "v2", "occ", candidate_words_file_name), 'r')
+            if vector == "inc":
+                candidates_file = open(os.path.join(dir_in, "year", "inc", candidate_words_file_name), 'r')
             else:
-                candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+                if method == "occ":
+                    candidates_file = open(os.path.join(dir_in, "year", "v2", "occ", candidate_words_file_name), 'r')
+                else:
+                    candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
 
             candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 
             row_count = sum(1 for row in candidates_reader)
             candidates_file.close()
 
-            if method == "occ":
-                candidates_file = open(os.path.join(dir_in, "year", "v2", "occ", candidate_words_file_name), 'r')
+            if vector == "inc":
+                candidates_file = open(os.path.join(dir_in, "year", "inc", candidate_words_file_name), 'r')
             else:
-                candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
+                if method == "occ":
+                    candidates_file = open(os.path.join(dir_in, "year", "v2", "occ", candidate_words_file_name), 'r')
+                else:
+                    candidates_file = open(os.path.join(dir_in, "year", "v2", candidate_words_file_name), 'r')
 
             candidates_reader = csv.reader(candidates_file, delimiter='\t')  # , quotechar='|')
 

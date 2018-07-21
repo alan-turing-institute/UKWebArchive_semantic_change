@@ -30,7 +30,7 @@ stop_words = set(stopwords.words('english'))
 # Parameters:
 
 freq_filter = 100  # frequency filter for candidate words
-method_values = ["cum", "point"]#["point", "occ", "cum"]
+method_values = ["occ", "cum"]#["point", "occ", "cum"]
 pvalue_values = ["095"]#["090", "095"]  # NB: if simple_valley_baseline = "yes", this parameter is ignored
 freq_threshold = 500  # Frequency threshold for allowing a word into the corpus dictionary
 changepoint_detection_values = ["simple_valley"]#["simple_valley", "mean_shift", "valley_var_1", "valley_var_2", "valley_var_4", "simple_valley", "mean_shift"]
